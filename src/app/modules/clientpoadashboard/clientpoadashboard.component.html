@@ -1,0 +1,292 @@
+<div>
+  <div nz-row nzGutter="10">
+    <h2 style="margin-left: 10px;margin-top: 10px">Approval List</h2>
+  </div>
+
+
+  <div *ngIf="!showverification" nz-row nzGutter="10" style="margin-top: 20px ;">
+    <div nz-col nzMd="6" style="margin-bottom:10px" class="mb-2" style="margin-left: 10px"
+      *ngFor="let Name of data;let i=index;">
+
+
+      <nz-card [nzTitle]="Brokerag" [@fadeLeft]="fadeLeft">
+        <ng-template #Brokerag>
+          <div class="header" [ngStyle]="{'background-color':  Name.Color}">{{Name.Type}}</div>
+        </ng-template>
+        <div (click)="showPending('P',Name.Type)" nz-card-grid style="width: 100%" class="addressPadding">
+          <span style="cursor: pointer;">
+            <div class="amount2"><b>Pending for Approval </b> </div>
+            <div class="label2">{{Name.Pending}}</div>
+          </span>
+        </div>
+        <div (click)="showPending('A',Name.Type)" nz-card-grid style="width: 100%" class="addressPadding">
+          <span style="cursor: pointer;">
+            <div class="amount2"><b>Approval done for the day </b></div>
+            <div class="label2">{{Name.Approved}}</div>
+          </span>
+        </div>
+        <div (click)="showPending('R',Name.Type)" nz-card-grid style="width: 100%" class="addressPadding">
+          <span style="cursor: pointer;">
+            <div class="amount2"><b>Rejection done for the day</b></div>
+            <div class="label2">{{Name.Rejected}}</div>
+          </span>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+
+
+  <div *ngIf="showverification">
+    <!-- <div nz-row nzGutter="5" style="float: right;">
+      <div nz-col nzMd="24" style="margin-top: -1rem;margin-right: 1rem;"> Skip Download Check
+        <nz-switch nzSize="small" [(ngModel)]="switchValue2" ></nz-switch>
+      </div>
+    </div> -->
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="24">
+        <button nz-button type="button" nzType="link" style="float: right; border-style: none;bottom:8px;"
+          nzSize="large" (click)="showPending('S','DDPI')">Show pending status</button>
+
+      </div>
+    </div>
+    <!-- <div nz-row nzGutter="5" style="float: right;">
+      <div nz-col nzMd="24" style="margin-top: -1rem;margin-right: 1rem;"> Skip Download Check
+        <nz-switch nzSize="small" [(ngModel)]="switchValue2" ></nz-switch>
+      </div>
+    </div> -->
+
+    <!-- <div nz-row nzGutter="5" >
+        <div nz-col nzMd="24" nzLg="24" style="float:right;"> -->
+    <!-- <form-handler (onPreview)="preview()" (onReset)="resetForm()"></form-handler> -->
+    <!-- <button nz-button nzType="primary" style="background-color:rgb(66, 222, 250);float: right;margin-right: 20px" (click)="Viewdata()">View</button>
+          </div>
+        </div> -->
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="3" style="margin-bottom:10px;margin-left: 10px">
+        <b>Location</b>
+        <master-find-ctrl [options]="locationFindopt" [(ngModel)]="location" name="location">
+        </master-find-ctrl>
+      </div>
+      <!-- <div nz-col nzMd="6" nzLg="4">    
+                <b>DP Client Id</b>
+                  <master-find-ctrl [options]="dpClientIdFindopt" autocomplete="off"  [(ngModel)]="dpClientDetails" name="dpClientDetails" ></master-find-ctrl>
+            </div> -->
+      <div nz-col nzMd="6">
+        <b>Tradecode</b>
+        <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode">
+        </master-find-ctrl>
+      </div>
+      <div nz-col nzMd="3" style="font-weight: bold">Trandate
+        <nz-date-picker [(ngModel)]="trandate"></nz-date-picker>
+      </div>
+      <div *ngIf="Showfromdate">
+        <div nz-col nzMd="3" style="font-weight: bold">From Date
+          <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="fdate" name="fd" [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </div>
+      </div>
+
+      <div *ngIf="Showtodate">
+        <div nz-col nzMd="3" style="font-weight: bold">To Date
+          <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="tdate" name="td" [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </div>
+      </div>
+
+    </div>
+    <div nz-row nzGutter="10" *ngIf="Showrequest">
+      <!-- margin-bottom:10px;margin-left: 10px -->
+      <div nz-col nzMd="3" style="font-weight: bold;margin-left: 10px;" *ngIf="Showrequest">Request From
+        <nz-form-control>
+          <nz-select style="width:100%;bottom: 9px;" [(ngModel)]="requestfrom" name="req"
+            (ngModelChange)="reqvaluechange($event,'R')" nzAllowClear>
+            <nz-option *ngFor="let data of  requestvalueArray" [nzValue]="data.code" [nzLabel]="data.Value">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div>
+      <div nz-col nzMd="3" style="font-weight: bold " >B2B Partner
+        <!-- <nz-form-control style="margin-top: -0.5rem;">
+          <nz-switch nzSize="small" [(ngModel)]="switchValue" style="margin-top: -0.5rem;"></nz-switch>
+        </nz-form-control> -->
+        <nz-form-control>
+          <nz-select style="width:100%;bottom: 9px;" [(ngModel)]="B2BPartner" name="req"
+            (ngModelChange)="reqvaluechange($event,'B',i)" nzAllowClear>
+            <nz-option *ngFor="let key of  B2BvalueArray;let i = index" [nzValue]="key.code" [nzLabel]="key.Value">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div>
+      <!-- <div nz-row nzGutter="5" style="float: right;"> -->
+      <div nz-col nzMd="4" style="margin-top:1.2rem;font-weight: bold;margin-bottom: 1rem;" *ngIf="hideToggle">
+        Include Downloaded Files
+        <nz-switch nzSize="small" [(ngModel)]="includeDwnld" (ngModelChange)="toggleChange()"></nz-switch>
+      </div>
+      <!-- [nzDisabled]="toggleDisable" -->
+      <!-- </div> -->
+    </div>
+    <br><br>
+    <div nz-row>
+      <div nz-col nzMd="6" nzLg="6" style="float:right; margin-right: 100px;">
+        <!-- <form-handler (onPreview)="preview()" (onReset)="resetForm()"></form-handler> -->
+        <button nz-button
+          style="background-color:#5179bf;color: white;margin-right: 5px; margin-top:-26px;float: left;width: 45px; left:-45px;bottom:-3px;"
+          *ngIf="hideToggle && Showrequest" (click)="DownloadV()">
+          <span nz-icon nzType="download" nzTheme="outline"></span></button>
+        <button nz-button nzType="primary"
+          style="background-color:green; margin-right: 5px; margin-top:-24px;float: left;width: 90px; left:5px;"
+          (click)="Viewdata()"> View</button>
+        <!-- <div > -->
+        <button *ngIf="ShowExcel" nz-button nzType="primary"
+          style="background-color:rgb(228, 130, 19); margin-top: -24px;float: left; margin: left 5px;margin-right: 5px;width: 90px; left:5px;"
+          (click)="Export()"> Excel</button>
+  
+        <!-- </div> -->
+  
+        <button nz-button nzType="primary"
+          style="background-color:rgb(250, 66, 66); margin-top:-25px;float: left;width: 90px; left:5px;"
+          (click)="Reset()">Reset</button>
+  
+  
+        <!-- MOD NAJAD FOR GET REPORT -->
+        <button *ngIf="showReport" nz-button nzType="primary"
+          style="background-color:rgb(66, 222, 250); margin-top:-25px;float: left;width: 90px; left: 100px;"
+          (click)="Report()">Report</button>
+  
+        <button *ngIf="reportexcel" nz-button nzType="primary"
+          style="background-color:rgb(228, 130, 19); margin-top: -25px;float: left; margin: left 5px;margin-right: 5px;width: 90px; left:195px;"
+          (click)="ReportExcel()"> Excel</button>
+
+      </div>
+    </div>
+    <!-- style="float:right;" -->
+
+
+    <hr>
+
+    <!-- <div *ngIf="ReportResponse.length>0" style="margin: 10px">
+
+      <nz-table *ngIf="ReportResponse.length>0" class="tranTbl table-responsive table-themed" #ReportTable
+        [nzData]="ReportResponse" [nzPageSize]="13" [nzShowPagination]="ReportResponse.length>13"
+        [nzScroll]="{ x: '1000px' }" nzSize="small">
+        <thead>
+          <tr style="padding: 5px 5px; color:white;background-color: #beeae0;">
+            <th class="text-left">DPID</th>
+            <th class="text-left">DPClientID</th>
+            <th class="text-left">DPCode</th>
+            <th class="text-left">Tradecode</th>
+            <th class="text-left">ClientName</th>
+            <th class="text-left">EntryDate</th>
+            <th class="text-left">Status</th>
+            <th class="text-left">Approved_User</th>
+            <th class="text-left">Approved_Date</th>
+            <th class="text-left">Reason</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let data of ReportTable.data;let i = index">
+            <tr *ngIf="!data.HoldRevision > 0" class="resulttable">
+
+              <td class="text-left">{{data.DPID}}</td>
+              <td class="text-left">{{data.DPClientID}}</td>
+              <td class="text-left">{{data.DPCode}}</td>
+              <td id="txt" class="text-left" (click)="viewapproveorreject(data)">{{data.Tradecode}}</td>
+              <td class="text-left">{{data.ClientName}}</td>
+              <td class="text-left">{{data.EntryDate}}</td>
+              <td class="text-left">{{data.ApprFlag}}</td>
+              <td class="text-left">{{data.ApprUser}}</td>
+              <td class="text-left">{{data.ApprDate}}</td>
+              <td class="text-left">{{data.Reason}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </nz-table>
+    </div> -->
+
+    <div nz-row #basicDPDetailsTable *ngIf="DetailData.length" #htmlView>
+      <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzPageSize]=15 [nzShowPagination]="true" nzSize="small"
+        [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <th class="text-left">Tradecode</th>
+            <th *ngFor="let header of detailDataHeads;let i = index"
+              [ngClass]="[header=='selectedtopool' ? 'display':'',header=='rowId' ? 'display':'']">
+              <span *ngIf="header!='Tradecode' && header!='ClientID' && header!='ID' ">{{header}}</span>
+              <!-- <span *ngIf="header!='ID' ">{{header}}</span>  -->
+
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+            <td id="txt" class="text-left" (click)="viewapproveorreject(data)">{{data.Tradecode}}</td>
+            <td *ngFor="let header of detailDataHeads">
+              <span *ngIf="header!='Tradecode' &&  header!='ClientID' && header!='ID' ">{{data[header]}}</span>
+              <!-- <span *ngIf="header!='ID' ">{{data[header]}}</span>  -->
+
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+
+
+  </div>
+
+  <!-- MOD NAJAD FOR REPORT TABLE -->
+  <div>
+    <nz-table *ngIf="DetailData1.length>0" class="tranTbl table-responsive table-themed" #ReportTable
+      [nzData]="DetailData1" [nzPageSize]="20" [nzShowPagination]="true" nzBordered [nzScroll]="{ x: '1000px' }"
+      nzSize="small">
+      <thead>
+        <tr>
+          <th rowspan="4" style="background-color :#96BCD3">State</th>
+          <th rowspan="4" style="background-color :#96BCD3">Region</th>
+          <th rowspan="4" style="background-color :#96BCD3">Location</th>
+          <th rowspan="4" style="background-color :#96BCD3">Tradecode</th>
+          <th rowspan="4" style="background-color :#96BCD3">DPID</th>
+          <th rowspan="4" style="background-color :#96BCD3">Client ID</th>
+          <th rowspan="4" style="background-color :#96BCD3">Rej/Approve</th>
+          <th colspan="4" style="background-color :#96BCD3">Purpose</th>
+          <th rowspan="2" style="background-color :#96BCD3">Rejection reason</th>
+          <th rowspan="2" style="background-color :#96BCD3">Rej/Approval Date</th>
+          <th rowspan="2" style="background-color :#96BCD3">Scanned copy Rej</th>
+        </tr>
+        <tr>
+          <th rowspan="3" style="background-color :#96BCD3">Transfer</th>
+          <th rowspan="3" style="background-color :#96BCD3">Pledge</th>
+          <th rowspan="3" style="background-color :#96BCD3">MF</th>
+          <th rowspan="3" style="background-color :#96BCD3">Tendering</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let data of ReportTable.data;let i = index">
+          <tr *ngIf="!data.HoldRevision > 0" class="resulttable">
+            <td class="text-left">{{data.State}}</td>
+            <td class="text-left">{{data.Region}}</td>
+            <td class="text-left">{{data.Loc}}</td>
+            <td class="text-left">{{data.Tradecode}}</td>
+            <td class="text-left">{{data.DPID}}</td>
+            <td class="text-left">{{data.ClientID}}</td>
+            <td class="text-left">{{data.ApprFlag=='A'?'A':data.ApprFlag=='R'?'R':'N'}}</td>
+            <td class="text-left">{{data.DDPI_Transfer==true?'Y':data.DDPI_Transfer==false?'N':''}}</td>
+            <td class="text-left">{{data.DDPI_Pledge==true?'Y':data.DDPI_Pledge==false?'N':''}}</td>
+            <td class="text-left">{{data.DDPI_MF==true?'Y':data.DDPI_MF==false?'N':''}}</td>
+            <td class="text-left">{{data.DDPI_Tender==true?'Y':data.DDPI_Tender==false?'N':''}}</td>
+            <td class="text-left">{{data.Reason}}</td>
+            <td class="text-left">{{data.ApprDate}}</td>
+            <td class="text-left">{{data.ApprFlag=='R'?'Y':''}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </nz-table>
+  </div>
+  <!-- end -->
+
+</div>
+
+<app-loader *ngIf="isSpinningVisible"></app-loader>

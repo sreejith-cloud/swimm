@@ -1,0 +1,24 @@
+// Responsive tables
+//
+// Generate series of `.table-responsive-*` classes for configuring the screen
+// size of where your table will overflow.
+
+.table-responsive {
+	#each-breakpoint-responsive-table(@i: 1) when (@i =< length(@grid-breakpoints)) {
+		@breakpoint: extract(extract(@grid-breakpoints, @i), 1);
+		@next: breakpoint-next(@breakpoint, @grid-breakpoints);
+		@infix: breakpoint-infix(@next, @grid-breakpoints);
+
+		&@{infix} {
+			#media-breakpoint-down(@breakpoint, {
+				display: block;
+				width: 100%;
+				overflow-x: auto;
+				-webkit-overflow-scrolling: touch;
+				-ms-overflow-style: -ms-autohiding-scrollbar;
+			});
+		}
+
+		#each-breakpoint-responsive-table((@i + 1));
+	} #each-breakpoint-responsive-table();
+}

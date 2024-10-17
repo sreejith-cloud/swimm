@@ -1,0 +1,134 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+        <div nz-row nzGutter="8">
+            <div nz-col nzMd="20" nzLg="10">
+                <h3 class="content-title">Email/Mobile Change Intimation</h3>
+            </div>
+            <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+                <form-handler (onPreview)="preview()" (onReset)="resetForm()" (onExportExcel)="exportExcel()"
+                    (onExportPdf)="pdfDownload()" (onSave)="preview('S')"></form-handler>
+            </div>
+        </div>
+        <div nz-row nzGutter="8">
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>Change Request From Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [disabled]="panNumber || (sentFromDate || sentToDate)" nzFormat="dd-MM-yyyy"
+                            [(ngModel)]="fromdate" name="fromdate" id="fromdate" [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>Change Request To Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [disabled]="panNumber || (sentFromDate || sentToDate)" nzFormat="dd-MM-yyyy"
+                            [(ngModel)]="todate" name="todate" id="todate" [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>Sent From Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [disabled]="panNumber || (fromdate || todate)" nzFormat="dd-MM-yyyy"
+                            [(ngModel)]="sentFromDate" name="sentFromDate" id="sentFromDate"
+                            [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>Sent To Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [disabled]="panNumber || (fromdate || todate)" nzFormat="dd-MM-yyyy"
+                            [(ngModel)]="sentToDate" name="sentToDate" id="sentToDate"
+                            [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>PAN</nz-form-label>
+                    <nz-form-control>
+                        <master-find-ctrl [disabled]="(fromdate || todate) || (sentFromDate || sentToDate)" name="pan"
+                            id="panNumber" [(ngModel)]="panNumber" [options]="panFindOption">
+                        </master-find-ctrl>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label>Letter Intimation</nz-form-label>
+                    <nz-form-control>
+                        <nz-select name="letterIntimation" [(ngModel)]="selectedLetterIntimation">
+                            <nz-option *ngFor="let data of letterIntimationArray" [nzValue]="data" [nzLabel]="data">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row nzGutter="8">
+            <div nz-row *ngIf="resultantData.length > 0" #htmlView>
+                <nz-table #resultantTableData [nzData]="resultantData"  nzSize="small"
+                [nzPageSize]="20" [nzShowPagination]="resultantData.length>20" [nzTotal]="resultantData.length" class="tranTbl table-responsive table-themed">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let header of detailDataHeads;let i= index"
+                                [ngClass]="header == 'Sent Date' ? 'dateFieldHeader' : header == 'Mark As Sent' ? 'markAsSentFieldHeader' : 'defaultFieldHeader'">
+                                <span>{{header}}</span>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of resultantTableData.data;let i = index" class="resulttable">
+                            <td *ngFor="let header of detailDataHeads"
+                                [ngClass]="header == 'Mark As Sent' ? 'markAsSentFieldHeader' : 'defaultFieldHeader'">
+                                <span *ngIf="header !== 'Sent Date' && header !== 'Mark As Sent'">
+                                    {{data[header]}}
+                                </span>
+                                <span *ngIf="header == 'Sent Date'">
+                                    <nz-date-picker nzAllowClear="false" nzFormat="dd-MM-yyyy" [disabled]="!data['Mark As Sent']"
+                                        [(ngModel)]="data[header]" name="sentDate{{i}}" id="sentDate{{i}}"
+                                        [nzDisabledDate]="disabledFutureDate"
+                                        (ngModelChange)="markAsSentFn(false,data['SerialNo'],'date')">
+                                    </nz-date-picker>
+                                </span>
+                                <!-- (ngModelChange)="markAsSentFn($event,i,'checkbox')" -->
+                                <span *ngIf="header == 'Mark As Sent'">
+                                    <label nz-checkbox [(ngModel)]="data[header]"
+                                        (ngModelChange)="markAsSentFn($event,data['SerialNo'],'checkbox')"
+                                        [ngModelOptions]="{standalone: true}"></label>
+                                </span>
+                            </td>
+                            <td>
+                                <a (click)="preview('L',data['SerialNo'])"><i nz-icon nzType="mail"
+                                        style="font-size: 25px;" nzTheme="outline"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+        </div>
+    </form>
+</div>
+
+<nz-drawer [nzClosable]="true" [nzVisible]="visible" nzPlacement="right" nzTitle="Letter"
+    (nzOnClose)="visible = false;drawerContent = ''" nzWidth="50%" nzExtra="downloadLetter">
+    <div style="text-align: end;">
+        <a (click)="exportPdf('D',SerialNoForPreview)"><i nz-icon nzType="download" style="font-size: 25px;"
+                nzTheme="outline"></i></a>
+    </div>
+    <div style="max-height: 80vh; overflow-y: auto ; overflow-x: auto;" [innerHTML]="drawerContent">
+    </div>
+</nz-drawer>
+
+<app-loader
+    *ngIf="isSpinVisible || pdfDownloadClicked.letterDownload || pdfDownloadClicked.addressDownload"></app-loader>

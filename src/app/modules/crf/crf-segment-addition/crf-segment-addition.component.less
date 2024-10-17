@@ -1,0 +1,326 @@
+/* ToolTip notification */
+.tooltip {
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    margin-left: 9px;
+    width: 320px;
+    visibility: hidden;
+    background-color: #FFF;
+    border-radius: 4px;
+    border: 1px solid #aeaeae;
+    position: absolute;
+    z-index: 1;
+    padding: 5px;
+    margin-top: -15px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 5%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #aeaeae transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tranTbl {
+  width: 100%;
+  border: 1px solid rgb(233, 233, 233);
+  border-radius: 5px;
+  margin-top: -2px;
+
+  tr {
+    z-index: -1;
+    display: table-row;
+    vertical-align: inherit;
+    border-color: black;
+    border-style: inherit;
+    padding: 3px 3px;
+    border-bottom: 1px solid #e8e8e8;
+    -webkit-transition: all 0.3s, border 0s;
+    transition: all 0.3s, border 0s;
+
+    th {
+      z-index: 1;
+      margin-top: -0.7%;
+      padding: 2px !important;
+      background-color: #32aa8d !important;
+      border-radius: 10px -1px 0px 0px !important;
+    }
+
+    td {
+      padding: 4px !important;
+      // font-size: 9px ;
+      font-size: small;
+      // border-bottom: 1px;
+      // white-space: nowrap;
+      border-bottom: 1px solid #e8e8e8;
+      -webkit-transition: all 0.3s, border 0s;
+      transition: all 0.3s, border 0s;
+      line-height: 1.5;
+    }
+
+    span {
+      margin-left: 5px;
+    }
+  }
+}
+
+/* Modal_Box */
+.SelectAll {
+    margin-left: 11px;
+    margin-top: -1%;
+} 
+.SLno {
+    margin-left: 11px;
+}
+
+.RejectionList {
+    line-height: 2.5;
+    border-bottom: 1px solid #e8e8e8;
+    word-wrap: normal;
+}
+
+.modalserialno {
+    margin-top: -2.5%;
+    margin-left: 4%;
+}
+
+.modalReasonList {
+    margin-top: -2.5%;
+    margin-left: 24%;
+    white-space: nowrap;
+    line-height: 22px;
+}
+
+.ReasonCheckbox {
+    margin-left: 1.1%;
+}
+
+
+
+.rejectedReasonsData {
+    margin-top: 1%;
+}
+
+.Popboxreasons {
+    padding: 8px;
+    font-size: 12px;
+    line-height: 6.5;
+    word-wrap: normal;
+    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 817px;
+    margin-top: -5px;
+    height: 580px;
+}
+
+.RejectedTable {
+    margin-top: 40px;
+    width: 52%;
+}
+
+.RejectedList {
+    line-height: 2.5;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.Rcheckboxes {
+    margin-left: -60%;
+    margin-top: 55%;
+}
+
+.PopupcheckBox {
+    margin-left: -49%;
+    margin-top: 10%;
+}
+.subhead1{
+
+    color:#000000 ;
+ 
+    
+    }
+
+    .switch1 {
+
+        position: relative;
+      
+        display: inline-block;
+      
+        width: 47px;
+      
+        height: 22px;
+      
+      
+      }
+      .switch1 input {
+
+        opacity: 0;
+      
+        width: 0;
+      
+        height: 0;
+      
+      }
+      
+       
+      
+      .slider1 {
+      
+        position: absolute;
+      
+        cursor: pointer;
+      
+        top: 0;
+      
+        left: 0;
+      
+        right: 0;
+      
+        bottom: 0;
+      
+        background-color: #ccc;
+      
+        -webkit-transition: .4s;
+      
+        transition: .4s;
+      
+      }
+      
+       
+      
+      .slider1:before {
+      
+        position: absolute;
+      
+        content: "";
+      
+        height: 20px;
+      
+        width: 20px;
+      
+        left: 2px;
+      
+        bottom: 1px;
+      
+        
+      
+        background-color: white;
+      
+        -webkit-transition: .4s;
+      
+        transition: .4s;
+      
+      }
+      
+       
+      
+      input:checked + .slider1 {
+      
+        background-color: #00abff;
+      
+      }
+      
+       
+      
+      input:focus + .slider1 {
+      
+        box-shadow: 0 0 1px #00abff;
+      
+      }
+      
+       
+      
+       
+      
+      input:checked + .slider1:before {
+      
+        -webkit-transform: translateX(26px);
+      
+        -ms-transform: translateX(26px);
+      
+        transform: translateX(26px);
+      
+       
+      
+      }
+      
+       
+      
+      /* Rounded sliders */
+      
+      .slider1.round1 {
+      
+        border-radius: 34px;
+      
+      }
+      
+       
+      
+      .slider1.round1:before {
+      
+        border-radius: 50%;
+      
+      }
+
+      .cards3 {
+
+        /* Add shadows to create the "card" effect */
+      
+        border: 2px solid #ccc; /* Change the color as needed */
+        transition: 0.3s;
+        border-radius: 10px;
+      
+       
+      
+        }
+
+        .checkboxinner{
+
+            width: 1.1rem;
+        
+            height: 1.1rem;
+        
+          }
+
+          .textfont{
+
+            font-size: 1.1rem;
+        
+          }
+
+
+          .active-slider  {
+            /* Your desired styles for the active state */
+            background-color: #32aa8d!important; /* Change this to your desired color */
+          }
+
+          .active-card {
+            border: 2px solid #32aa8d; /* Add a border for the inactive card */
+            border-radius: 10px;
+          }
+
+          .inactive-card {
+            border: 2px solid rgb(176, 176, 176); /* Add a border for the inactive card */
+            border-radius: 10px;
+          }
+        .boldinglabelSegment {
+          font-weight: bold;
+          display: inline-block;
+          width: 100px; /* Set a fixed width as needed */
+          white-space: nowrap; /* Prevent text wrapping */
+          overflow: hidden; /* Hide overflowing content */
+          text-overflow: ellipsis; /* Display ellipsis (...) for overflow */
+        }

@@ -1,0 +1,314 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+
+  
+  <app-loader *ngIf="isSpinVisible"></app-loader>
+  <div nz-row nzGutter="10">
+      <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+          <ng-template #findHead>Reports
+          </ng-template>
+          <div nz-col nzMd="24">
+        
+
+        <div nz-row nzGutter="10">
+            <div nz-col nzMd="3" style="padding-top: 19px;">
+                <!-- <fieldset class="fieldset_made">
+                    <legend class="fieldset-shadow-condensed">
+                    
+                    </legend> -->
+            <nz-radio-group [(ngModel)]="model.crforpostacc" (ngModelChange)="reset()"
+            name="crforpostacc">
+            <label title="Post Account Opening" style="font-size: 14px;" nz-radio
+            nzValue="POSTACCOPEN">POST AOF</label>
+            <label nz-radio nzValue="CRF">CRF</label>
+          </nz-radio-group>
+        <!-- </fieldset> -->
+        </div>
+        <div nz-col nzMd="3"  >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel"> From Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="model.From" name="LicenseFrom" >
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="3" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel"> To Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="model.To" name="To">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- <div nz-col nzMd="2" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Barcode Id</nz-form-label>
+              <nz-form-control>
+                  <input nz-input  [(ngModel)]="BarCode"  type="text"  name="BarCode">
+              </nz-form-control>
+            </nz-form-item>
+          </div> -->
+          <div nz-col nzMd="2" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Box No</nz-form-label>
+              <nz-form-control>
+                  <input nz-input  [textMask]="{mask: inputMasks.numeric}"  [(ngModel)]="BoxNo"  type="text"  name="BoxNo">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="3" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Mode</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="model.mode" nzPlaceHolder="Mode" (ngModelChange)="reset()"  name="Mode" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of Modes" [nzLabel]="item.Mode" [nzValue]="item.code">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+            <div nz-col nzMd="2" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Pending Type</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="model.Type" nzPlaceHolder="Type" (ngModelChange)="reset1()"  name="Type" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of Types" [nzLabel]="item.Mode" [nzValue]="item.code">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="2" >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Dp Type</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="model.DpType" nzPlaceHolder="Dp Type" (ngModelChange)="reset1()"  name="DpType" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of DPTypes" [nzLabel]="item.Mode" [nzValue]="item.code">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="2" >
+              <nz-form-item>
+                <nz-form-label class="boldinglabel">ActionType</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="model.ActionType" nzPlaceHolder="Action Type" (ngModelChange)="reset1()"  name="ActionType" nzDropdownMatchSelectWidth="true">
+                    <nz-option *ngFor="let item of ActionTypes" [nzLabel]="item.Mode" [nzValue]="item.code">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="2" >
+                <nz-form-item>
+                  <nz-form-label class="boldinglabel">Account Type</nz-form-label>
+                  <nz-form-control>
+                    <nz-select [(ngModel)]="model.AccountType" nzPlaceHolder="AccountType" (ngModelChange)="reset1()"  name="AccountType" nzDropdownMatchSelectWidth="true">
+                      <nz-option *ngFor="let item of AccountTypes" [nzLabel]="item.Mode" [nzValue]="item.code">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="2" >
+                  <nz-form-item>
+                    <nz-form-label class="boldinglabel">Report Type</nz-form-label>
+                    <nz-form-control>
+                      <nz-select [(ngModel)]="model.ReportSubType" nzPlaceHolder="ReportSubType" (ngModelChange)="reset1()"  name="ReportSubType" nzDropdownMatchSelectWidth="true">
+                        <nz-option *ngFor="let item of ReportSubTypes" [nzLabel]="item.Mode" [nzValue]="item.code">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+          
+
+            <div nz-col nzMd="5" style="padding-top: 18px; float: right;">
+                <button type="button" nz-button nzType="primary" (click)="reset()" style="float: right;">Reset</button>
+                 <button type="button" nz-button nzType="primary" (click)="generateExcel()" style="float: right;">Excel</button>
+                <!-- <button nz-button nzType="primary" (click)="AcceptData()" style="float: right;">Accept</button> -->
+                        <button type="submit" nz-button nzType="primary" (click)="view()" style="float: right;">View</button>
+
+                    </div>
+                
+        </div>
+              <!-- <div nz-col nzMd="5" style="padding-top: 18px; float: right;">
+                <div nz-row nzGutter="10">
+                    <div nz-col nzSpan="24">
+                        <button nz-button nzType="primary" (click)="onviewReset()" style="float: right;">Reset</button>
+                       
+                    </div>
+                </div>
+              </div> -->
+            
+      
+  
+          </div>
+        </nz-card>
+  
+  
+  
+  
+            <!-- <div nz-col nzMd="24">
+                <nz-table #ClientChangeArraytable [nzData]="clientArray" [nzSize]="'small'"
+                  [nzShowPagination]="false" [nzFrontPagination]="false">
+                  <thead>
+                    <tr style="background: rgba(137, 238, 204, 0.678);">
+                      <th nzWidth="5%">Account Type</th>
+                      <th nzWidth="5%">Account Code</th>
+                      <th nzWidth="10%">Name</th>
+                      <th nzWidth="10%">Location</th>
+                      <th nzWidth="10%">Enrol Date</th>
+                      <th nzWidth="5%">DOB</th>
+                      <th nzWidth="5%" nzAlign='center'>Applicable</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of ClientChangeArraytable.data">
+                      <td>{{data.AccountType}}</td>
+                      <td>{{data.AccountCode}}</td>
+                      <td>{{data.AccountName}}</td>
+                      <td>{{data.AccountLocation}}</td>
+                      <td>{{data.AccountEnrolDate| slice:0:10 }}</td>
+                      <td>{{data.AccountDOB | slice:0:10}}</td>
+  
+                      <td nzShowCheckbox nzAlign="left" [(nzChecked)]="data.AccountFlag"
+                        [nzDisabled]="tableCheckBox" nzAlign='center'> </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </div> -->
+                     
+                     
+                     
+                      <!-- <div nz-col nzMd="24">
+                          <button nz-button nzType="primary" style="float: right;" (click)="onnextclick()">Next</button>
+                      </div> -->
+            
+      <!-- <div nz-col nzMd="6" nzLg="4">
+          <nz-form-item>
+            <nz-form-label>State</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="stateFindopt" (ngModelChange)="onChangestate($event);"
+                [(ngModel)]="model.state" name="State"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="6" nzLg="3">
+          <nz-form-item>
+              <nz-form-label>Region</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="RegionFindopt" (ngModelChange)="onChangeRegion($event);"
+                [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="6" nzLg="2">
+          <nz-form-item>
+            <nz-form-label>Location</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="locationFindopt" 
+                [(ngModel)]="model.Location" name="Location">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+   
+   <div nz-col nzMd="6" nzLg="2">
+      <nz-form-item>
+        <nz-form-label >From Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="model.FD" name="FD" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div> 
+    <div nz-col nzMd="6" nzLg="2">
+      <nz-form-item>
+        <nz-form-label >To Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="model.TD" name="TD" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>    
+  <div nz-col nzMd="6" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>PAN</nz-form-label>
+      <nz-form-control>
+        <input nz-input placeholder="PAN" [(ngModel)]="model.PAN" type="text" name="PAN">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="6" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>Serial Number</nz-form-label>
+      <nz-form-control>
+        <input nz-input placeholder="slno" [(ngModel)]="model.slno" type="text" name="slno">
+      </nz-form-control>
+    </nz-form-item>
+  </div> -->
+  </div>
+        
+  <div nz-row  #htmlView *ngIf="DetailData.length>0">
+      <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzShowPagination]="true"  [nzShowPagination]="basicDPDetailsTable.data.length>5"  class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <th>SLNO</th>
+            <th *ngFor="let header of detailDataHeads;let i = index" [ngClass]="[header === 'Acceptorreject' ? 'display1' :'',header === 'SerialNo'? 'color':'']">
+              {{header}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index">
+              <td>{{i+1}}</td>
+            <td *ngFor="let header of detailDataHeads" (click)="getDtailsofStamp(header,data.UserCode)"  [ngClass]="[header === 'UserName' ? 'resulttable' :'']"
+              >{{data[header]}}
+            </td>
+          </tr>
+        </tbody>
+       
+      </nz-table >
+</div>
+            
+
+<nz-modal [(nzVisible)]="modalon" nzTitle="Stamped Clients" (nzOnCancel)="handleCancel()"
+(nzOnOk)="handleCancel()" nzWidth="70%">
+
+<div nz-row  #htmlView *ngIf="DetailData1.length>0">
+    <nz-table #basicDPDetailsTable [nzData]="DetailData1" [nzShowPagination]="true"  [nzShowPagination]="basicDPDetailsTable.data.length>10"  class="tranTbl table-responsive table-themed">
+      <thead>
+        <tr>
+          <th>SLNO</th>
+          <th *ngFor="let header of detailDataHeads1;let i = index" [ngClass]="[header === 'UserName' ? 'color1' :'']" >
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicDPDetailsTable.data;let i = index"    >
+            <td>{{i+1}}</td>
+          <td *ngFor="let header of detailDataHeads1"
+            >{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+     
+    </nz-table >
+</div>
+
+</nz-modal>
+  
+    </form>
+  
+  
+    
+   
+  </div>
+  
+  

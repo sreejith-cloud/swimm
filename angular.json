@@ -1,0 +1,186 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "crd": {
+            "root": "",
+            "sourceRoot": "src",
+            "projectType": "application",
+            "prefix": "app",
+            "schematics": {},
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/crd",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.app.json",
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets",
+                            {
+                                "glob": "**/*",
+                                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                                "output": "/assets/"
+                            },
+                            {
+                                "glob": "**/*",
+                                "input": "./src/assets/",
+                                "output": "/assets/"
+                            }
+                        ],
+                        "styles": [
+                            "src/styles.less",
+                            "src/styles.css"
+                        ],
+                        "scripts": [],
+                        "lazyModules": [
+                            "src/app/modules/dashboard/dashboard.module",
+                            "src/app/modules/CommodityCategoristaionClientwiserpt/CommodityCategoristaionClientwiserpt.module",
+                            "src/app/modules/uccuploadfilegeneration/uccuploadfilegeneration.module",
+                            "src/app/modules/clientcommoditycategorisation/clientcommoditycategorisation.module",
+                            "src/app/modules/uccuploadfilegeneration/uccuploadfilegeneration.module",
+                            "src/app/modules/client-master/client-master.module",
+                            "src/app/modules/client-master/client-master.module",
+                            "src/app/modules/mtf-loc-aproval/mtflocaproval.module",
+                            "src/app/modules/mtf-loc/mtfloc.module",
+                            "src/app/modules/AcctOpeningrpt/AcctOpeningrpt.module",
+                            "src/app/modules/crf/crf.module",
+                            "src/app/modules/AcctOpeningrpt/AcctOpeningrpt.module",
+                            "src/app/modules/proofverification/proofverification.module",
+                            "src/app/modules/jvclienttransfer/jvclienttransfer.module",
+                            "src/app/modules/jvclienttransferreport/jvclienttransferreport.module",
+                            "src/app/modules/accountopening/accountopening.module",
+                            "src/app/modules/document-verification-report/document-verification-report.module",
+                            "src/app/modules/bank-change/bank-change.module",
+                            "src/app/modules/aof-ipvprocess/aof-ipvprocess.module",
+                            "src/app/modules/franchisestaffdetails-report/franchisestaffdetails-report.module",
+                            "src/app/modules/additionalagreementssigned/additionalagreementssigned.module",
+                            "src/app/modules/clientmapping/clientmapping.module",
+                            "src/app/modules/clientpoaentry/clientpoaentry.module",
+                            "src/app/modules/clientpoadashboard/clientpoadashboard.module",
+                            "src/app/modules/poaapprovedorreject/poaapprovedorreject.module",
+                            "src/app/modules/custodian-master/custodian-master.module",
+                            "src/app/modules/remiser-commission-slab/remiser-commission-slab.module",
+                            "src/app/modules/poastamped-documents/poastamped-documents.module",
+                            "src/app/modules/finideastncstatus/finideastncstatus.module",
+                            "src/app/modules/enableactivationrequest/enableactivationrequest.module",
+                            "src/app/modules/activationenabledclients/activationenabledclients.module",
+                            "src/app/modules/additionalagreements/additionalagreements.module",
+                            "src/app/modules/pandetails/pandetails.module",
+                            "src/app/modules/birthdaydetails/birthdaydetails.module",
+                            "src/app/modules/tradingaccounttransactioncharges/tradingaccounttransactioncharges.module",
+                            "src/app/modules/collectionrequests/collectionrequests.module",
+                            "src/app/modules/kra/kra.module",
+                            "src/app/modules/status-conversion/status-conversion.module",
+                            "src/app/modules/status-conversion-report/status-conversion-report.module",
+                            "src/app/modules/dcnactivation/dcnactivation.module",
+                            "src/app/modules/advncamcacopening/advncamcacopening.module",
+                            "src/app/modules/ddpirejectionreport/ddpirejectionreport.module",
+                            "src/app/modules/franchiseestaffcontrol/franchiseestaffcontrol.module",
+                            "src/app/modules/miscellaneous/miscellaneous.module",
+                            "src/app/modules/sikkim-clients/sikkim-clients.module",
+                            "src/app/modules/email-mobile-validate/email-mobile-validate.module",
+                            "src/app/modules/autoallocation/autoallocation.module",
+                            "src/app/modules/crf-hold-request/crf-hold-request.module",
+                            "src/app/modules/dcob-ddpi-form/dcob-ddpiform.module",
+                            "src/app/modules/client-data-update/client-data-update.module",
+                            "src/app/modules/nre-more-than-one-account/nre-more-than-one-account.module",
+                            "src/app/modules/nse-bse-upload/nse-bse-upload.module",
+                            "src/app/modules/emailaccountclosure/emailaccountclosure.module",
+                            "src/app/modules/accountclosureapproval/accountclosureapproval.module",
+                            "src/app/modules/kraliveenquiry/kraliveenquiry.module",
+                            "src/app/modules/inactive-client-activation/inactive-client-activation.module",
+                            "src/app/modules/email-mobile-changeintimation/email-mobile-changeintimation.module",
+                            "src/app/modules/pan-based-client-profile-master/pan-based-client-profile-master.module",
+                            "src/app/modules/physical-activation-kit-report/physical-activation-kit-report.module",
+                            "src/app/modules/physical-activation-kit-upload/physical-activation-kit-upload.module",
+                            "src/app/modules/physical-activation-kit-image-view/physical-activation-kit-image-view.module",
+                            "src/app/modules/pan-verification/pan-verification.module",
+                            "src/app/modules/brokerage-revision/brokerage-revision.module",
+                            "src/app/modules/brokerage-revision-approval/brokerage-revision-approval.module",
+                            "src/app/modules/brokerage-revision-report/brokerage-revision-report.module",
+                            "src/app/modules/ckycemail-log/ckycemail-log.module",
+                            "src/app/modules/block-unblock-report/block-unblock-report.module"
+                        ]
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [{
+                                "replace": "src/environments/environment.ts",
+                                "with": "src/environments/environment.prod.ts"
+                            }],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "aot": true,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [{
+                                "type": "initial",
+                                "maximumWarning": "3mb",
+                                "maximumError": "5mb"
+                            }]
+                        }
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "browserTarget": "crd:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "browserTarget": "crd:build:production"
+                        }
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "browserTarget": "crd:build"
+                    }
+                },
+                "test": {
+                    "builder": "@angular-devkit/build-angular:karma",
+                    "options": {
+                        "main": "src/test.ts",
+                        "polyfills": "src/polyfills.ts",
+                        "tsConfig": "tsconfig.spec.json",
+                        "karmaConfig": "karma.conf.js",
+                        "styles": [
+                            "src/styles.css"
+                        ],
+                        "scripts": [],
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets"
+                        ]
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": [
+                            "tsconfig.app.json",
+                            "tsconfig.spec.json",
+                            "tsconfig.json"
+                        ],
+                        "exclude": [
+                            "**/node_modules/**"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "cli": {
+        "analytics": "a1756d63-c0fc-407c-b6ff-5b1186f5463e"
+    }
+}

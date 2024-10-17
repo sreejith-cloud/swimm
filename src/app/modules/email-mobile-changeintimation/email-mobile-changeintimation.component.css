@@ -1,0 +1,28 @@
+/* .ant-drawer-content-wrapper {
+    width: 720px !important; 
+  } */
+
+  .ant-drawer-content {
+    width: 100%;
+}
+
+/* :host ::ng-deep .cdk-global-overlay-wrapper .cdk-overlay-pane .ant-drawer .ant-drawer-content-wrapper  {
+    width: 720px !important;
+} */
+
+:host ::ng-deep #drawerclassbody .ant-drawer-content-wrapper {
+    width: 720px !important;
+}
+
+.dateFieldHeader {
+    min-width: 8rem;
+}
+
+.defaultFieldHeader {
+    /* max-width: 8rem; */
+}
+
+.markAsSentFieldHeader {
+    text-align: center;
+    align-items: center;
+}

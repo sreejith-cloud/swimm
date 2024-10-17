@@ -1,0 +1,1163 @@
+<div class="main-content">
+  <h3 class="content-title">Brokerage Revision</h3>
+  <div nz-form nzLayout="vertical" class="margintop1">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="32" nzLg="24">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-radio-group id="radios" [(ngModel)]="currentBrokerage" name="currentBrokerage" (ngModelChange)="currentBrokerageFunction()"
+              [ngModelOptions]="{standalone: true}">
+              <label nz-radio id="radio1" nzValue="D"><b>Brokerage Revision Downward</b></label>
+              <label nz-radio id="radio2" nzValue="U"><b>Brokerage Revision Upward</b></label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div  nz-row nzGutter="8">
+      <div nz-col nzMd="8" nzLg="4" class="paddingtop1">
+
+        <nz-form-item>
+          <nz-form-label class="boldinglabel">Tradecode</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl  #config [options]="TradeFindopt" (ngModelChange)="tradecodeSearch()" [(ngModel)]="Tradecode" name="Tradecode">
+            </master-find-ctrl>
+            <!-- <lib-master-nonautofind [options]="TradeFindopt" [(ngModel)]="Tradecode" name="tradeCode">
+            </lib-master-nonautofind> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="8" nzLg="4" class="paddingtop10">
+        <form-handler    (onPreview)="view()" (onReset)="reset()">
+        </form-handler>
+      </div>
+
+    </div>
+    <!-- <div nz-row nzGutter="8">
+      <div nz-col nzMd="12" nzLg="6">
+        <b>Client Name </b>: ,<b>{{this.detailData[0]?.ClentName}}</b>
+      </div>
+      <div nz-col nzMd="12" nzLg="6">
+
+      </div>
+      <div nz-col nzMd="12" nzLg="6">
+
+      </div>
+    </div> -->
+    <div *ngIf="entryFieldsShow">
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="32" nzLg="24">
+          <nz-table #basicDPDetailsTable [nzData]="detailData" nzSize="small" [nzShowPagination]="false"
+            class="tranTbl table-responsive table-themed">
+
+            <tbody>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Client Name </b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ClentName}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Status </b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.Status}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Category </b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.Category}}</b>
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Present Offline Delivery Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.DlvBrokeragePercent}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Offline Speculation Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.SpecBrokeragePercent}}</b>
+                </td>
+                <td class="width-25">
+
+                </td>
+                <td class="width-25">
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Online Delivery Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OnlineDlvBrokerage}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Online Speculation Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OnlineSpecBrokerage}}</b>
+                </td>
+                <td class="width-25">
+                </td>
+                <td class="width-25">
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Futures Offline Brokerage % and lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.FuturesBrokeragePercent}} -
+                    {{this.detailData[0]?.FuturesBrokerageLot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Futures Online Brokerage % and lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.FuturesPercent_Online }} -
+                    {{this.detailData[0]?.FuturesperLot_Online}}</b>
+                </td>
+                <td class="width-25">
+                </td>
+                <td class="width-25">
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Option Online Intraday Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OptionOnlineIntradayPerlot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Option Online Carryforward Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OptionOnlineCarryforwardPerlot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Option Offline Intraday Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OptionOfflineIntradayPerlot}}</b>
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Option Offline Carryforward Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.OptionofflineCarryforwardPerlot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Currency Futures Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.CurFuturesBrokperLot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Currency Options Brokerage per lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.CurOptionsBrokperLot}}</b>
+                </td>
+              </tr>
+              <!-- <tr class="resulttable">
+              <td class="width-25">
+                <b>MCX-SX Futures Brokerage per lot</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.MCXSXFuturesBrokperLot}}</b>
+              </td>
+              <td class="width-25">
+                <b>MCX-SX Options Brokerage per lot</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.MCXSXOptBrokperLot}}</b>
+              </td>
+              <td class="width-25">
+                <b>Min Brok</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.BrokMin}}</b>
+              </td>
+            </tr> -->
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>COM MCX Futures - Normal Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComMCXFuturesNormalBrkPer}}</b>
+                </td>
+                <td class="width-25">
+                  <b>COM MCX Futures - Delivery Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComMCXFuturesDeliveryBrk}}</b>
+                </td>
+                <td class="width-25">
+                  <b>COM MCX Futures - Intraday Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComMCXFuturesIntradayBrkPer}}</b>
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>COM NCDEX Futures - Normal Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComNCDEXFuturesNormalBrkPer}}</b>
+                </td>
+                <td class="width-25">
+                  <b>COM NCDEX Futures - Delivery Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComNCDEXFuturesDeliveryBrk}}</b>
+                </td>
+                <td class="width-25">
+                  <b>COM NCDEX Futures - Intraday Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.ComNCDEXFuturesIntradayBrkPer}}</b>
+                </td>
+              </tr>
+              <!-- <tr class="resulttable">
+              <td class="width-25">
+                <b>COM ICEX Futures - Normal Brokerage %</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.ComICEXFuturesNormalBrkPer}}</b>
+              </td>
+              <td class="width-25">
+                <b>COM ICEX Futures - Delivery Brokerage %</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.ComICEXFuturesDeliveryBrk}}</b>
+              </td>
+              <td class="width-25">
+                <b>COM ICEX Futures - Intraday Brokerage %</b>
+              </td>
+              <td class="width-25">
+                <b>:- {{this.detailData[0]?.ComICEXFuturesIntradayBrkPer}}</b>
+              </td>
+            </tr> -->
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>COM Options - Normal Brokerage Per Lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.COMOptionsNormalBrokperLot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>COM Options - Intraday Brokerage Per Lot</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.COMOptionsIntradayBrokperLot}}</b>
+                </td>
+                <td class="width-25">
+                  <b>SLB Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.SLB_Brok_Per}}</b>
+                </td>
+              </tr>
+              <tr class="resulttable">
+                <td class="width-25">
+                  <b>Present Bond Delivery Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.BondDlvBrokeragePercent}}</b>
+                </td>
+                <td class="width-25">
+                  <b>Bond Speculation Brokerage %</b>
+                </td>
+                <td class="width-25">
+                  <b>:- {{this.detailData[0]?.BondSpecBrokeragePercent}}</b>
+                </td>
+                <td class="width-25">
+                </td>
+                <td class="width-25">
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4" class="paddingDate">
+          <nz-form-item>
+            <nz-form-label>
+              Date of Effect
+            </nz-form-label>
+            <nz-form-control>
+              <nz-date-picker [nzAllowClear]="false" [(ngModel)]="dateofEffect" nzFormat="yyyy/MM/dd" [nzDisabledDate]="disabledFutureDate" [ngModelOptions]="{standalone: true}">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <!-- (ngModelChange)="chkDelivery_CheckedChanged()" -->
+                <label nz-checkbox [(ngModel)]="deliveryCheck" (ngModelChange)="deliveryCheckFunction()" [ngModelOptions]="{standalone: true}">Delivery</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="deliveryCheck">
+          <nz-form-item>
+            <nz-form-label>Delivery [{{this.detailData[0]?.DlvBrokeragePercent}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="deliveryDelivery" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="deliverydelivery" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="deliveryCheck">
+          <nz-form-item>
+            <nz-form-label>Speculation [{{this.detailData[0]?.SpecBrokeragePercent}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="deliverySpeculation" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="deliveryspeculation" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="deliveryCheck">
+          <nz-form-item>
+            <nz-form-label>Minimum Brokerage [0.0000]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="deliveryMinBrokerage" maxlength="8" (keypress)="Clientidcheck(event)" disabled="true"
+                [ngModelOptions]="{standalone: true}" name="deliveryminbrokerage" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" id="addbuttondiv" *ngIf="deliveryCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="getAvailableSlab('delivery')"> Get Available Slab</button>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="deliveryCheck">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-select class="width-100" [(ngModel)]="delivaryAvailableSlab" name="delivaryAvailableSlab">
+                <nz-option *ngFor="let data of delivaryAvailableSlabDropdowns " [nzValue]="data.Code"
+                  [nzLabel]="data.Code">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="!detailData[0]?.ITClient" [(ngModel)]="equityOnlineBrokerageCheck" (ngModelChange)="equityOnlineBrokerageCheckFunction()"
+                  [ngModelOptions]="{standalone: true}">Equity Online Brokerage</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="equityOnlineBrokerageCheck">
+          <nz-form-item>
+            <nz-form-label>Delivery [{{this.detailData[0]?.OnlineDlvBrokerage}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="equityDelivery" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck2(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="equitydelivery" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="equityOnlineBrokerageCheck">
+          <nz-form-item>
+            <nz-form-label>Speculation [{{this.detailData[0]?.OnlineSpecBrokerage}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="equitySpeculation" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck2(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="equityspeculation" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="equityOnlineBrokerageCheck">
+          <nz-form-item>
+            <nz-form-label>Minimum Brokerage [0.0000]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="equityMinBrokerage" maxlength="8" (keypress)="Clientidcheck(event)" disabled="true"
+                [ngModelOptions]="{standalone: true}" name="equityminbrokerage" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" id="addbuttondiv" *ngIf="equityOnlineBrokerageCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="getAvailableSlab('online')"> Get Available Slab</button>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="equityOnlineBrokerageCheck">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-select class="width-100" [(ngModel)]="onlineAvailableSlab" name="onlineAvailableSlab">
+                <nz-option *ngFor="let data of onlineAvailableSlabDropdowns " [nzValue]="data.Code"
+                  [nzLabel]="data.Code">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.FuturesBrokeragePercent==='NIL'" (ngModelChange)="futuresCheckFunction()"
+                  [(ngModel)]="futuresCheck" [ngModelOptions]="{standalone: true}">Futures</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresCheck">
+          <nz-form-item>
+            <nz-form-label>Offline Percentage [{{this.detailData[0]?.FuturesBrokeragePercent}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="offlinePercentage" maxlength="8" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="offlinepercentage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresCheck">
+          <nz-form-item>
+            <nz-form-label>Offline Lot [{{this.detailData[0]?.FuturesBrokerageLot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="offlineLot" maxlength="4" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="offlinelot" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresCheck">
+          <nz-form-item>
+            <nz-form-label>Online Percentage [{{this.detailData[0]?.FuturesPercent_Online }}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="onlinePercentage" maxlength="8" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="onlinepercentage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresCheck">
+          <nz-form-item>
+            <nz-form-label>Online Lot [{{this.detailData[0]?.FuturesperLot_Online}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="onlineLot" maxlength="4" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="onlinelot" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.OptionOnlineIntradayPerlot==='NIL'" (ngModelChange)="optionsCheckFunction()"
+                  [(ngModel)]="optionsCheck" [ngModelOptions]="{standalone: true}">Options</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="optionsCheck">
+          <nz-form-item>
+            <nz-form-label>Online Intraday Brokerage per lot
+              [{{this.detailData[0]?.OptionOnlineIntradayPerlot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="onlineIntradayBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="onlineintradaybrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="optionsCheck">
+          <nz-form-item>
+            <nz-form-label>Online Carry Forward Brokerage per lot
+              [{{this.detailData[0]?.OptionOnlineCarryforwardPerlot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="onlineCarryForwardBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="onlineCarryForwardbrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="optionsCheck">
+          <nz-form-item>
+            <nz-form-label>Offline Intraday Brokerage per lot
+              [{{this.detailData[0]?.OptionOfflineIntradayPerlot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="offlineIntradayBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="offlineintradaybrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="optionsCheck">
+          <nz-form-item>
+            <nz-form-label>Offline Carry Forward Brokerage per lot
+              [{{this.detailData[0]?.OptionofflineCarryforwardPerlot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="offlineCarryForwardBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="offlineCarryForwardbrokerage"
+                nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.FuturesBrokeragePercent==='NIL'" (ngModelChange)="futuresSymbolwiseCheckFunction()"
+                  [(ngModel)]="futuresSymbolwiseCheck" [ngModelOptions]="{standalone: true}"
+                  (ngModelChange)="fillSymbol('FUT')">Futures Symbolwise</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label>Futures Symbol</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="futuresSymbolOpt" (ngModelChange)="FuturesSymbolSerach()" [(ngModel)]="FuturesSymbol" name="Futuressymbol">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="futuresSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label><span
+                *ngIf="FuturesSymbol">[{{FuturesSymbol['A.FixedBrokerage']?FuturesSymbol['A.FixedBrokerage']:''}}]</span>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="FuturesSymbolField" maxlength="5" (keypress)="restrictAlphabets($event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="Futuressymbolfield" nz-input
+                type="text" (ngModelChange)="tbxFixedBrok_TextChanged('FUT')">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4" nzLg="2" id="addbuttondiv" *ngIf="futuresSymbolwiseCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="addSymbol('futures')"> Add</button>
+        </div>
+
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.FuturesBrokeragePercent==='NIL'" (ngModelChange)="optionsSymbolwiseCheckFunction()"
+                  [(ngModel)]="OptionsSymbolwiseCheck" [ngModelOptions]="{standalone: true}"
+                  (ngModelChange)="fillSymbol('OPT')">Options Symbolwise</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="OptionsSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label>Options Symbol</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="optionsSymbolOpt" (ngModelChange)="OptionsSymbolSearch()" [(ngModel)]="OptionsSymbol" name="optionssymbol">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="OptionsSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label><span
+                *ngIf="OptionsSymbol">[{{OptionsSymbol['A.FixedBrokerage']?OptionsSymbol['A.FixedBrokerage']:''}}]</span>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="OptionsSymbolField" maxlength="5" (keypress)="restrictAlphabets($event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="optionssymbolfield" nz-input
+                type="text" (ngModelChange)="tbxFixedBrok_TextChanged('OPT')">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4" nzLg="2" id="addbuttondiv" *ngIf="OptionsSymbolwiseCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="addSymbol('options')"> Add</button>
+        </div>
+
+      </div>
+      <div nz-row nzGutter="8" *ngIf="contrBrkDtsTablShow && contrBrkDtsTable.length>0">
+        <div nz-col nzMd="32" nzLg="24">
+          <nz-table #ContrBrkDtsTabl [nzData]="contrBrkDtsTable" nzSize="small" [nzShowPagination]="false"
+            class="tranTbl table-responsive table-themed">
+            <thead>
+              <tr>
+                <!-- <th>Slno</th> -->
+                <th>Product</th>
+                <th>Symbol</th>
+                <th>Present Brokerage</th>
+                <th>New Brokerage</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dat of ContrBrkDtsTabl.data;let i = index" class="resulttable">
+                <!-- <td>{{dat.Slno}}</td> -->
+                <td>{{dat.Ins_code}}</td>
+                <td>{{dat.Symbol}}</td>
+                <td>{{dat.FixedBrokerage}}</td>
+                <td>{{dat.NewFixedBrokerage}}</td>
+                <td id="txt" (click)="deleteContrBrkDtsTabl(i)">Delete</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.CurFuturesBrokperLot==='NIL'" (ngModelChange)="cdsFuturesCheckFucntion()"
+                  [(ngModel)]="cdsFuturesCheck" [ngModelOptions]="{standalone: true}">CDS Futures</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="cdsFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>[{{this.detailData[0]?.CurFuturesBrokperLot}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="cdsFuturesDefaultBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="cdsfuturesdefaultbrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.CurOptionsBrokperLot==='NIL'" (ngModelChange)="cdsOptionsCheckFucntion()"
+                  [(ngModel)]="cdsOptionsCheck" [ngModelOptions]="{standalone: true}">CDS Options</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="cdsOptionsCheck">
+          <nz-form-item>
+            <nz-form-label>[{{this.detailData[0]?.CurOptionsBrokperLot}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="cdsOptionsDefaultBrokerage" maxlength="4" (keypress)="Clientidcheck(event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="cdsoptionsdefaultbrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+
+      <!-- <div nz-row nzGutter="8">
+      <div nz-col nzMd="8" nzLg="4">
+        <nz-form-item>
+          <nz-form-control>
+            <span>
+              <label nz-checkbox [nzDisabled]="detailData[0]?.MCXSXFuturesBrokperLot==='NIL'"
+                [(ngModel)]="mcxsxFuturesCheck" [ngModelOptions]="{standalone: true}">MCX-SX Futures</label>
+            </span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzLg="4" *ngIf="mcxsxFuturesCheck">
+        <nz-form-item>
+          <nz-form-label>[{{this.detailData[0]?.MCXSXFuturesBrokperLot}}] </nz-form-label>
+          <nz-form-control>
+            <input [(ngModel)]="mcxsxFuturesDefaultBrokerage" maxlength="4" (keypress)="Clientidcheck(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+              name="mcxsxfuturesdefaultbrokerage" nz-input type="text">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="8" nzLg="4">
+        <nz-form-item>
+          <nz-form-control>
+            <span>
+              <label nz-checkbox [nzDisabled]="detailData[0]?.MCXSXOptBrokperLot==='NIL'"
+                [(ngModel)]="mcxsxOptionsCheck" [ngModelOptions]="{standalone: true}">MCX-SX Options</label>
+            </span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzLg="4" *ngIf="mcxsxOptionsCheck">
+        <nz-form-item>
+          <nz-form-label>[{{this.detailData[0]?.MCXSXOptBrokperLot}}] </nz-form-label>
+          <nz-form-control>
+            <input [(ngModel)]="mcxsxOptionsDefaultBrokerage" maxlength="4" (keypress)="Clientidcheck(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+              name="mcxsxoptionsdefaultbrokerage" nz-input type="text">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.ComMCXFuturesNormalBrkPer==='NIL'" (ngModelChange)="commcxFuturesCheckFunction()"
+                  [(ngModel)]="commcxFuturesCheck" [ngModelOptions]="{standalone: true}">COM-MCX Futures %</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="commcxFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Normal Brokerage % [{{this.detailData[0]?.ComMCXFuturesNormalBrkPer}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="mcxNormal" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="mcxnormal" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="commcxFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Intraday Brokerage % [{{this.detailData[0]?.ComMCXFuturesIntradayBrkPer}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="mcxIntraday" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="mcxIntraday" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="commcxFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Delivery Brokerage % [{{this.detailData[0]?.ComMCXFuturesDeliveryBrk}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="mcxDelivery" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="mcxDelivery" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.ComNCDEXFuturesNormalBrkPer==='NIL'" (ngModelChange)="comncdexFuturesCheckFunction()"
+                  [(ngModel)]="comncdexFuturesCheck" [ngModelOptions]="{standalone: true}">COM-NCDEX Futures %</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comncdexFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Normal Brokerage % [{{this.detailData[0]?.ComNCDEXFuturesNormalBrkPer}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="ncdexNormal" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="ncdexnormal" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comncdexFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Intraday Brokerage % [{{this.detailData[0]?.ComNCDEXFuturesIntradayBrkPer}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="ncdexIntraday" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="ncdexIntraday" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comncdexFuturesCheck">
+          <nz-form-item>
+            <nz-form-label>Delivery Brokerage % [{{this.detailData[0]?.ComNCDEXFuturesDeliveryBrk}}] </nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="ncdexDelivery" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="ncdexDelivery" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!-- <div nz-row nzGutter="8">
+      <div nz-col nzMd="8" nzLg="4">
+        <nz-form-item>
+          <nz-form-control>
+            <span>
+              <label nz-checkbox [nzDisabled]="detailData[0]?.ComICEXFuturesNormalBrkPer==='NIL'"
+                [(ngModel)]="comicexFutures" [ngModelOptions]="{standalone: true}">COM-ICEX Futures %</label>
+            </span>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzLg="4" *ngIf="comicexFutures">
+        <nz-form-item>
+          <nz-form-label>Normal Brokerage % [{{this.detailData[0]?.ComICEXFuturesNormalBrkPer}}] </nz-form-label>
+          <nz-form-control>
+            <input [(ngModel)]="icexNormal" maxlength="7" (keypress)="restrictAlphabets($event)" onpaste="return false" [ngModelOptions]="{standalone: true}" name="icexnormal" nz-input
+              type="text">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzLg="4" *ngIf="comicexFutures">
+        <nz-form-item>
+          <nz-form-label>Intraday Brokerage % [{{this.detailData[0]?.ComICEXFuturesIntradayBrkPer}}] </nz-form-label>
+          <nz-form-control>
+            <input [(ngModel)]="icexIntraday" maxlength="7" (keypress)="restrictAlphabets($event)" onpaste="return false" [ngModelOptions]="{standalone: true}" name="icexIntraday" nz-input
+              type="text">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzLg="4" *ngIf="comicexFutures">
+        <nz-form-item>
+          <nz-form-label>Delivery Brokerage % [{{this.detailData[0]?.ComICEXFuturesDeliveryBrk}}] </nz-form-label>
+          <nz-form-control>
+            <input [(ngModel)]="icexDelivery" maxlength="7" (keypress)="restrictAlphabets($event)" onpaste="return false" [ngModelOptions]="{standalone: true}" name="icexDelivery" nz-input
+              type="text">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div> -->
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="detailData[0]?.COMOptionsNormalBrokperLot==='NIL'" (ngModelChange)="comOptionsCheckFunction()"
+                  [(ngModel)]="comOptionsCheck" [ngModelOptions]="{standalone: true}">COM Options</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comOptionsCheck">
+          <nz-form-item>
+            <nz-form-label>Normal Brokerage Per Lot [{{this.detailData[0]?.COMOptionsNormalBrokperLot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="optionNormal" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="optionnormal" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comOptionsCheck">
+          <nz-form-item>
+            <nz-form-label>Intraday Brokerage Per Lot
+              [{{this.detailData[0]?.COMOptionsIntradayBrokperLot}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="optionIntraday" maxlength="7" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="optionIntraday" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox
+                  [nzDisabled]="detailData[0]?.ComMCXFuturesNormalBrkPer==='NIL' && detailData[0]?.ComNCDEXFuturesNormalBrkPer==='NIL' && detailData[0]?.ComICEXFuturesNormalBrkPer==='NIL'" (ngModelChange)="comSymbolwiseCheckFunction()"
+                  [(ngModel)]="comSymbolwiseCheck" [ngModelOptions]="{standalone: true}"><span>COM Symbolwise
+                    -</span><br><span style="padding: 18%;"> Amountwise</span></label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="6" nzLg="3" *ngIf="comSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="exchangeOrSymbol" (ngModelChange)="rdlstComFutSymbol_SelectedIndexChanged()" name="exchangeOrSymbol"
+                [ngModelOptions]="{standalone: true}">
+                <label nz-radio nzValue="E">Exchangewise</label>
+                <label nz-radio nzValue="S">Symbolwise</label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div *ngIf="comSymbolwiseCheck" nz-col nzMd="4" nzLg="2">
+          <nz-form-item>
+            <nz-form-label>Instrument </nz-form-label>
+            <nz-form-control>
+              <nz-select class="width-100" [(ngModel)]="instrument" (ngModelChange)="ddlInstrument_SelectedIndexChanged()" name="instrument">
+                <nz-option *ngFor="let data of instrumentDropdowns " [nzValue]="data.InstrumentCode" [nzLabel]="data.InstrumentCode">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div *ngIf="exchangeOrSymbol==='E' && comSymbolwiseCheck" nz-col nzMd="4" nzLg="2">
+          <nz-form-item>
+            <nz-form-label>Exchange </nz-form-label>
+            <nz-form-control>
+              <nz-select class="width-100" [(ngModel)]="exchange"
+                (ngModelChange)="drpdwnExchange_SelectedIndexChanged()" name="exchange">
+                <nz-option *ngFor="let data of exchangeDropdowns " [nzValue]="data.Product_Value" [nzLabel]="data.Product_Text">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="6" nzLg="3" *ngIf="comSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label>Symbol</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="symbolFindOpt" [disabled]="exchangeOrSymbol === 'E' && exchange === ''" (ngModelChange)="symbolSearchClick()" [(ngModel)]="symbol" name="symbol">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label>Normal Brokerage Per Lot <span
+                *ngIf="symbol">[{{symbol['V.NormalBrokerage']?symbol['V.NormalBrokerage']:''}}]</span></nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="symbolOrAmountNormal" maxlength="6" (keypress)="restrictAlphabets($event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="symbolOrAmountnormal" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="comSymbolwiseCheck">
+          <nz-form-item>
+            <nz-form-label>Intraday Brokerage Per Lot <span
+                *ngIf="symbol">[{{symbol['V.IntradayNormalBrokerage']}}]</span></nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="symbolOrAmountIntraday" maxlength="6" (keypress)="restrictAlphabets($event)"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="symbolOrAmountIntraday" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="4" nzLg="2" id="addbuttondiv" *ngIf="comSymbolwiseCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="btnAddCOMFut_Click()"> Add</button>
+        </div>
+      </div>
+      <div nz-row nzGutter="8" *ngIf="commodityTableShow && commodityTable.length>0">
+        <div nz-col nzMd="32" nzLg="24">
+          <nz-table #commodityTabl [nzData]="commodityTable" nzSize="small" [nzShowPagination]="false"
+            class="tranTbl table-responsive table-themed">
+            <thead>
+              <tr>
+                <!-- <th>Slno</th> -->
+                <th>Instrument</th>
+                <th>Product</th>
+                <th>Symbol</th>
+                <th>Present - Normal Brokerage Per Lot</th>
+                <th>New - Normal Brokerage Per Lot</th>
+                <th>Present - Intraday Brokerage Per Lot</th>
+                <th>New - Intraday Brokerage Per Lot</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dat of commodityTabl.data;let i = index" class="resulttable">
+                <td>{{dat.Instrument}}</td>
+                <td>{{dat.Product}}</td>
+                <td>{{dat.Symbol}}</td>
+                <td>{{dat.CurNormalBrok}}</td>
+                <td>{{dat.NormalBrok}}</td>
+                <td>{{dat.CurIntradayBrok}}</td>
+                <td>{{dat.IntradayBrok}}</td>
+                <td id="txt" (click)="deletecommodityTabl(i)">Delete</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [nzDisabled]="!detailData[0]?.BondClient" [(ngModel)]="bondCheck" (ngModelChange)="bondCheckFunction()"
+                  [ngModelOptions]="{standalone: true}">BOND</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="bondCheck">
+          <nz-form-item>
+            <nz-form-label>Delivery [{{this.detailData[0]?.BondDlvBrokeragePercent}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="bonddelivery" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck1(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="bonddelivery" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="bondCheck">
+          <nz-form-item>
+            <nz-form-label>Speculation [{{this.detailData[0]?.BondSpecBrokeragePercent}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="bondspeculation" maxlength="8" (keypress)="Clientidcheck(event)"
+                (ngModelChange)="slabcheck1(event)" onpaste="return false" [ngModelOptions]="{standalone: true}"
+                name="bondspeculation" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="bondCheck">
+          <nz-form-item>
+            <nz-form-label>Minimum Brokerage [0.0000]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="bondminbrokerage" maxlength="8" (keypress)="Clientidcheck(event)" disabled="true"
+                onpaste="return false" [ngModelOptions]="{standalone: true}" name="bondminbrokerage" nz-input
+                type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" id="addbuttondiv" *ngIf="bondCheck">
+          <button id="btn1" nz-button nzType="primary" (click)="getAvailableSlab('bond')"> Get Available Slab</button>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="bondCheck">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-select class="width-100" [(ngModel)]="bondAvailableSlab" name="bondAvailableSlab">
+                <nz-option *ngFor="let data of bondAvailableSlabDropdowns " [nzValue]="data.Code" [nzLabel]="data.Code">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-control>
+              <span>
+                <label nz-checkbox [(ngModel)]="slbCheck" (ngModelChange)="slbCheckFunction()" [ngModelOptions]="{standalone: true}">SLB</label>
+              </span>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" *ngIf="slbCheck">
+          <nz-form-item>
+            <nz-form-label>Percentage [{{this.detailData[0]?.SLB_Brok_Per}}]</nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="slbpercentage" maxlength="8" (keypress)="Clientidcheck(event)" onpaste="return false"
+                [ngModelOptions]="{standalone: true}" name="slbpercentage" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="8" nzLg="4">
+          <nz-form-item>
+            <nz-form-label>Projected Brokerage Per Month <br> <span>(In Rs ) </span></nz-form-label>
+            <nz-form-control>
+              <input [(ngModel)]="projectedBrokerage" maxlength="10" (keypress)="Clientidcheck(event)"
+                [ngModelOptions]="{standalone: true}" name="projectedBrokerage" nz-input type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+
+        <div nz-col nzMd="12" nzLg="6">
+          <nz-form-item>
+            <nz-form-label>Reason For Revision </nz-form-label>
+            <nz-form-control>
+              <textarea nz-input [(ngModel)]="reason"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="12" nzLg="6">
+          <nz-form-item>
+            <nz-form-label>Additional Remarks</nz-form-label>
+            <nz-form-control>
+              <textarea nz-input [(ngModel)]="remark" name="remark"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="12" nzLg="6" id="addbuttondiv">
+          <button id="btn2" nz-button nzType="primary" [disabled]="btnSave" (click)="save()"> Save</button>
+          <button id="btn2" nz-button nzType="primary" (click)="reset()"> Cancel</button>
+          <!-- <form-handler  class="formHdlr" #formHdl2 (onPreview)="view()" (onReset)="reset()">
+          </form-handler> -->
+        </div>
+      </div>
+    </div>
+      <div *ngIf="divDisclaimer1" >
+        <!-- <font size="20px">
+            <br />
+            <font color="green"><b>Disclaimer : "> -->
+              <!-- size="20px" -->
+        <font>
+        <br />
+        <font color="green"><b>Disclaimer : </b></font>
+        <br />
+        <b>1.</b> All brokerage related mails may be sent to <a href="mailto:brokerage@geojit.com?"><font color="blue"><b>brokerage@geojit.com</b></font></a>.<br />
+        <b>2.</b> The deadline for entry of brokerage reduction/approval is 4 p.m. All entries
+        received before this cut-off time will be effective from the same day. Requests
+        received after the cut-off time will be effective only from the next day.<br />
+        <b>3.</b> Make sure selected trade code and client in module are correct before
+        saving the entry. If any incorrect entry is updated, report to concerned R.M immediately
+        and confirm that the said entry has been rejected by R.M<br />
+        <!-- <b>4.</b> Special type of reduction details should be mentioned in the additional
+        remarks field in the module.<br /> -->
+        <b>4.</b> For equity segment reduction, mark delivery button compulsorily and
+        click in available slab. Please update existing % in blank column for delivery or
+        intraday as required.
+        <br />
+        </font>
+      </div>
+      <div *ngIf="divDisclaimer2">
+        <br />
+        <font color="green"><b>Disclaimer : </b></font>
+        <br />
+        <b>1.</b> All brokerage related mails may be sent to <a href="mailto:brokerage@geojit.com?"><font color="blue"><b>brokerage@geojit.com</b></font></a>.<br />
+        <b>2.</b> Upward revision will effective only after 15 days from request date.<br />
+        <b>3.</b> Make sure selected trade code and client in module are correct before
+        saving the entry. If any incorrect entry is updated, report to concerned R.M immediately
+        and confirm that the said entry has been rejected by R.M<br />
+              <!-- <b>4.</b> Special type of reduction details should be mentioned in the additional
+        remarks field in the module.<br /> -->
+        <b>4.</b> For equity segment reduction, mark delivery button compulsorily and
+        click in available slab. Please update existing % in blank column for delivery or
+        intraday as required.<br />
+        <br />
+      </div>
+
+  </div>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

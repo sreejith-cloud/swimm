@@ -1,0 +1,60 @@
+
+// ............................................................
+// .for
+.for(@i, @n) {.-each(@i)}
+.for(@n)     when (isnumber(@n)) {.for(1, @n)}
+.for(@i, @n) when not (@i = @n)  {
+    .for((@i + (@n - @i) / abs(@n - @i)), @n);
+}
+
+// ............................................................
+// .for-each
+
+.for(@array)   when (default()) {.for-impl_(length(@array))}
+.for-impl_(@i) when (@i > 1)    {.for-impl_((@i - 1))}
+.for-impl_(@i)                  {.-each(extract(@array, @i))}
+
+//---------------------------------------------------------------------
+
+@table-padding-vertical-sm: 3px;
+@table-padding-horizontal-sm: 3px;
+
+//---------------------------------------------------------------------
+
+#themes {
+  .light(){
+    @layout-header-background: #2196F3;
+    @layout-header-background-alt: #2196F3;
+    @text-color-secondary-dark: #3E4B5B;
+  }
+  .dark(){
+    @layout-header-background: #222b35;
+    @layout-header-background-alt: #414a57;
+    @text-color-secondary-dark: #efefef;
+  }
+}
+
+// Setting variables and escaping than
+@themes: ~"light" ~"dark";
+
+// Starting the mixin
+.themify(@property; @key) {
+    // Generating the loop to each brand
+    .for(@themes); .-each(@name) {
+         // When the theme is found, match the selector and propert/value
+        .theme-@{name} & when (@name = dark) {
+          #themes.dark();
+          @{property}: @@key;
+        }
+        .theme-@{name} & when (@name = light) {
+          #themes.light();
+          @{property}: @@key;
+        }
+    }
+}
+// Theming sample
+// .carColor {
+//     .themify(color, primary);
+// }
+
+//---------------------------------------------------------------------

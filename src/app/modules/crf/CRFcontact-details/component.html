@@ -1,0 +1,756 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <div nz-row nzGutter="10">
+        <div nz-col nzLg="24">
+            <nz-card [nzTitle]="title1">
+                <ng-template #title1>
+                    <i nz-icon nzType="phone" nzTheme="outline" class="icon"></i> &nbsp;&nbsp;Contact Details
+                </ng-template>
+                <div nz-row nzGutter="5"  *ngIf="applicationStatus=='P' && HO">
+                    <button  nz-button nzType="primary" class='editButton' type="button" (click)="editButton()">Edit</button>
+                </div>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6" *ngIf="tab!='Email'&&tab!='Telephone'&&tab!='Mobile'">
+                        <nz-form-item>
+                            <nz-form-label>Telephone (Office)</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="telephoneOff" [textMask]="{mask: inputMasks.numeric}"
+                                    maxlength="8" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" *ngIf="tab!='Email'&&tab!='Telephone'&&tab!='Mobile'">
+                        <nz-form-item>
+                            <nz-form-label>Telephone (Res)</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="telephoneRes" [textMask]="{mask: inputMasks.numeric}"
+                                    maxlength="8" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" *ngIf="tab!='Email'&&tab!='Telephone'&&tab!='Mobile'">
+                        <nz-form-item>
+                            <nz-form-label>Fax</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="fax" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" *ngIf="tab!='Email'&&tab!='Telephone'">
+                        <nz-form-item>
+                            <nz-form-label>SMS Facility</nz-form-label>
+                            <nz-form-control>        
+                                <nz-switch formControlName="smsFacility" [disabled]="isSwitchDisabled" (ngModelChange)="CheckSMSAvailable()" (click)="toggleSwitch()">
+                                </nz-switch>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12" *ngIf="tab=='Email'||tab=='Mobile'">
+                        <nz-form-item>
+                            <nz-form-label>&nbsp;</nz-form-label>
+                            <nz-form-control>
+                                <nz-radio-group formControlName="requestMode" (ngModelChange)="notifMode($event)">
+                                    <label nz-radio nzValue="Physical">Physical Request</label>
+                                    <label nz-radio nzValue="Email">Email Request</label>
+                                </nz-radio-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="10" *ngIf="tab!='Email'&&tab!='Telephone'&&NRI=='false'">
+                        <nz-form-item>
+                            <nz-form-label><p style="color: red;">For only change in overseas mobile number, Please change <b>isdcode</b> option</p></nz-form-label>
+                        </nz-form-item>
+                    </div> -->
+                </div>
+                <div nz-row nzGutter="5" *ngIf="tab=='Telephone'">
+                    <div nz-col nzMd="2">
+                        <nz-form-item>
+                            <nz-form-label class="required">Country Code</nz-form-label>
+                            <nz-form-control>
+                                <!-- <input nz-input formControlName="countryCodeResidence"
+                                            [textMask]="{mask: inputMasks.numeric}" /> -->
+                                <nz-select formControlName="countryCodeResidence" nzShowSearch nzAllowClear
+                                    (ngModelChange)="setCountry('Tel1',$event)">
+                                    <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE"
+                                        [nzValue]="item.CODE"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="5">
+                        <nz-form-item>
+                            <nz-form-label>Country Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="telCountry" [ngModelOptions]="{standalone: true}" readonly>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">STD Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="stdCodeResidence"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="4" />
+
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="5">
+                        <nz-form-item>
+                            <nz-form-label class="required">Telephone (Residence)</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="telephoneResidence"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="8" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+                <!-- <div nz-row nzGutter="5" *ngIf="tab=='Telephone'">
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Country Code</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="countryCodeOffice" nzShowSearch nzAllowClear>
+                                    <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE"
+                                        [nzValue]="item.CODE"></nz-option>
+                                </nz-select>
+                            </nz-form-control>   
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3">
+                        <nz-form-item>
+                            <nz-form-label>STD Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="stdCodeOffice" [textMask]="{mask: inputMasks.numeric}"
+                                    maxlength="4" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Telephone (Office)</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="telephoneOffice"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="8"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div> -->
+
+                <!-- <div nz-row nzGutter="5" *ngIf="tab=='Telephone'">
+                        <div nz-col nzMd="3">
+                                <nz-form-item>
+                                    <nz-form-label>Country Code</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="countryCodeOverseas"
+                                            [textMask]="{mask: inputMasks.numeric}" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+        
+                    <div nz-col nzMd="9">
+                        <nz-form-item>
+                            <nz-form-label>Overseas Mobile Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="overseasMobileNumber"
+                                    [textMask]="{mask: inputMasks.numeric}" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div> -->
+                <div nz-row nzGutter="5" *ngIf="tab!='Email' && tab!='Telephone'">
+                    <div nz-col nzMd="2">
+                        <nz-form-item>
+                            <nz-form-label>ISD Code</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzShowSearch formControlName="isdCodeMobile"
+                                    (ngModelChange)="SetPhoneNumberLen('FirstMob',$event)" [class.disabled]=true>
+                                    <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE"
+                                        [nzValue]="item.CODE"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Country Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="mob1Country" [ngModelOptions]="{standalone: true}"
+                                    readonly>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Mobile</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzCompact>
+                                    <!-- <input type="text" nz-input value="+91" readonly style="width: 30%;" /> -->
+                                    <!-- <input nz-input formControlName="mobile" 
+                                        [textMask]="{mask: inputMasks.numeric}" /> -->
+                                    <input nz-input formControlName="mobile" [textMask]="{mask: inputMasks.numeric}"
+                                        [maxlength]="Maxlen1" [minlength]="Minlen1" type="text"
+                                        (blur)="CheckExisting('Mobile1','M',$event.target.value)"  (ngModelChange)="toggleSwitch()"  />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label [class.required]="ContMob1">Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="relation">
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code"
+                                        [nzLabel]="item.Code"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Existing Client</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingClient" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Existing PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingPan" maxlength="10"
+                                    (ngModelChange)="setRelation($event,'mobile')" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="2" *ngIf="NRI=='true'">
+                        <nz-form-item>
+                            <nz-form-label>Overseas ISD</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzShowSearch formControlName="isdCodeOverseas"
+                                    (ngModelChange)="SetPhoneNumberLen('Overseas',$event);toggleSwitch()">
+                                    <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE"
+                                        [nzValue]="item.CODE"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="4" *ngIf="NRI=='true'">
+                        <nz-form-item>
+                            <nz-form-label>Country Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="OverseasCountry" [ngModelOptions]="{standalone: true}"
+                                    readonly>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="NRI=='true'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Overseas Mobile</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzCompact>
+                                    <!-- <input type="text" nz-input value="+91" readonly style="width: 30%;" /> -->
+                                    <!-- <input nz-input formControlName="mobile" 
+                                        [textMask]="{mask: inputMasks.numeric}" /> -->
+                                    <input nz-input formControlName="OverseasMobile"
+                                        [textMask]="{mask: inputMasks.numeric}" [maxlength]="Maxlen1"
+                                        [minlength]="Minlen1" type="text" />
+                                </nz-input-group>`
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+
+                <div nz-row nzGutter="5" *ngIf="tab!='Email' && tab!='Telephone' && tab!='Mobile'">
+                    <div nz-col nzMd="2">
+                        <nz-form-item>
+                            <nz-form-label>ISD Code</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzShowSearch nzAllowClear formControlName=isdCodeAdditionMobile
+                                    (ngModelChange)="SetPhoneNumberLen('SecondMob',$event)">
+                                    <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE"
+                                        [nzValue]="item.CODE"></nz-option>
+                                </nz-select>
+
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Country Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="mob2Country" [ngModelOptions]="{standalone: true}"
+                                    readonly>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Additional Mobile</nz-form-label>
+                            <nz-form-control>
+                                <nz-input-group nzCompact>
+                                    <!-- <input type="text" nz-input value="+91" readonly style="width: 30%;" /> -->
+                                    <input nz-input formControlName="additionalMblNo"
+                                        [textMask]="{mask: inputMasks.numeric}" [maxlength]="Maxlen2"
+                                        [minlength]="Minlen2" type="text"
+                                        (blur)="CheckExisting('Mobile2','M',$event.target.value)" />
+                                </nz-input-group>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="relation1">
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code"
+                                        [nzLabel]="item.Code"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Existing Client</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingClient1" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Existing PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingPan1" maxlength="10" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5" *ngIf="tab!='Mobile' && tab!='Telephone'">
+                    <div nz-col nzMd="9">
+                        <nz-form-item>
+                            <nz-form-label class="required">Email</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="email"
+                                    (blur)="CheckExisting('Email1','E',$event.target.value)"  maxlength="64"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label [class.required]="ContEmail1">Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="relation2">
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code"
+                                        [nzLabel]="item.Code"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Existing Client</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingClient2" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3">
+                        <nz-form-item>
+                            <nz-form-label>Existing PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingPan2" maxlength="10"
+                                    (ngModelChange)="setRelation($event,'email')" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5" *ngIf="tab!='Mobile' && tab!='Telephone' && tab!='Email'">
+                    <div nz-col nzMd="5">
+                        <nz-form-item>
+                            <nz-form-label>Additional Email</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="addEmail" [textMask]="{mask: inputMasks.email}"
+                                    (blur)="CheckExisting('Email2','E',$event.target.value)" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="5">
+                        <nz-form-item>
+                            <nz-form-label>Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="relation3">
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code"
+                                        [nzLabel]="item.Code"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="9">
+                        <nz-form-item>
+                            <nz-form-label>Existing Client</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingClient3" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="5">
+                        <nz-form-item>
+                            <nz-form-label>Existing PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="existingPan3" maxlength="10" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <!-- <div nz-col nzLg="12" *ngIf="false">
+            <nz-divider nzText="Details of related person" nzOrientation="left"></nz-divider>
+
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>KYC no of related person</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>&nbsp;</nz-form-label>
+                        <nz-form-label>Name:</nz-form-label>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>Title</nz-form-label>
+                        <nz-form-control>
+                            <nz-select nzAllowClear nzPlaceHolder="Choose">
+                                <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                                <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                                <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>First Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>Middle Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>Last Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>Proof Of Identity</nz-form-label>
+                        <nz-form-control>
+                            <nz-select>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>&nbsp;</nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <nz-form-item>
+                <nz-form-label>Remarks</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input style="max-height: 100px;"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+
+        <!-- <div nz-col nzMd="12" >
+            <nz-card [nzTitle]="title2" class="cardHeight">
+                <ng-template #title2>
+                        <i nz-icon nzType="solution" nzTheme="outline" class="icon text-danger"></i>   IPV / KYC Details / Applicant declaration
+                </ng-template>
+                <kyc-ipv></kyc-ipv>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>&nbsp;</nz-form-label>
+                            <nz-form-label>Applicant declaration:</nz-form-label>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label class="required">Date</nz-form-label>
+                            <nz-form-control>
+                                <nz-date-picker formControlName="dateOfDeclaration"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label class="required">Place</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="placeOfDeclaration"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div> -->
+        <!-- <div nz-row nzGutter="5">
+                <div nz-col nzMd="16">
+                        <kyc-kra-details></kyc-kra-details>
+                </div>
+                <div nz-col nzMd="8">
+                        <nz-divider nzText="Signature" nzOrientation="left"></nz-divider>
+                                <nz-form-item>
+                                    <nz-form-label>&nbsp;</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                        </nz-upload>
+                                    </nz-form-control>
+                                </nz-form-item>                          
+                </div>
+            </div> -->
+        <!-- </nz-card>
+        </div> -->
+    </div>
+
+    <div *ngIf="(tab=='Mobile' && (applicationStatus=='P'||applicationStatus=='T'||applicationStatus=='A'||applicationStatus=='R' || applicationStatus=='F'))
+        ||(tab=='Email' && (applicationStatus=='P'||applicationStatus=='T'||applicationStatus=='A'||applicationStatus=='R' ||applicationStatus=='F')) " style="margin-top: 10px;">
+        <app-crfipv></app-crfipv>
+    </div>
+    <div *ngIf="tab=='Mobile'||tab=='Email' || tab=='Telephone'" style="margin-top: 10px; margin-bottom: 10px;">
+        <crf-image-upload></crf-image-upload>
+    </div>
+    <div nz-row nzGutter="5" formGroupName="Rejection">
+        <div nz-col nzMd="15">
+            <div nz-col nzSpan="5">
+                <nz-form-label>{{Remks}}</nz-form-label>
+            </div>
+            <div nz-col nzSpan="15">
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="RejRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                            [nzAutocomplete]="remarks2" />
+                        <nz-autocomplete #remarks2>
+                            <nz-auto-option *ngFor="let option of rejectionRemarks" [nzValue]="option.Remarks"
+                                [nzLabel]="option.Remarks" class="aleternateColor">
+                                <span [innerHTML]="option.Remarks"></span>
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div *ngIf="applicationStatus=='P'">
+                <div nz-col nzSpan="1">
+                    <button nz-button nzType="primary" type="button" (click)="fetchReasons()"
+                        title="Click here for Rejection Reasons">Select</button>
+                </div>
+            </div>
+        </div>
+        <div nz-col nzMd="9">
+            <p class="text-right" *ngIf="tab=='Mobile'|| tab=='Email'||tab=='Telephone'">
+                <button nz-button nzType="primary" type="button" (click)="onBackClick()">Back</button>
+                <button nz-button nzType="primary" type="submit" (click)="SaveContactDetails('save')"
+                    *ngIf="saveButtonFlag&&applicationStatus!='T'">Save</button>
+                <button nz-button nzType="primary" type="submit" (click)="SaveContactDetails('savefinalise')"
+                    *ngIf="saveButtonFlag&&applicationStatus=='T'">Save and Finalize</button>
+                <button nz-button nzType="primary" type="button" (click)="BranchReject()"
+                    *ngIf="saveButtonFlag&&applicationStatus=='T'&&!HO">Branch Reject</button>
+                <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag || finalApproveOrRejectButtonFlag"
+                    (click)="Reject()">Reject</button>
+                    <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag && editFlag"
+                    (click)="initialApprove()">First level Approve</button>
+                <button nz-button nzType="primary" type="button" *ngIf="finalApproveOrRejectButtonFlag ||  (approveOrRejectButtonFlag && !editFlag)"
+                    (click)="Approve()">Final Approve</button>
+                <button nz-button nzType="primary" style="float: right;" type="button"
+                    *ngIf="requestID!=''&&!(approveOrRejectButtonFlag ||finalApproveOrRejectButtonFlag) " (click)="PrintForm()">Print {{tab}} Form</button>
+            </p>
+        </div>
+        <div *ngIf="checkBoxArray.length!=0 || AllcheckboxArray.length!=0">
+            <table class="RejectedTable">
+                <thead style="text-align: center; background-color: #32aa8d; color: white;">
+                    <b>Rejected Reasons</b>
+                </thead>
+                <div *ngFor="let item of checkBoxArray; let i = index;">
+                    <tbody _ngcontent-c61="">
+                        <tr _ngcontent-c61="" class="ng-star-inserted">
+                            <td class="Sno"><b>{{i+1}}</b>
+                            </td>&nbsp;
+                            <td _ngcontent-c61="" class="RejectedList">
+                                <b> <input type="hidden" [checked]="checkBoxSelected"
+                                        [disabled]="Cbox_Disabled">{{item.Description}}</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
+                <div *ngFor="let item of AllcheckboxArray; let i = index;">
+                    <tbody _ngcontent-c61="">
+                        <tr _ngcontent-c61="" class="ng-star-inserted">
+                            <td class="Sno"><b>{{i+1}}</b>
+                            </td>&nbsp;
+                            <td _ngcontent-c61="" class="RejectedList">
+                                <b> <input type="hidden" [checked]="checkBoxSelected"
+                                        [disabled]="Cbox_Disabled">{{item}}</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
+            </table>
+        </div>
+        <br><br>
+        <div *ngIf="applicationStatus=='R'&& reasonList.length!=0" class="rejectedReasonsData">
+            <div class="table_container">
+                <nz-table [nzData]="reasonList" [nzShowPagination]=false nzSize="small" class="tranTbl">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div style="margin-left: 34px;
+                                word-break: normal;color: white;">Sl no</div>
+                            </th>
+                            <th>
+                                <div style="margin-left: -75pc;
+                                text-align: center;color: white;">Reasons</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <div class="ReasonCheckbox reasons">
+                            <tr _ngcontent-c61="" class="ng-star-inserted" *ngFor="let data of reasonList; let i = index">
+                                <td class="checkBox">
+    
+                                    <div><a><input class="Rcheckboxes" #saveUserNameCheckBox id="saveUserNameCheckBox"
+                                                type="checkbox" [checked]="checkBoxSelect" (change)="changed($event,data)"
+                                                [disabled]="applicationStatus=='R'" />
+                                        </a>
+                                    </div>
+                                </td>
+                                <td class="Sno"><span>{{i+1}}</span>
+                                </td>
+                                <td _ngcontent-c61="">
+                                    <label><span> {{data.Description}}</span></label><br>
+                                </td><br>
+                            </tr>
+                        </div>
+                    </tbody>
+                </nz-table> 
+            </div>
+            <br>
+        </div>
+        <br>
+        <div nz-col nzMd="15" *ngIf="(applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F')&&  !editFlag">
+            <div nz-col nzSpan="5">Approval Remarks</div>
+            <div nz-col nzSpan="15">
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="AppRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                            [nzAutocomplete]="remarks1" />
+                        <nz-autocomplete #remarks1>
+                            <nz-auto-option *ngFor="let option of approvelRemarks" [nzValue]="option.Remarks"
+                                [nzLabel]="option.Remarks" class="aleternateColor">
+                                <span [innerHTML]="option.Remarks"></span>
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                        <!-- <nz-select formControlName="country">
+                            </nz-select> -->
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div *ngIf="applicationStatus=='P' || applicationStatus=='F'">
+            <div class="wrapper">
+                <nz-modal [(nzVisible)]="isVisible" nzTitle="Rejection Reasons" (nzOnCancel)="isVisible=false"
+                    (nzOnOk)="popOut()" nzWidth="850px" [nzBodyStyle]="{ height: '610px', 'padding-bottom':'53px' }"
+                    [nzStyle]="{top:'8px'}">
+                    <table>
+                        <thead>
+                            <div style="margin-top: 137%;">
+                                <div class="SelectAll">
+                                    <div *ngIf="checkBoxArray.length==0 || checkedArray.length==0">
+                                        <div class="tooltip">
+                                            <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                                                [checked]="checkBoxSelect" (change)="onSaveCheckBoxChanged($event)"
+                                                [disabled]="applicationStatus=='R'" />
+                                            <span class="tooltiptext">
+                                                Proceed with this selection only if all the reasons provided below are
+                                                applicable
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modalserialno">
+                                    <b>Sl No</b>
+                                </div>
+                                <div class="modalReasonList">
+                                    <b>Reasons</b>
+                                </div>
+                            </div>
+                        </thead>
+                        <br>
+                        <tbody class="">
+                            <div class="ReasonCheckbox">
+                                <div class="Popboxreasons ">
+                                    <tr class="ant-modal-body" *ngFor="let data of reasonsList; let i = index;">
+
+                                        <td>
+                                            <div><a><input class="PopupcheckBox" #saveUserNameCheckBox
+                                                        id="saveUserNameCheckBox" type="checkbox"
+                                                        [checked]="checkboxSelected[i]" (change)="changed($event,data)"
+                                                        [disabled]="applicationStatus=='R'" />
+                                                </a></div>
+                                        </td>
+                                        <td><span class="SLno">{{i+1}}</span>
+                                        </td>&nbsp;&nbsp;&nbsp;
+                                        <td _ngcontent-c61="">
+                                            <label><span class="RejectionList">{{data.Description}}</span></label><br>
+                                        </td>
+                                    </tr>
+                                    <br>
+                                </div>
+                            </div>
+                        </tbody>
+                    </table>
+                </nz-modal>
+            </div>
+        </div>
+    </div>
+</form>
+<app-loader *ngIf="isSpining"></app-loader>

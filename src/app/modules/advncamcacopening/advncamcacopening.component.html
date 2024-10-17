@@ -1,0 +1,473 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <!-- <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Advance AMC A/C Opening</h3>
+      </div>
+      
+    </div> -->
+    <!-- <div nz-row nzGutter="8" >
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label class="required">&nbsp;</nz-form-label>
+          <nz-form-control>
+            <button class="header__icons_validate" [disabled]="adddata" (click)="Add()" nz-button  nzType="primary">ADD</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label class="required"><b>Voucher ID</b></nz-form-label>
+          <nz-form-control>
+            <lib-master-nonautofind [disabled]="voucheridDisable" [options]="VoucheridFindopt"
+                [(ngModel)]="model.voucherid" name="voucherid" (ngModelChange)="onchangevoucherID($event)">
+              </lib-master-nonautofind>
+          </nz-form-control>
+        </nz-form-item> 
+      </div>
+
+    </div> -->
+
+    <div style="margin-top: 2%;">
+      <nz-card nzTitle="Advance AMC A/C Opening" class="Dis">
+
+        <div nz-row nzGutter="8">
+
+          <!-- <div nz-col nzMd="4">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">Type</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-radio-group [(ngModel)]="model.type" name="type">
+                    <label nz-radio nzValue="cdsl">CDSL</label>
+                    <label nz-radio nzValue="nsdl">NSDL</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div> -->
+
+          <!-- <div nz-col nzMd="3">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">Type</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="model.type" name="type" nzDropdownMatchSelectWidth="true">
+              <nz-option nzLabel="CDSL"  nzValue="cdsl"></nz-option>
+              <nz-option nzLabel="NSDL" nzValue="nsdl"></nz-option>
+     
+            </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Type</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="model.type" name="typeModule" (ngModelChange)="TypeChange($event)">
+                  <nz-option nzValue="cdsl" nzLabel="CDSL"></nz-option>
+                  <nz-option nzValue="nsdl" nzLabel="NSDL"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label class="required">&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button class="header__icons_validate" [disabled]="adddata" (click)="Add()" nz-button
+                  nzType="primary">ADD</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label class="required"><b>Voucher ID</b></nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [disabled]="voucheridDisable" [options]="VoucheridFindopt"
+                  [(ngModel)]="model.voucherid" name="voucherid" (ngModelChange)="onchangevoucherID($event)">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+        </div>
+
+        <div nz-row nzGutter="8" style="margin-top: 2%;">
+
+
+
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Location</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [disabled]="isAddNotSelected" *ngIf="locationview==false"
+                  [options]="locationFindopt" [(ngModel)]="model.location" name="location"
+                  (ngModelChange)="onchnagelocation($event)">
+                </lib-master-nonautofind>
+                <input nz-input [disabled]="true" *ngIf="locationview==true" type="text" maxlength="10"
+                  [(ngModel)]="model.location.Location" name="locationname">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3" nzLg="3">
+            <nz-form-item>
+              <nz-form-label class="required"><b>Date</b></nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [disabled]="isAddNotSelected" [(ngModel)]="model.date " name="date"
+                  nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledFutureDate">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="8" *ngIf="model.type=='nsdl'">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">Special Offer</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-radio-group [nzDisabled]="isAddNotSelected" [(ngModel)]="model.specialoffer" name="specialoffer"
+                    (ngModelChange)="specialofferChange($event)">
+                    <!-- <label nz-radio nzValue="M">Market</label> -->
+                    <label nz-radio nzValue="0">Quarterly</label>
+                    <label nz-radio nzValue="1">COM</label>
+                    <label nz-radio nzValue="2">NRI</label>
+                    <label nz-radio nzValue="3">CORP</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div>
+
+          <div nz-col nzMd="7" *ngIf="model.type=='cdsl'">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">Type Of Account</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-radio-group [nzDisabled]="isAddNotSelected" [(ngModel)]="model.specialoffer" name="specialoffer"
+                    (ngModelChange)="specialofferChange2($event)">
+                    <!-- <label nz-radio nzValue="M">Market</label> -->
+                    <label nz-radio nzValue="0">INDIVIDUAL</label>
+                    <label nz-radio nzValue="1">COM</label>
+                    <label nz-radio nzValue="2">NRI</label>
+                    <label nz-radio nzValue="3">CORP</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div>
+
+          <div nz-col nzMd="10">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">Quarter</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <label nz-checkbox [disabled]="trueStampCharge || isAddNotSelected || quarter1Disable"
+                    [(ngModel)]="model.quarter1" name="quarter1" class="boldinglabel">Quarter1</label>
+                  <label nz-checkbox [disabled]="trueStampCharge || isAddNotSelected || quarter2Disable"
+                    [(ngModel)]="model.quarter2" name="quarter2" class="boldinglabel"
+                    (ngModelChange)="onchangeQuarter()">Quarter2</label>
+                  <label nz-checkbox [disabled]="trueStampCharge || isAddNotSelected || quarter3Disable"
+                    [(ngModel)]="model.quarter3" name="quarter3" class="boldinglabel"
+                    (ngModelChange)="onchangeQuarter()">Quarter3</label>
+                  <label nz-checkbox [disabled]="trueStampCharge || isAddNotSelected || quarter4Disable"
+                    [(ngModel)]="model.quarter4" name="quarter4" class="boldinglabel"
+                    (ngModelChange)="onchangeQuarter()">Quarter4</label>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div>
+
+        </div>
+
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="6">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">Accounting</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-radio-group [nzDisabled]="isAddNotSelected" [(ngModel)]="model.paymentoption" name="paymentoption"
+                    (ngModelChange)="onchangepaymentOption($event)">
+                    <label nz-radio nzValue="Q">QRCODE</label>
+                    <!-- <label nz-radio nzValue="U">UPI</label> -->
+                    <label nz-radio nzValue="P">BANK</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div>
+
+          <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label class="required">&nbsp;</nz-form-label>
+              <nz-form-control>
+                <label nz-checkbox *ngIf="ShowUpfront" [disabled]="isAddNotSelected || upfrontDisable"
+                  [(ngModel)]="model.upfront" name="upfront" class="boldinglabel"
+                  (ngModelChange)="onchangeUpfront($event)">Upfront</label>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="6" *ngIf="notnewbooklet">
+            <fieldset class="fieldset-shadow-condensed">
+              <legend class="fieldset-shadow-condensed">
+                <span class="boldinglabel">DCN Agreement Signed</span>
+              </legend>
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-radio-group [nzDisabled]="isAddNotSelected" [(ngModel)]="model.dcnagreementsigned"
+                    name="dcnagreementsigned">
+                    <label nz-radio nzValue="Y">YES</label>
+                    <label nz-radio nzValue="N">NO</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            </fieldset>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label> <b>Kit No</b></nz-form-label>
+              <nz-form-control>
+                <input [disabled]="isAddNotSelected" nz-input maxlength="255" [(ngModel)]="model.kitno" name="type" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+        </div>
+
+        <div *ngIf="showBankDetails">
+          <div nz-row nzGutter="3">
+
+            <div nz-col nzMd="6">
+              <nz-form-item>
+                <nz-form-label><b>BANK/CASH</b></nz-form-label>
+                <nz-form-control>
+                  <master-find-ctrl [disabled]="isAddNotSelected" [options]="BankFindopt" [(ngModel)]="model.bankorcash"
+                    name="bank/cash">
+                  </master-find-ctrl>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="3">
+              <nz-form-item>
+                <nz-form-label><b>Cheque No</b></nz-form-label>
+                <nz-form-control>
+                  <input [disabled]="isAddNotSelected" nz-input (keypress)="Validatecheque($event)"
+                    style="text-transform: uppercase;" [(ngModel)]="model.chequeno" name="chequeno" maxlength="6"
+                    minlength="6" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="10">
+            <nz-form-item>
+              <nz-form-label> <b>Narration</b></nz-form-label>
+              <nz-form-control>
+                <input [disabled]="isAddNotSelected" nz-input [maxlength]="50" [(ngModel)]="model.narration"
+                  name="narration" (ngModelChange)="model.narration = $event.toUpperCase()" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="3" *ngIf="notnewbooklet">
+            <nz-form-item>
+              <nz-form-label> <b>Stamp Paper Charge</b></nz-form-label>
+              <nz-form-control>
+                <input nz-input disabled="true" maxlength="255" [(ngModel)]="model.stampapercharge"
+                  name="stampapercharge" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4" *ngIf="notnewbooklet">
+            <nz-form-item>
+              <nz-form-label> <b>DCN Stamp Paper Charge</b></nz-form-label>
+              <nz-form-control>
+                <input nz-input disabled="true" maxlength="255" [(ngModel)]="model.dcnstamppapercharge"
+                  name="dcnstamppapercharge" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label> <b>AMC</b></nz-form-label>
+              <nz-form-control>
+                <input nz-input disabled="true" maxlength="255" [(ngModel)]="model.amc" name="amc" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label> <b>TOTAL</b></nz-form-label>
+              <nz-form-control>
+                <input nz-input disabled="true" maxlength="255" [(ngModel)]="model.total" name="total" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label> <b>VOUCHERID</b></nz-form-label>
+              <nz-form-control>
+                <input nz-input disabled="true" maxlength="255" [(ngModel)]="model.vid" name="vid" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+        </div>
+        <div nz-row nzGutter="8">
+          <div nz-col nzMd="8">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <label nz-checkbox [disabled]="isAddNotSelected || stampchrgeDisable"
+                  [(ngModel)]="model.stampChargesOnly" name="stampChargesOnly" class="boldinglabel"
+                  (ngModelChange)="OnchangeStampChargesOnly($event)">stamp Charges Only (BSDA/AMC Privileged
+                  Loc)</label>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-col nzMd="28" nzLg="14" class="header__icons_set">
+          <button [disabled]="isAddNotSelected || saveDisable" type="primary" nz-button nzType="primary" class="mr-2"
+            (click)="save()">
+            <i nz-icon type="save" theme="outline"></i> Save</button>
+
+          <button type="primary" nz-button nzType="danger" class="mr-2" (click)="reset()">
+            <i nz-icon type="rollback" theme="outline"></i> Reset</button>
+
+          <button [disabled]="printdisable" type="primary" nz-button nzType="warning" class="mr-2"
+            (click)="print(model.vid)">
+            <i nz-icon nzType="printer" nzTheme="outline"></i> Print</button>
+        </div>
+      </nz-card>
+    </div>
+
+
+  </form>
+</div>
+
+<!--  mod by jishnu start-->
+<nz-modal [(nzVisible)]="isVisibleMod" nzMask=true nzOkText="Save" (nzOnCancel)="handleCancelUPI()" (nzOnOk)="save2()">
+  <!-- <p><b>Total Amount is <h3 style="display: inline-block;font-weight: 500;">{{totalAmount}}</h3></b></p>
+ <p><b>Please Enter The UPI Ref No</b></p>
+ <div nz-row nzGutter="8" style="margin-left: 12px">
+   <div nz-col nzMd="12">
+     <nz-form-item>
+       <nz-form-control>
+         <input nz-input maxlength="12" minlength="12" 
+           [(ngModel)]="model.upirefno" name="upirefno" />
+       </nz-form-control>
+     </nz-form-item>
+   </div> -->
+
+  <div style="text-align: center;"><b>
+      <h3>Total Amount is </h3>
+    </b></div>
+  <div style="text-align: center;">
+    <h1>{{model.total}}</h1>
+  </div>
+  <div style="text-align: center;">
+    <h3>Do You Want To Continue?</h3>
+  </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="isVisibleMod1" nzMask=true nzOkText="Save" (nzOnCancel)="handleCancelUPI1()"
+  (nzOnOk)="ValidateupiRefNo()">
+
+  <!-- <img style="max-width: 100%;min-width: 100%;" [src]="qrcodeurl">
+ <p><b>Please Enter The UPI Ref No<b style="color: red;">*</b></b></p>
+ <div nz-row nzGutter="8" style="margin-left: 12px">
+   <div nz-col nzMd="12">
+     <nz-form-item>
+       <nz-form-control>
+         <input nz-input maxlength="12" 
+           [(ngModel)]="upirefno" name="upirefno" [maxlength]="12" />
+       </nz-form-control>
+     </nz-form-item>
+   </div>
+   
+ </div> -->
+
+  <div>
+    <img class="Logogeojit" src="https://www.geojit.com/img/New-Logo.jpg" alt="Bootstrap" width="30" height="24">
+  </div>
+  <div style="display: inline-block;">
+    <div style="display: inline-block;">
+      <h3>Name: {{name}}</h3>
+    </div> &emsp; <div style="display: inline-block;" *ngIf="tcode">
+      <h3>&emsp;{{tcode}}</h3>
+    </div>
+    <div>
+      <h3>DP KIT No: {{dpclntid}}</h3>
+    </div>
+  </div>
+
+
+  <table>
+    <thead>
+      <tr>
+        <th width="70%"></th>
+        <th width="30%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td width="70%"><img style="max-width: 50%" [src]="qrcodeurl"></td>
+        <td width="30%">
+          <div>
+            <h3>{{pa}}</h3>
+          </div>
+          <div>
+            <h3>{{amount}}</h3>
+          </div>
+          <div>
+            <h3>{{uid}}</h3>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p><b>Please Enter The UPI Ref No<b style="color: red;">*</b></b></p>
+  <div nz-row nzGutter="8" style="margin-left: 12px">
+    <div nz-col nzMd="8">
+      <nz-form-item>
+        <nz-form-control>
+          <input nz-input [minlength]="12" [(ngModel)]="upirefno" name="upirefno" (keypress)="numberOnly($event)" [maxlength]="12" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+  </div>
+
+</nz-modal>
+
+<!--  mod by jishnu end-->
+
+<app-loader *ngIf="isLoading"></app-loader>

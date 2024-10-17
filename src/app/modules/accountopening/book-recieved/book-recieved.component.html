@@ -1,0 +1,782 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="24">
+        <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+          <ng-template #findHead>
+            Find Booklet
+          </ng-template>
+          <div nz-col nzMd="24">
+            <div nz-row nzGutter="5">
+              <div nz-col nzMd="2" style="padding-top: 19px;">
+                <nz-radio-group [(ngModel)]="model.crforpostacc" (ngModelChange)="reset()" name="crforpostacc">
+                  <label title="Post Account Opening" style="font-size: 14px;" nz-radio nzValue="POSTACCOPEN">POST
+                    AOF</label>
+                  <label readonly nz-radio nzValue="CRF">CRF</label>
+                </nz-radio-group>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>PAN</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="pan" [options]="panFindOption" (ngModelChange)="onChangeRegion($event)"
+                      [(ngModel)]="model.PanNo">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>CIN</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="cin" (ngModelChange)="onChangeRegion($event)" [options]="cinFindOption"
+                      [(ngModel)]="model.Cin">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Geojit Unique Code</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="uniqueCode" (ngModelChange)="onChangeRegion($event)"
+                      [options]="geojitUniqueCodeFindOption" [options]="cinFindOption" [(ngModel)]="model.uniqueCode">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Kit Number</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="kitno" (ngModelChange)="onChangeRegion($event)" [options]="kitnoFindOption"
+                      [(ngModel)]="model.kitno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Booklet Serial No</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="slno" (ngModelChange)="onChangeRegion($event)" [options]="slnoFindOption"
+                      [(ngModel)]="model.slno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Account Serial No</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="accslno" (ngModelChange)="onChangeRegion($event)"
+                      [options]="accslnoFindOption" [(ngModel)]="model.accslno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3" style="padding-top: 18px; float: right;">
+
+                <button type="button" nz-button nzType="primary" (click)="reset()" style="float: right;">Reset</button>
+                <button type="submit" [disabled]="buttonactive" nz-button nzType="primary" (click)="getData()"
+                  style="float: right;">View</button>
+
+              </div>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+
+    <app-loader *ngIf="isSpinning"></app-loader>
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="24">
+        <nz-card [nzTitle]=findHead1 style="margin-bottom: 10px;">
+          <ng-template #findHead1>
+            HO Booklet Receive
+          </ng-template>
+          <div nz-col nzMd="24">
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="24">
+                <nz-form-item>
+                  <div nz-row nzGutter="5">
+                    <div nz-col nzMd="18">
+                      <fieldset class="fieldset_made">
+                        <legend class="fieldset-shadow-condensed">
+                          Account Type & POA Details
+                        </legend>
+                        <div nz-row nzGutter="5">
+                          <div nz-col nzMd="2">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [disabled]="true" [(ngModel)]="Trading" readonly
+                                  [ngModelOptions]="{standalone: true}">Trading</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="2">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" [disabled]="true" nz-checkbox [(ngModel)]="NSDL" readonly
+                                  [ngModelOptions]="{standalone: true}">NSDL</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="2">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [disabled]="true" [(ngModel)]="CDSL" readonly
+                                  [ngModelOptions]="{standalone: true}">CDSL</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="2">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="B2B" readonly
+                                  [ngModelOptions]="{standalone: true}">B2B</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="2" *ngIf="B2B==true">
+                            <nz-form-control>
+                              <span>
+                                B2BPartner: {{B2BPartner}}
+
+                              </span>
+                            </nz-form-control>
+                          </div>
+
+                          <div nz-col nzMd="3" style="padding-right: 46.5px;">
+
+                            <nz-form-control>
+                              <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="poasigneddate"
+                                name="poasigneddate"> </nz-date-picker>
+                            </nz-form-control>
+                          </div>
+
+                          <div nz-col nzMd="3">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [disabled]="true" [(ngModel)]="poasigned"
+                                  readonly [ngModelOptions]="{standalone: true}">POA Signed</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+
+                          <div nz-col nzMd="3">
+
+                            <nz-form-control>
+                              <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="poadebiteddate"
+                                name="poadebiteddate"> </nz-date-picker>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="3">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [disabled]="true" [(ngModel)]="poadebited"
+                                  readonly name="poadebited" [ngModelOptions]="{standalone: true}">POA Debited</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="4">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" [class.tooltip]="!poadebited" nz-checkbox [disabled]="true"
+                                  [(ngModel)]="poastamped" readonly (ngModelChange)="getScannedData()"
+                                  [ngModelOptions]="{standalone: true}" [disabled]="B2B">
+                                  <span>
+                                    POA Stamped <span class="tooltiptext">POA stamping is blocked as stamp charge not
+                                      debited for this client</span>
+                                  </span>
+                                  <!-- <span *ngIf="B2B">
+                                    DDPI Stamped
+                                  </span> -->
+                                </label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="4" *ngIf="DDPIStatus">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [(ngModel)]="DDPIstamped" readonly
+                                  (ngModelChange)="getScannedData()" [ngModelOptions]="{standalone: true}">
+                                  DDPI Stamped
+                                </label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                        </div>
+
+                      </fieldset>
+
+                      <div nz-row nzGutter="10">
+                        <div nz-col nzMd="4">
+                          <nz-form-item>
+                            <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                                class="text-success space"></i>First
+                              Holder Name</nz-form-label>
+                            <nz-form-control>
+                              <input nz-input [(ngModel)]="holdername" [title]="holdername" type="text" readonly name="holdername">
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>Pan</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="holderpan" readonly type="text" name="holderpan">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="3">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>
+                            Account Type</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="code" type="text" readonly name="code">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="5">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>
+                            Account Description</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="acctype" readonly type="text" name="acctype">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP
+                            Account
+                            Type</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="dpcode" readonly type="text" name="dpcode">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP
+                            Account
+                            Sub Type</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="subtype" readonly type="text" name="subtype">
+                          </nz-form-control>
+                        </div>
+                      </div>
+                      <div nz-row nzGutter="10">
+                        <div nz-col nzMd="5">
+                          <nz-form-item>
+                            <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                                class="text-success space"></i>Trading
+                              Region Name</nz-form-label>
+                            <nz-form-control>
+                              <input nz-input [(ngModel)]="tradingregionname" type="text" readonly
+                                name="tradingregionname">
+                            </nz-form-control>
+                          </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="3">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>
+                            Location</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="TradingLocation" readonly type="text" name="TradingLocation">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="3">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>Trading Code
+                          </nz-form-label>
+
+
+
+                          <nz-form-control>
+                            <!-- <input nz-input [(ngModel)]="TradingLocation" readonly type="text" name="TradingLocation"> -->
+                            <input nz-input [(ngModel)]="tradecode" type="text" readonly name="tradecode">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="5">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>Trading
+                            Location Name</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="tradinglocname" readonly type="text" name="tradinglocname">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP
+                            Id
+                          </nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="dpaccid" readonly type="text" name="dpaccid">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP
+                            Client Id</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="dpaccbenid" readonly type="text" name="dpaccbenid">
+                          </nz-form-control>
+                        </div>
+                      </div>
+                      <div nz-row nzGutter="10">
+                        <div nz-col nzMd="5">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>First Holder
+                            KRA Initial Status
+                          </nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="initialstatus" readonly type="text" name="initialstatus">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="5">
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>First Holder
+                            KRA Update Status</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="updatestaus" readonly type="text" name="updatestaus">
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="3">
+
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>No.
+                            Of
+                            Holders</nz-form-label>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="holderno" readonly name="holderno">
+                          </nz-form-control>
+
+                        </div>
+                        <div nz-col nzMd="3">
+
+                          <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline"
+                              class="text-success space"></i>Pouch Slno
+                          </nz-form-label>
+                          <nz-form-control>
+
+                            <input nz-input [(ngModel)]="model.pouchno" name="pouchno" (click)="getPouchSlno()">
+                          </nz-form-control>
+
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label class="required">Enroll Date</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="EnrolDate"
+                              name="EnrolDate"> </nz-date-picker>
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="4">
+                          <nz-form-label class="required"> Received Date</nz-form-label>
+                          <nz-form-control>
+                            <nz-date-picker [nzDisabledDate]="disabledFutureDate" [(ngModel)]="receiveddate"
+                              nzFormat="dd-MM-yyyy" name="accepteddate" [disabled]="dcmntrecieved"> </nz-date-picker>
+                          </nz-form-control>
+                        </div>
+                      </div>
+                      <!-- <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Id
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="dpaccid" readonly type="text" name="dpaccid">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Client Id</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="dpaccbenid" readonly type="text" name="dpaccbenid">
+                </nz-form-control>
+              </div> -->
+
+
+                      <!-- </div>
+            </div> -->
+
+
+
+
+                      <!-- <div nz-col nzMd="3">
+                  <nz-form-label class="required">Enroll Date</nz-form-label>
+                  <nz-form-control>
+                    <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="EnrolDate" name="EnrolDate"> </nz-date-picker>
+                  </nz-form-control>
+                </div>
+                <div nz-col nzMd="3">
+                    <nz-form-label class="required">  Received Date</nz-form-label>
+                    <nz-form-control>
+                      <nz-date-picker [(ngModel)]="receiveddate" nzFormat="dd-MM-yyyy" name="accepteddate"> </nz-date-picker>
+                    </nz-form-control>
+                  </div>
+              <div nz-col nzMd="3" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label nz-checkbox [(ngModel)]="dcmntrecieved" [ngModelOptions]="{standalone: true}">
+                      Document Received</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+
+
+
+              <div nz-col nzMd="3" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label nz-checkbox [(ngModel)]="passedtoauditor" [ngModelOptions]="{standalone: true}">Passed
+                      To Auditor</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div> -->
+
+
+                      <div nz-row nzGutter="10">
+
+                        <div nz-col nzMd="5" style="padding-top: 5px;">
+                          <nz-form-control>
+                            <nz-form-label>&nbsp;</nz-form-label>
+
+                            <nz-form-control>
+                              <label nz-checkbox [(ngModel)]="dcmntrecieved" [ngModelOptions]="{standalone: true}"
+                                (ngModelChange)="ticked($event)">
+                                Document Received</label>
+                            </nz-form-control>
+                          </nz-form-control>
+                        </div>
+
+
+
+                        <div nz-col nzMd="5" style="padding-top: 5px;">
+                          <nz-form-control>
+                            <nz-form-label>&nbsp;</nz-form-label>
+
+                            <nz-form-control>
+                              <label nz-checkbox [(ngModel)]="passedtoauditor"
+                                [ngModelOptions]="{standalone: true}">Passed
+                                To Auditor</label>
+                            </nz-form-control>
+                          </nz-form-control>
+                        </div>
+                        <div nz-col nzMd="6" style="padding-top: 18px; float: right;">
+                          <!-- <button *ngIf="dcobDetails.length!=0" type="button" [disabled]="buttonactive" nz-button nzType="primary" (click)="Savedcobdoc()" style="float: right;">Mark Document</button> -->
+                          <button type="button" [disabled]="buttonactive" nz-button nzType="primary" (click)="save()"
+                            style="float: right;">Save</button>
+                          <button [hidden]="value==0 ? true:false" [disabled]="buttonactive" type="button" nz-button
+                            nzType="primary" style="float: right;" id="btnPrint" printSectionId="print-section"
+                            ngxPrint>Print</button>
+                          <!-- <button type="button" nz-button [hidden]="true" id="btnPrint" printSectionId="print-section" ngxPrint></button> -->
+                          <!-- printSectionId="print-section" ngxPrint -->
+                        </div>
+                      </div>
+                    </div>
+                    <div nz-col nzMd="6">
+                      <div nz-row nzGutter="10">
+                        <div nz-col nzMd="24">
+                          <nz-table class="bookreceived-table" style="height: 98px;margin-top: 12px;"
+                            [ngClass]="[dcobDetails1.data.length==0?'DCOBTABLE':'']" [nzShowPagination]="false"
+                            #dcobDetails1 [nzData]="dcobDetails">
+                            <thead>
+                              <tr>
+                                <th class="tablecolor">DocName</th>
+                                <th class="tablecolor">Received</th>
+                                <th class="tablecolor" nzWidth="45%">Received Date</th>
+                                <!-- <th class="tablecolor">Status</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let data of dcobDetails1.data;let i = index" class="resulttable">
+                                <td>{{data.Docname}}</td>
+                                <td> <nz-select [(ngModel)]="data.RECEIVED" (ngModelChange)="resetDate(data,i)"
+                                    nzPlaceHolder="RECEIVED" name="RECEIVED{{i}}" nzDropdownMatchSelectWidth="true"
+                                    style="width: 100%;">
+                                    <nz-option *ngFor="let item of Receiveddata" [nzLabel]="item.Mode"
+                                      [nzValue]="item.code">
+                                    </nz-option>
+                                    <!-- [nzDisabled]="item.code!='C'" -->
+                                  </nz-select></td>
+                                <td><nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="data.RECEIVEDDATE"
+                                    name="RECEIVEDDATE{{i}}" style="width: 100%;"> </nz-date-picker></td>
+                                <!-- <td>{{data.sts}}</td> -->
+                              </tr>
+                            </tbody>
+                          </nz-table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+
+
+    <nz-modal [(nzVisible)]="isVisibleRejection" nzTitle="Account Details" (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleCancel()" nzWidth="70%">
+
+      <nz-table class="tranTbl table-responsive table-themed" #pouchslnoDetails1 [nzData]="pouchslnoDetails">
+        <thead>
+          <tr>
+            <th *ngFor="let header of pouchslnoDetailsHead;let i = index">
+              {{header}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of pouchslnoDetails1.data" (click)="SetPendingdata(data)" class="resulttable">
+            <td *ngFor="let header of pouchslnoDetailsHead">{{data[header]}}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </nz-modal>
+
+
+  </form>
+  <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent"
+    [contentType]="filePreiewContentType" [fileName]="filePreiewFilename"></app-file-preview>
+</div>
+
+
+
+
+
+
+<div [hidden]="true" id="print-section" style="width:500px;margin-top:-10px">
+
+
+  <table style="width:250px;margin-top:-30px">
+    <tbody>
+      <tr>
+        <td style="font-size: 18px;font-weight: bold;">{{kinoforreport}}</td>
+        <td colspan="2" style="padding-left: 103px;"><ngx-barcode [bc-font-size]="fontSize" [bc-height]="height"
+            [bc-width]="width" class="barcode" [bc-value]="value" [bc-display-value]="true">
+            <!-- [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight" -->
+          </ngx-barcode></td>
+      </tr>
+
+    </tbody>
+  </table>
+  <table>
+    <tbody>
+      <tr>
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">Account</td>
+        <td *ngIf="NSDL&&Trading" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;Trading-NSDL
+          &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+        <td *ngIf="NSDL&&!Trading" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;NSDL
+          &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+        <td *ngIf="CDSL&&!Trading" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;CDSL
+          &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+        <td *ngIf="CDSL&&Trading" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;Trading-CDSL
+          &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+        <td *ngIf="Trading&&!NSDL&&!CDSL&&!B2B" style="font-weight: bold;font-size: 11px;font-family: arial;">
+          :&nbsp;Trading &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+        <td *ngIf="Trading&&B2B" style="font-weight: bold;font-size: 10px;font-family: arial;">
+          :&nbsp;Trading&nbsp;&nbsp;B2B-{{B2BPartner}} &nbsp;&nbsp;&nbsp;&nbsp;{{EnrolDate}}</td>
+
+      </tr>
+
+      <tr>
+
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">Trading</td>
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">
+          :&nbsp;{{TradingLocation}}-{{tradecode}}&nbsp;{{code}}-{{acctype}}</td>
+        <!-- <td colspan="2" style="width:100%;padding-right: 39px;font-weight: bold;font-size: 16px;font-family: arial;">{{code}}</td> -->
+
+        <!-- <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">{{code}}-{{acctype}}</td> -->
+        <!-- <td *ngIf="NSDL" style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">{{dpaccid}}{{dpaccbenid}}</td>
+                  <td *ngIf="CDSL" style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">{{dpaccbenid}}-{{dpcode}}</td> -->
+        <!-- <td style="width:100%;padding-right: 39px;font-weight: bold;font-size: 16px;font-family: arial;">{{dpcode}}</td> -->
+      </tr>
+      <tr *ngIf="NSDL||CDSL">
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">DP Id</td>
+        <td *ngIf="NSDL" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;{{dpaccid}}-{{dpaccbenid}}
+        </td>
+        <td *ngIf="CDSL" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;{{dpaccbenid}}</td>
+        <!-- <td style="width:100%;padding-right: 39px;font-weight: bold;font-size: 16px;font-family: arial;">{{dpcode}}</td> -->
+        <!-- <td style="width:100%;padding-right: 39px;font-weight: bold;font-size: 16px;font-family: arial;">:{{kinoforreport}}</td>
+                  <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">AccSlNo:</td>
+                  <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">{{accslnoforreport}}</td> -->
+      </tr>
+      <!-- <tr>
+                  <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">TradeCode:</td>
+                  <td style="width:100%;padding-right: 39px;font-weight: bold;font-size: 16px;font-family: arial;">{{TradingLocation}}-{{tradecode}}</td>
+                  <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">TradeType:</td>
+                  <td style="width:100%;font-weight: bold;font-size: 16px;font-family: arial;">{{code}}-{{acctype}}</td>
+
+
+              </tr> -->
+      <tr *ngIf="NSDL||CDSL">
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">DP Type</td>
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;{{dpcode}}&nbsp;{{subtype}}</td>
+
+
+      </tr>
+
+
+      <tr>
+        <td style="font-weight: bold;font-size: 11px;font-family: arial;">SlNo</td>
+        <td style="font-weight: bold;font-size:11px;font-family: arial;">
+          :&nbsp;{{bookletslno}}[B]&nbsp;&nbsp;{{accslnoforreport}}[A]&nbsp;&nbsp;{{model.pouchno}}[P]
+        </td>
+
+
+      </tr>
+      <tr>
+        <td></td>
+        <td style="font-weight: bold;font-size:11px;font-family: arial;padding-left: 131px;padding-top: 10px;">
+          <span style="float:right;font-weight: bold;
+                      ">{{dateforreport2}}-{{dateforreport1| date:'h:mm a'}}</span>
+        </td>
+      </tr>
+      <!-- <tr>
+                  <td style="font-weight: bold;font-size: 11px;font-family: arial;">PouchSlno</td>
+                  <td style="font-weight: bold;font-size:11px;font-family: arial;">:&nbsp;{{accslnoforreport}}
+                      <span style="float:right;font-weight: bold;
+                      ">{{dateforreport}}-{{receiveddate| date:'h:mm a'}}</span></td>
+              </tr> -->
+
+      <!-- <tr>
+                      <td style="font-weight: bold;font-size: 10px;font-family: arial;">AccSlno</td>
+                      <td style="font-weight: bold;font-size:10px;font-family: arial;">:&nbsp;{{accslnoforreport}}<span style="float:right;font-weight: bold;    padding-top: 2px;
+                        ">{{dateforreport}}-{{receiveddate| date:'h:mm a'}}</span></td>
+
+
+                  </tr> -->
+
+      <!-- <tr>
+                    <td></td>
+                      <td  style="float:right;font-weight: bold;font-size: 11px;font-family: arial;    margin-bottom: 15px;">{{dateforreport}}-{{receiveddate| date:'h:mm a'}}</td>
+                  </tr> -->
+
+
+
+    </tbody>
+  </table>
+
+</div>
+
+<nz-modal [(nzVisible)]="scanimagevisible" nzTitle="Document Scanning" nzOkText="Save" (nzOnCancel)="handleCancelscan()"
+  *ngIf="scanimagevisible" (nzOnOk)="handleSavescan()" [nzOkDisabled]="modalsave" nzWidth="60%">
+  <!-- <div style="text-align:center">
+      <div>
+        <webcam [height]="450" [width]="450" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+         [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+         (initError)="handleInitError($event)"></webcam>
+        <br/>
+        <div class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">📸</div>
+        <div class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">🔁</div>
+      </div>
+    </div> -->
+  <div nz-row nzGutter="10">
+    <!-- <div nz-col nzMd="24" style="text-align:center">
+            <div>
+              <webcam [height]="250" [width]="250" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+               [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+               (initError)="handleInitError($event)"></webcam>
+              <br/>
+              <div class="actionBtn" (click)="triggerSnapshot();" title="Take Picture">📸</div>
+              <div class="actionBtn" (click)="showNextWebcam(true);" title="Switch Camera">🔁</div>
+            </div>
+          </div>  -->
+    <div nz-col nzMd="12">
+      <nz-card style="width:600px;height:573px;">
+        <div>
+
+          <!-- <canvas id="canvas"  width=500 height=490></canvas> -->
+          <img [@rotatedState]='state' [src]="scannedImages1" [hidden]="firstImage" style="width: 500px;height: 488px;">
+
+          <img [@rotatedState]='state' [src]="scannedImages2" [hidden]="secondImage"
+            style="width: 500px;height: 488px;">
+          <img [@rotatedState]='state' [src]="scannedImages3" [hidden]="thirdImage" style="width: 500px;height: 488px;">
+          <div style="text-align:center" [hidden]="scancamera">
+            <webcam [height]="1000" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+              *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+              [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+              (initError)="handleInitError($event)"></webcam>
+
+
+
+            <!-- <button nz-button nzType="primary" (click)="showNextWebcam(true);">Reset</button>
+                    <button nz-button nzType="primary" (click)="triggerSnapshot();">📸Scan</button> -->
+
+          </div>
+          <br />
+          <div style="text-align:center">
+            <!-- <image-cropper
+                    (click)="getimageData1($event)"
+                    [imageChangedEvent]="imageChangedEvent"
+                    [maintainAspectRatio]="false"
+                    [resizeToWidth]="0"
+                    format="png"
+                    (imageCropped)="imageCropped($event)"
+                    (imageLoaded)="imageLoaded()"
+                    (loadImageFailed)="loadImageFailed()"
+
+                      ></image-cropper> -->
+            <!-- <img-cropper #cropper [image]="imageCropData" [settings]="cropperSettings"></img-cropper>  -->
+            <button nz-button nzType="primary" (click)="rotateimage1()">🔁</button>
+          </div>
+        </div>
+        <!-- <input type="file" (change)="fileChangeEvent($event)" /> -->
+
+      </nz-card>
+
+    </div>
+    <!-- </div>
+    <div nz-row nzGutter="10"> -->
+
+    <div nz-col nzMd="4">
+
+      <nz-card class="cardhover" [class.higlight]="firsthover"
+        style="width:144px;margin-bottom: 10px;height: 173px;margin-left: 300px;">
+        <img [@rotatedState]='state' [src]="scannedImages1" class="cardImages" (click)="getimageData('1')">
+        <p style="text-align: center;color: #0a9e7a;">Stamped POA - 1</p>
+
+        <!--  -->
+        <button style="margin-left:9px;" nz-button nzType="primary"
+          (click)="triggerSnapshot('1',$event);">📸Scan</button>
+        <!-- <iframe [src]="scannedImages1" ></iframe> -->
+      </nz-card>
+
+
+      <nz-card class="cardhover" [class.higlight]="secondhover"
+        style="width:144px;margin-bottom: 10px;height: 173px;margin-left: 300px;">
+        <img [src]="scannedImages2" class="cardImages" (click)="getimageData('2')">
+        <p style="text-align: center;color: #0a9e7a;">Stamped POA - 2</p>
+        <button style="margin-left:9px;" nz-button nzType="primary" (click)="triggerSnapshot('2');">📸Scan</button>
+        <!-- <iframe [src]="scannedImages2" ></iframe> -->
+      </nz-card>
+
+      <nz-card *ngIf="!B2B && !DDPIStatus" class="cardhover" [class.higlight]="thirdhover"
+        style="width:144px;height: 173px;margin-left: 300px;">
+        <img [src]="scannedImages3" class="cardImages" (click)="getimageData('3')">
+        <p style="text-align: center;color: #0a9e7a;">Stamped POA - 3</p>
+        <button style="margin-left:9px;" nz-button nzType="primary" (click)="triggerSnapshot('3');">📸Scan</button>
+      </nz-card>
+    </div>
+    <!-- <div  nz-col nzMd="8" style="text-align:center">
+              <webcam [height]="250" [width]="250" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+               [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+               (initError)="handleInitError($event)"></webcam>
+              <br/>
+
+              <button nz-button nzType="primary" (click)="showNextWebcam(true);">🔁Reset</button>
+              <button nz-button nzType="primary" (click)="triggerSnapshot();">📸Scan</button>
+
+          </div> -->
+
+
+  </div>
+
+  <!-- <div class="snapshot" *ngIf="WebcamImage1">
+      <img style="max-width: 200px;
+        max-height: 200px;padding-right: 14px;" [src]="WebcamImage1.imageAsDataUrl" />
+    </div> -->
+  <!-- <div style="font-size: 25px;color: red;"> Access denied! </div> -->
+
+</nz-modal>
+
+
+
+
+<!-- <td style="font-weight: bold;font-size: 11px;font-family: arial;">DP</td>
+                   <td  *ngIf="NSDL" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;{{dpaccid}}-{{dpaccbenid}}&nbsp;{{dpcode}}&nbsp;{{subtype}}</td>
+                  <td  *ngIf="CDSL" style="font-weight: bold;font-size: 11px;font-family: arial;">:&nbsp;{{dpaccbenid}}&nbsp;{{dpcode}}&nbsp;{{subtype}}</td> -->

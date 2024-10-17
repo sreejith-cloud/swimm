@@ -1,0 +1,228 @@
+<div #tabsContentRef style="position: absolute; top:0"></div>
+<div class='editButtonDiv'>
+    <button *ngIf="applicationStatus=='P' && HO" nz-button nzType="primary" class='editButton' type="button"
+        (click)="editButton()">Edit</button>
+</div>
+<ng-container>
+    <div class="text-right">
+    </div>
+    <kyc-personal-details #kycPersnalDetails1
+        [class.disableCards]="((this.applicationStatus == 'P' &&  !editFlag) || this.applicationStatus == 'T' || this.applicationStatus == 'F' || this.applicationStatus == 'A')">
+    </kyc-personal-details>
+    <kyc-address #kycAddress1
+        [class.disableCards]="((this.applicationStatus == 'P' &&  !editFlag) || this.applicationStatus == 'T' || this.applicationStatus == 'F' || this.applicationStatus == 'A')">
+    </kyc-address>
+    <br>
+    <kyc-contact-details #kycContactDetails1
+        [class.disableCards]="((this.applicationStatus == 'P' &&  !editFlag) || this.applicationStatus == 'F' || this.applicationStatus == 'A')">
+    </kyc-contact-details>
+    <br>
+    <proof-upload #kycProofUpload1></proof-upload>
+    <br>
+    <p class="text-right">
+        <!-- <button nz-button nzType="primary"(click)="back()">Back</button>
+                            <button nz-button nzType="primary" (click)="SaveKYC()">Save</button> -->
+    </p>
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="15"
+            *ngIf="applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='T'||applicationStatus=='F'">
+            <div nz-col nzSpan="5">
+                <span>Rejection Remarks</span>
+            </div>
+            <!-- <div nz-col nzSpan="19">
+                 class="RejectionInput" 
+                <input style="width: 338px;margin-left: -5.5%;" nz-input [(ngModel)]="RejRemarks"
+                    [disabled]="applicationStatus=='A'||applicationStatus=='R'" />
+            </div>-->
+            <div nz-col nzSpan="16">
+                <input nz-input [(ngModel)]="RejRemarks" [disabled]="applicationStatus=='A'||applicationStatus=='R'" />
+            </div>
+
+            <div *ngIf="applicationStatus=='P' || applicationStatus=='F'">
+                <div nz-col nzSpan="2" style="margin-left: 1%;">
+                    <button nz-button nzType="primary" type="button" (click)="fetchReasons()"
+                        title="Click here for Rejection Reasons">Select</button>
+                </div>
+            </div>
+        </div>
+        <div nz-col nzMd="30">
+            <p class="text-right">
+                <button nz-button nzType="primary" type="button" (click)="back()">Back </button>
+                <button nz-button nzType="primary" type="submit" (click)="SaveKYC('save')"
+                    *ngIf="saveButtonFlag&&applicationStatus!='T'">Save</button>
+                <button nz-button nzType="primary" type="submit" (click)="SaveKYC('savefinalise')"
+                    *ngIf="saveButtonFlag&&applicationStatus=='T'">Save and Finalize</button>
+                <button nz-button nzType="primary" type="button" (click)="BranchReject()"
+                    *ngIf="saveButtonFlag&&applicationStatus=='T'&&!HO">Branch Reject</button>
+                <button nz-button nzType="primary" type="button" (click)="Reject()"
+                    *ngIf="approveOrRejectButtonFlag || finalApproveOrRejectButtonFlag">Reject</button>
+                <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag && editFlag"
+                    (click)="SaveKYC('approve')">First level Approve</button>
+                <button nz-button nzType="primary" class="btnApprove1" type="button"
+                    *ngIf="finalApproveOrRejectButtonFlag || (approveOrRejectButtonFlag && !editFlag)"
+                    (click)="Approve()">Final Approve</button>
+                <button nz-button nzType="primary" style="float: right;" type="button"
+                    *ngIf="requestID!=''&&!(approveOrRejectButtonFlag ||finalApproveOrRejectButtonFlag) "
+                    (click)="PrintForm()">Print {{tab}} Form</button>
+            </p>
+        </div>
+    </div>
+    <div *ngIf="checkBoxArray.length!=0 || AllcheckboxArray.length!=0">
+        <table class="RejectedTable">
+            <thead style="text-align: center; background-color: #32aa8d; color: white;">
+                <b>Rejected Reasons</b>
+            </thead>
+            <div *ngFor="let item of checkBoxArray; let i = index;">
+                <tbody _ngcontent-c61="">
+                    <tr _ngcontent-c61="" class="ng-star-inserted">
+                        <td class="Sno"><b>{{i+1}}</b>
+                        </td>&nbsp;
+                        <td _ngcontent-c61="" class="RejectedList">
+                            <b> <input type="hidden" [checked]="checkBoxSelected"
+                                    [disabled]="Cbox_Disabled">{{item.Description}}</b>
+                        </td>
+                    </tr>
+                </tbody>
+            </div>
+            <div *ngFor="let item of AllcheckboxArray; let i = index;">
+                <tbody _ngcontent-c61="">
+                    <tr _ngcontent-c61="" class="ng-star-inserted">
+                        <td class="Sno"><b>{{i+1}}</b>
+                        </td>&nbsp;
+                        <td _ngcontent-c61="" class="RejectedList">
+                            <b> <input type="hidden" [checked]="checkBoxSelected"
+                                    [disabled]="Cbox_Disabled">{{item}}</b>
+                        </td>
+                    </tr>
+                </tbody>
+            </div>
+        </table>
+    </div>
+    <br>
+    <div *ngIf="applicationStatus=='R'&& reasonList.length!=0" class="rejectedReasonsData">
+        <br>
+        <div class="table_container">
+            <nz-table [nzData]="reasonList" [nzShowPagination]=false nzSize="small" class="tranTbl">
+                <thead>
+                    <tr>
+                        <th>
+                            <div style="margin-left: 34px;
+                            word-break: normal;color: white;">Sl no</div>
+                        </th>
+                        <th>
+                            <div style="margin-left: -75pc;
+                            text-align: center;color: white;">Reasons</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div class="ReasonCheckbox reasons">
+                        <tr _ngcontent-c61="" class="ng-star-inserted" *ngFor="let data of reasonList; let i = index">
+                            <td class="checkBox">
+
+                                <div><a><input class="Rcheckboxes" #saveUserNameCheckBox id="saveUserNameCheckBox"
+                                            type="checkbox" [checked]="checkBoxSelect" (change)="changed($event,data)"
+                                            [disabled]="applicationStatus=='R'" />
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="Sno"><span>{{i+1}}</span>
+                            </td>
+                            <td _ngcontent-c61="">
+                                <label><span> {{data.Description}}</span></label><br>
+                            </td><br>
+                        </tr>
+                    </div>
+                </tbody>
+            </nz-table>
+        </div>
+        <br>
+    </div>
+    <div nz-col nzMd="15"
+        *ngIf="(applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F')&& !editFlag">
+        <div nz-col nzSpan="5">Approvel Remarks </div>
+        <div nz-col nzSpan="16">
+            <input nz-input [(ngModel)]="AppRemarks" [disabled]="applicationStatus=='A'||applicationStatus=='R'"
+                [nzAutocomplete]="remarks1" />
+            <nz-autocomplete #remarks1>
+                <nz-auto-option *ngFor="let option of approvelRemarks" [nzValue]="option.Remarks"
+                    [nzLabel]="option.Remarks" class="aleternateColor">
+                    <span [innerHTML]="option.Remarks"></span>
+                </nz-auto-option>
+            </nz-autocomplete>
+        </div>
+    </div>
+
+
+    <div style="color: white; padding-bottom: 40px;">
+        <br>
+        <span>.</span>
+    </div>
+
+    <div *ngIf="applicationStatus=='P' || applicationStatus=='F'">
+        <div class="wrapper">
+            <nz-modal [(nzVisible)]="isVisible" nzTitle="Rejection Reasons" (nzOnCancel)="isVisible=false"
+                (nzOnOk)="popOut()" nzWidth="850px" [nzBodyStyle]="{ height: '610px', 'padding-bottom':'53px' }"
+                [nzStyle]="{top:'8px'}">
+                <table>
+                    <thead>
+                        <div style="margin-top: 137%;">
+                            <div class="SelectAll">
+                                <div *ngIf="checkBoxArray.length==0 || checkedArray.length==0">
+                                    <div class="tooltip">
+                                        <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                                            [checked]="checkBoxSelect" (change)="onSaveCheckBoxChanged($event)"
+                                            [disabled]="applicationStatus=='R'" />
+                                        <span class="tooltiptext">
+                                            Proceed with this selection only if all the reasons provided below are
+                                            applicable
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modalserialno">
+                                <b>Sl No</b>
+                            </div>
+                            <div class="modalReasonList">
+                                <b>Reasons</b>
+                            </div>
+                        </div>
+                    </thead>
+                    <br>
+                    <tbody class="">
+                        <div class="ReasonCheckbox">
+                            <div class="Popboxreasons ">
+                                <tr class="ant-modal-body" *ngFor="let data of reasonsList; let i = index;">
+
+                                    <td>
+                                        <div><a><input class="PopupcheckBox" #saveUserNameCheckBox
+                                                    id="saveUserNameCheckBox" type="checkbox"
+                                                    [checked]="checkboxSelected[i]" (change)="changed($event,data)"
+                                                    [disabled]="applicationStatus=='R'" />
+                                            </a></div>
+                                    </td>
+                                    <td><span class="SLno">{{i+1}}</span>
+                                    </td>&nbsp;&nbsp;&nbsp;
+                                    <td _ngcontent-c61="">
+                                        <label><span class="RejectionList">{{data.Description}}</span></label><br>
+                                    </td>
+                                </tr>
+                                <br>
+                            </div>
+                        </div>
+                    </tbody>
+                </table>
+            </nz-modal>
+        </div>
+    </div>
+
+    <!-- <div nz-col nzMd="14" style="margin-top:'10px'">
+            <div nz-row nzGutter=5 *ngIf="applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='T'||applicationStatus=='F'">
+                <div nz-col nzSpan="3">Rejection Remarks </div>
+                <div nz-col nzSpan="21">
+                    <input nz-input [(ngModel)]="RejRemarks" [disabled]="applicationStatus=='A'||applicationStatus=='R'" /> 
+                </div>
+            </div>
+        </div> -->
+</ng-container>
+<app-loader *ngIf="isSpining"></app-loader>

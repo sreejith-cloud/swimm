@@ -1,0 +1,337 @@
+<div class="main-content">
+  <div class="parentFilterSection">
+    <form nz-form nzLayout="vertical">
+      <div nz-row nzGutter="5">
+        <div nz-col nzMd="4" nzLg="4">
+          <h3 class="content-title">KRA Live Enquiry</h3>
+        </div>
+        <div nz-col nzMd="20" nzLg="20" class="initialFilterButtons">
+          <nz-form-item>
+            <nz-form-control>
+              <button type="button" nz-button (click)="processData()" [disabled]="!processEnableButton"
+                class="processButton">Process</button>
+
+              <button (click)="syncToBackOffice()"
+                *ngIf="activeTab == 1 && kraLiveEnquiryDataList.length > 0 && !processedDataTemp.BOSynced"
+                [disabled]="!syncToBoEnableButton || kraLiveEnquiryDataList.length === 0 || activeTab != 1 || processedDataTemp.BOSynced"
+                type="button" nz-button nzType="primary" class="syncToBoButton">Sync to B.O</button>
+
+              <form-handler style="padding: 0px;display: inline-block;margin-left: 15px;"
+                (onExportExcel)="downloadKRALiveEnquiry()" (onReset)="reset()"></form-handler>
+
+              <button type="button" *ngIf="activeTab == 0" nz-button (click)="abortProcess()"
+                [disabled]="disableAbortButton || !abortEnableButton" class="abortButton">Abort Process</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="24">
+
+        <div nz-col nzMd="3" nzLg="3">
+          <nz-form-item>
+            <nz-form-label>From Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker name="fromdate" [(ngModel)]="fromdate" [disabled]="model.PanNo || dis.length>0"
+                [nzDisabledDate]="disabledFutureDate" nzFormat="dd-MM-yyyy">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="3" nzLg="3">
+          <nz-form-item>
+            <nz-form-label>To Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker name="todate" [(ngModel)]="todate" [disabled]="model.PanNo || dis.length>0"
+                [nzDisabledDate]="disabledFutureDate" nzFormat="dd-MM-yyyy">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="4" nzLg="4">
+          <nz-form-item>
+            <nz-form-label>PAN</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl name="panno" [(ngModel)]="model.PanNo" [options]="panFindOption"
+                [disabled]="fromdate || todate || dis.length>0" (ngModelChange)="onviewClick($event);" #client
+                id="findclient">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="2" nzLg="2">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-upload [(nzFileList)]="dis" name="excelFile" nzAccept=".csv" [nzBeforeUpload]="beforeUpload"
+                nzLimit="1">
+                <button nz-button [disabled]="fromdate || todate || model.PanNo">
+                  <i nz-icon type="upload"></i><span>Select File</span>
+                </button>
+              </nz-upload>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="3" nzLg="3">
+          <nz-form-item>
+            <nz-form-label>Service</nz-form-label>
+            <nz-form-control>
+              <nz-select name="status" [disabled]="isSpinning" [(ngModel)]="service">
+                <nz-option *ngFor="let data of getServiceList" [nzValue]="data.Agency" [nzLabel]="data.Agency">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div class="TabSection">
+    <nz-tabset [(nzSelectedIndex)]="activeTab" (nzSelectedIndexChange)="tabChange()">
+      <nz-tab nzTitle="History">
+
+        <form nz-form nzLayout="vertical">
+          <div nz-row nzGutter="24">
+
+            <!-- <div nz-col nzMd="4" nzLg="4">
+              <nz-form-item>
+                <nz-form-label>Token</nz-form-label>
+                <nz-form-control>
+                  <input placeholder="token" nz-input [(ngModel)]="searchToken" name="searchToken" />
+                </nz-form-control>
+              </nz-form-item>
+            </div> -->
+
+            <div nz-col nzMd="3" nzLg="3">
+              <nz-form-item>
+                <nz-form-label>From Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker name="fromdateHistory" [(ngModel)]="fromdateHistory"
+                    [nzDisabledDate]="disabledFutureDate" nzFormat="dd-MM-yyyy">
+                  </nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="3" nzLg="3">
+              <nz-form-item>
+                <nz-form-label>To Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker name="todateHistory" [(ngModel)]="todateHistory" [nzDisabledDate]="disabledFutureDate"
+                    nzFormat="dd-MM-yyyy">
+                  </nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="18" nzLg="18" class="secondarySearchCol">
+              <nz-form-item>
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-control>
+                  <!-- <button type="button" nz-button nzType="primary"
+                    style="color: white;margin-left: 15px;">Search</button>
+
+                  <button style="background-color: #FFA500 !important;margin-left: 15px;" nz-button (click)="fn1()"
+                    nzType="primary">
+                    <i class="anticon anticon-reload"></i>Reset</button> -->
+
+                  <button [disabled]="!searchEnableButton" class="searchHistoryButton" nz-button
+                    (click)="historyFilterSearch()" nzType="primary">
+                    <i class="fas fa-search"></i>Search</button>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+          </div>
+        </form>
+
+        <ng-container *ngIf="historyTableData.length == 0;else historydataDiv">
+          <div class="noDataDiv">
+            <h2>
+              No Data Available
+            </h2>
+          </div>
+        </ng-container>
+
+        <ng-template #historydataDiv>
+
+          <div nz-row nzGutter="24" *ngIf="historyTableData.length>0">
+            <div nz-col nzMd="24">
+              <nz-table #historyTable [nzData]="historyTableData" [nzPageSize]="20"
+                [nzShowPagination]="historyTableData.length>20" [nzTotal]="historyTableData.length"
+                class="tranTbl table-responsive table-themed" nzSize="medium" nzShowQuickJumper>
+                <thead>
+                  <tr>
+                    <th>SI No</th>
+                    <th>Processed Date</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Pan No</th>
+                    <th>File Name</th>
+                    <th>Service</th>
+                    <th>B.O Sync</th>
+                    <th>EUSER</th>
+                    <th>Total Count</th>
+                    <th>Success Count</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of historyTable.data;let i = index">
+                    <td>{{data.SLNo}}</td>
+                    <td>{{data.lastupdatedon}}</td>
+                    <td>{{data.FROMDATE}}</td>
+                    <td>{{data.TODATE}}</td>
+                    <td>{{data.PANNO}}</td>
+                    <td>{{data.FILENAME}}</td>
+                    <td>{{data.Agency}}</td>
+                    <td>{{data.BOSynced ? 'Y' : 'N'}}</td>
+                    <td>{{data.EUSER}}</td>
+                    <td>{{data.TotalCount}}</td>
+                    <td>{{data.SuccessCount}}</td>
+                    <td class="historyTableButton">
+                      <button *ngIf="data.Status == 'completed'" [disabled]="!previewEnableButton"
+                        (click)="ViewData(data)" class="viewButtonClass" nz-button nzType="primary">
+                        View
+                      </button>
+
+                      <button *ngIf="data.Status == 'In-Process'" disabled class="processButtonClass" nz-button
+                        nzType="primary">
+                        Processing
+                      </button>
+
+                      <button *ngIf="data.Status == 'Failed'" disabled class="failedClassButton" nz-button
+                        nzType="primary">
+                        Failed
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+
+          </div>
+        </ng-template>
+
+      </nz-tab>
+
+      <nz-tab nzTitle="Processed Data">
+
+        <ng-container *ngIf="kraLiveEnquiryDataList.length == 0 && !processedDataTemp;else processedDataDiv">
+          <div class="noDataDiv">
+            <h2>
+              No Data Available
+            </h2>
+          </div>
+        </ng-container>
+
+        <ng-template #processedDataDiv>
+
+          <div nz-row nzGutter="24" *ngIf="processedDataTemp" class="tempDataClass">
+            <div nz-col nzMd="24" nzLg="24">
+              <div class="tokenClass">
+                <span class="dataHeader">Token :</span> {{processedDataTemp.TOKEN}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp.PANNO">
+                <span class="dataHeader">Pan :</span> {{processedDataTemp.PANNO}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp.FROMDATE">
+                <span class="dataHeader">From Date :</span> {{processedDataTemp.FROMDATE}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp.TODATE">
+                <span class="dataHeader">To Date :</span> {{processedDataTemp.TODATE}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp.FILENAME">
+                <span class="dataHeader">File Name :</span> {{processedDataTemp.FILENAME}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp">
+                <span class="dataHeader">Service :</span> {{processedDataTemp.Agency}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp">
+                <span class="dataHeader">Synced to B.O :</span> {{processedDataTemp.BOSynced ? 'Y' : 'N'}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp">
+                <span class="dataHeader">Total Count :</span> {{processedDataTemp.TotalCount}}
+              </div>
+              <div class="processdataBasicDetails" *ngIf="processedDataTemp">
+                <span class="dataHeader">Success Count :</span> {{processedDataTemp.SuccessCount}}
+              </div>
+              <!-- <div class="processdataBasicDetails" *ngIf="processedDataTemp">
+                <nz-select id="processedData" (ngModelChange)="processedDataStatusChange($event)" [(ngModel)]="processedDataSelectedStatus" name="status">
+                  <nz-option  nzValue="success" nzLabel="success"></nz-option>
+                  <nz-option  nzValue="fail" nzLabel="fail"></nz-option>
+                </nz-select>
+              </div> -->
+            </div>
+
+            <!-- <div nz-col nzMd="2" nzLg="2">
+              <nz-form-item>
+                <nz-form-control>
+                  <nz-select style="width: 100%" [(ngModel)]="processedDataSelectedStatus" nzPlaceHolder="Choose Status" name="status">
+                    <nz-option *ngFor="let item of processedDataStatus" [nzValue]="item" [nzLabel]="item"></nz-option>
+                </nz-form-control>
+              </nz-form-item>
+            </div> -->
+          </div>
+
+          <div nz-row nzGutter="24" *ngIf="kraLiveEnquiryDataList.length>0">
+            <div nz-col nzMd="24">
+              <nz-table #KRALiveEnquiryData [nzData]="kraLiveEnquiryDataList" [nzPageSize]="20"
+                [nzShowPagination]="kraLiveEnquiryDataList.length>20" [nzTotal]="kraLiveEnquiryDataList.length"
+                class="tranTbl table-responsive table-themed" nzSize="medium" nzShowQuickJumper>
+                <thead>
+                  <tr>
+                    <th>SLNo</th>
+                    <th>PAN</th>
+                    <th>NAME</th>
+                    <th>APP_STATUS_AGENT</th>
+                    <th>APP_ENTRYDT</th>
+                    <th>APP_STATUSDT</th>
+                    <th>APP_STATUS_DESC</th>
+                    <th>APP_HOLD_DEACTIVE_RMKS</th>
+                    <th>APP_MODDT</th>
+                    <th>APP_UPDT_DESC</th>
+                    <th>APP_UPDT_RMKS</th>
+                    <th>PERM_ADD_PROOF</th>
+                    <th>CORRES_ADD_PROOF</th>
+                    <th>STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let enqdata of KRALiveEnquiryData.data"
+                    [ngClass]="{'failedKraClass': enqdata.Status == 'fail'}">
+                    <td>{{enqdata['SLNo']}}</td>
+                    <td>{{enqdata['PAN']}}</td>
+                    <td>{{enqdata['NAME']}}</td>
+                    <td>{{enqdata['APP_STATUS_AGENT']}}</td>
+                    <td>{{enqdata['APP_ENTRYDT']}}</td>
+                    <td>{{enqdata['APP_STATUSDT']}}</td>
+                    <td>{{enqdata['APP_STATUS_DESC']}}</td>
+                    <td>{{enqdata['APP_HOLD_DEACTIVE_RMKS']}}</td>
+                    <td>{{enqdata['APP_MODDT']}}</td>
+                    <td>{{enqdata['APP_UPDT_DESC']}}</td>
+                    <td>{{enqdata['APP_UPDT_RMKS']}}</td>
+                    <td>{{enqdata['PERM_ADD_PROOF']}}</td>
+                    <td>{{enqdata['CORRES_ADD_PROOF']}}</td>
+                    <td>{{enqdata['STATUS']}}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+
+          </div>
+        </ng-template>
+
+      </nz-tab>
+
+    </nz-tabset>
+
+  </div>
+</div>
+<app-loader *ngIf="isSpinning"></app-loader>

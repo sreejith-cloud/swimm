@@ -1,0 +1,85 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+
+    <nz-divider nzText="Details of Promoters/ Trustees/ Karta/Partners and Whole Time Directors " nzOrientation="left">
+    </nz-divider>
+
+    <div nz-form nzLayout="inline">
+        <nz-form-item>
+            <nz-form-label>Enter number of Promoters/ Trustees/ Karta/Partners and Whole Time Directors</nz-form-label>
+            <nz-form-control>
+                <nz-input-number [(ngModel)]="rowCount" (ngModelChange)="updateRows()" [nzMin]="1" [nzMax]="10"
+                    [nzStep]="1"></nz-input-number>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+
+    <div nz-row nzGutter="5" *ngFor="let tab of rows; let i=index;">
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>PAN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Relationship with Applicant</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>DIN (for direcotrs)/ UID (for Others)</nz-form-label>
+                <nz-form-control>
+                    <nz-select>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Residential / Registered Address</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Existing PAN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Fax</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Email</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+
+</form>

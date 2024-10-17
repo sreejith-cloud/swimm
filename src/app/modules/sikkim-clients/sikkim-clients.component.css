@@ -1,0 +1,63 @@
+#thead{
+    color: #ffffff;
+    background: #a5a5a5;
+    font-weight: bold;
+    text-align: center;
+}
+
+td{
+    /* font-weight: bold; */
+    padding: 6px !important;
+    background-color: #f3f3f4;
+    text-align: center;
+}
+
+#form{
+    position: -webkit-sticky;
+    position: sticky;
+    display: -webkit-inline-box;
+    bottom: 0;
+    padding: 0px 0;
+    background-color: #fff;
+    z-index: 99;
+    text-align: right;
+}
+.ant-col-md-4 {
+    display: -webkit-inline-box;
+}
+.ant-table-thead > tr > th {
+    color: #ffffff;
+    background: #a5a5a5;
+    font-weight: bold;
+}
+#form1{
+    margin-left: -30px;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px  black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 70%;
+    text-align: left;
+    border-radius: 6px;
+    padding: 0px 0;
+  
+    position: absolute;
+    z-index: 1;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    background-color: #c6c2c2;
+  }
+  .ant-form-item-label {
+    line-height: 14px;
+  }
+  .ant-menu-horizontal > .ant-menu-item:hover, .ant-menu-horizontal > .ant-menu-submenu:hover, .ant-menu-horizontal > .ant-menu-item-active, .ant-menu-horizontal > .ant-menu-submenu-active, .ant-menu-horizontal > .ant-menu-item-open, .ant-menu-horizontal > .ant-menu-submenu-open, .ant-menu-horizontal > .ant-menu-item-selected, .ant-menu-horizontal > .ant-menu-submenu-selected {
+    color: #fbfdff;
+    border-bottom: 0px solid #f4f8fb;
+}

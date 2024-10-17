@@ -1,0 +1,108 @@
+<div>
+<form nz-form  [formGroup]="form" nzLayout="vertical">
+        <nz-card nzTitle="KYC Of Company">
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Name of applicant</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="Nameofapplicant" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Date of Incorporation</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker formControlName="DateofIncorporation">
+                    </nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Place of Incorporation</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="PlaceofIncorporation" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Registration No</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="RegistrationNo" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Registration Authority</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="RegistrationAuthority" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>CIN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="CIN" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Date of commencement of business</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker formControlName="Dateofcommencementofbusiness">
+                    </nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Status</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="Status">
+                        <nz-option nzValue="Private Ltd. Co" nzLabel="Private Ltd. Co"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>PAN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="PAN" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Upload PAN</nz-form-label>
+                <nz-form-control>
+                        <button nz-button nzType="primary" (click)="showModal()" *ngIf="fileList.length" style="float: right;"><i nz-icon type="eye" ></i></button>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload"  [(nzFileList)]="fileList" [nzLimit]="1">
+                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                        </nz-upload>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Upload Registration certificate</nz-form-label>
+                <nz-form-control>
+                        <button nz-button nzType="primary" (click)="showModal1()" *ngIf="fileList1.length" style="float: right;"><i nz-icon type="eye" ></i></button>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload1"  [(nzFileList)]="fileList1" [nzLimit]="1">
+                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                        </nz-upload>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-card>
+</form>
+</div>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+[fileName]="filePreiewFilename"></app-file-preview>

@@ -1,0 +1,87 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <nz-card nzTitle="Block/Unblock Request By Client">
+      <div nz-row style="display: flex; justify-content: flex-end; flex-wrap: nowrap;">
+        <div nz-col nzLg="9" class="verifybtn1">
+          <nz-form-item>
+            <nz-form-control>
+              <form-handler (onExportExcel)="exportexcel()" (onReset)="resetForm()" (onExportPdf)="pdfDownload()"
+                (onPreview)="preview()" id="form"></form-handler>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzLg="4">
+          <nz-form-item>
+            <nz-form-label>From Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker [nzDisabledDate]="disabledFutureDate" [disabled]="panNo || dis.length>0"
+                [(ngModel)]="fromdate" name="fromDate" id="fromDate" nzFormat="dd-MM-yyyy">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzLg="4">
+          <nz-form-item>
+            <nz-form-label>To Date</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker [nzDisabledDate]="disabledPreviousDate" [disabled]="panNo || dis.length>0"
+                [(ngModel)]="toDate" name="toDate" id="toDate" nzFormat="dd-MM-yyyy">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzLg="4">
+          <nz-form-item>
+            <nz-form-label>PAN</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [disabled]="fromdate || toDate || dis.length>0" name="pan" id="panNumber"
+                [(ngModel)]="panNo" [options]="panFindOption">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="3" nzLg="3">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-upload [(nzFileList)]="dis" name="excelFile" nzAccept=".csv" [nzBeforeUpload]="beforeUpload"
+                nzLimit="1">
+                <button nz-button [disabled]="fromdate || toDate || panNo">
+                  <i nz-icon type="upload"></i><span>Upload PAN</span>
+                </button>
+              </nz-upload>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div *ngIf="tableData.length>0" nz-row
+        style="background-color: white; border-radius:5px;">
+        <nz-table class="tranTbl table-responsive table-themed" #ReportTable2 [nzData]="tableData" [nzPageSize]="20"
+          [nzShowPagination]="tableData.length>10" [nzScroll]="{ x: '1000px' }" nzSize="small">
+          <thead>
+            <tr style="padding: 5px 5px; color: black;background-color: #96bcd3;">
+              <th style="text-transform: capitalize;" *ngFor="let header of tableDataHeader;" class="text-left">
+                {{header}}</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of ReportTable2.data;let i = index" class="resulttable">
+              <td *ngFor="let header of tableDataHeader; let j = index" class="text-left">
+                <span>{{ data[header] }}</span>
+              </td>
+              <td>
+                <a (click)="pdfDownload(data['SerialNo'])"><i nz-icon nzType="mail"
+                  style="font-size: 25px;" nzTheme="outline"></i></a>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-card>
+
+  </form>
+</div>
+<app-loader *ngIf="isSpinning"></app-loader>

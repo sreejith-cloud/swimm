@@ -1,0 +1,98 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+    <nz-card [nzTitle]="groupTitle">
+            <ng-template #groupTitle> <label nz-checkbox formControlName="DebitmandatefromNACH"
+                >Debit mandate from NACH
+                 / AP</label>
+         </ng-template>
+        
+    <div nz-row nzGutter="5" *ngIf="form.value.DebitmandatefromNACH==true">
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>NACH Type</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="NACHtype" nzAllowClear>
+               <nz-option *ngFor="let data of nachType" [nzValue]="data.Item" [nzLabel]="data.Item"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Effective from</nz-form-label>
+                <nz-form-control>
+                    <!-- <input type="date"  formControlName="EffectiveForm" class=date> -->
+                    <nz-date-picker  nzPlaceHolder="YYYY-MM-DD" [nzDisabledDate]="disabledPastDate" formControlName="EffectiveForm"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label>Effective To</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input type="date"  formControlName="EffectiveTo" class=date> -->
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [nzDisabledDate]="disabledPastDate"   formControlName="EffectiveTo"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        <div nz-col nzLg="2" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Amount</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [textMask]="{mask: inputMasks.numeric}"  formControlName="Amount"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Frequency</nz-form-label>
+                <nz-form-control>
+                    <nz-select  formControlName="Frequency" nzAllowClear>
+                        <nz-option *ngFor="let data of nachFrequency" [nzValue]="data.FrequencyCode" [nzLabel]="data.FrequencyDesc"></nz-option>
+                        </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>ECS Serial No</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="ECSserialNo" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>T&C Date</nz-form-label>
+                <nz-form-control>
+                    <!-- <input type="date"  formControlName="termsAndcondRate" class=date> -->
+
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD"  [nzDisabledDate]="disabledFutureDate"  formControlName="termsAndcondRate" [nzDisabledTime]="true">
+                            </nz-date-picker> 
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6" class="ml-4">
+            <nz-form-item>
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-control>
+                    <label nz-checkbox formControlName="NACHtermsAndcond" style="color: rgb(28, 29, 28);font-weight: 500;"> T&C Accepted</label>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label>NACH Bank</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="NACHBank" nzAllowClear>
+                            <nz-option   *ngFor="let item of nachBanksArray" [nzValue]="item.BankName" [nzLabel]="item.BankName"></nz-option>
+
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        
+    </div>
+</nz-card>
+</form>

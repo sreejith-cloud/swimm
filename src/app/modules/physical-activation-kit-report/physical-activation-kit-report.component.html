@@ -1,0 +1,171 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div style="margin-left: 20px ;">
+    <div nz-row nzGutter="24" style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+      <p nz-col nzMd="12" style="text-align: left;font-size: 20px;"><b>Physical Activation Kit Report</b></p>
+
+      <div nz-col nzMd="12" style="text-align: right;">
+        <form-handler (onPreview)="view()" (onReset)="reset()" (onExportExcel)="export()" (onSave)="save()"></form-handler>
+      </div>
+    </div>
+    </div>
+    
+
+  
+  <div style="margin-left: 30px ;">
+    <!-- Location -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>Location</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="locationFind" [(ngModel)]="location" name="Location">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+    <!--Region-->
+
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>Region</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="regionFind" [(ngModel)]="region" name="Region" id="findRegion">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+    <!-- Trade Code -->
+
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>Trade Code</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="tradeCodeFind" [(ngModel)]="tradecode" name="tradeCode" id="findtradeCode">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <nz-date-picker [nzDisabledDate]="disabledFutureDate" [(ngModel)]="fromDate" name="FD" nzFormat="dd-MM-yyyy" ></nz-date-picker>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+  
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <nz-date-picker [nzDisabledDate]="disabledFutureDate" [(ngModel)]="toDate" name="TD" nzFormat="dd-MM-yyyy" >
+                </nz-date-picker>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+    <!-- Select -->
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Approved</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="approved" name="Approved">
+              <nz-option nzValue="" nzLabel="All"></nz-option>
+              <nz-option nzValue="Y" nzLabel="Approved"></nz-option>
+              <nz-option nzValue="N" nzLabel="Pending"></nz-option>
+              <nz-option nzValue="R" nzLabel="Rejected"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Received</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="received" name="Received">
+              <nz-option nzValue="" nzLabel="All"></nz-option>
+              <nz-option nzValue="Y" nzLabel="YES"></nz-option>
+              <nz-option nzValue="N" nzLabel="NO" ></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div class="resulttable " *ngIf="DocumentsArray.length>0">
+      <nz-table #DocumentTable [nzData]="DocumentsArray" class="tranTbl table-responsive table-theme" nzPageSize="10">
+        <thead>
+          <tr>
+            <th *ngFor="let head of DocumentsArrayHeads" class="tableHeader" >{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DocumentTable.data;let i = index" style="text-align: center;">
+            <td  *ngFor="let heads of DocumentsArrayHeads">
+              <span *ngIf="heads !=='Received' && heads !=='Approved' ">
+                <nz-form-item>
+                  <span style="margin-right: 5px;">{{data[heads]}}</span>
+                </nz-form-item>
+              </span>
+              <span *ngIf="heads ==='Received'">
+                <nz-form-item *ngIf="!data[heads]">
+                  <span style="margin-right: 5px;">N</span><label nz-checkbox [(ngModel)]="data[heads]" name="docReceived{{i}}" (ngModelChange)="onCheckboxChange(data,i)"></label>
+                </nz-form-item>
+                <nz-form-item *ngIf="data[heads]">
+                  <span>Y</span>
+                </nz-form-item>
+              </span>
+              <span *ngIf="heads ==='Approved'">
+                <nz-form-item *ngIf="data[heads] === false">
+                  <span>N</span>
+                </nz-form-item>
+                <nz-form-item *ngIf="data[heads] === true">
+                  <span>Y</span>
+                </nz-form-item>
+                <nz-form-item *ngIf="data[heads] !== true && data[heads] !== false">
+                  <span> {{data[heads]}} </span>
+                </nz-form-item>
+              </span>
+            </td>
+            <td class="text-center">
+
+          </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    </div>
+  </form>
+</div>
+<app-loader *ngIf="isSpinningVisible"></app-loader>

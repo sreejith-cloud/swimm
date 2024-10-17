@@ -1,0 +1,104 @@
+<div #tabsContentRef style="position: absolute; top:0"></div>
+<div class="text-right">
+        <button nz-button  nzType="primary" (click)="getimagedata()"><i nz-icon type="eye"  ></i>Documents</button>
+        </div>
+    <div>
+        <!-- <div nz-col nzMd="16"> -->
+            <trading-general #generalDetials></trading-general>
+        <!-- </div> -->
+        <!-- <div nz-col nzMd="8"> -->
+            <!-- <trading-membership></trading-membership> -->
+        <!-- </div> -->
+    </div>
+<br>
+<div>
+        <!-- <div nz-col nzMd="12"> -->
+            <trading-additional-details #additionalDetilas></trading-additional-details>
+        <!-- </div> -->
+        <!-- <div nz-col nzMd="12"> -->
+            <!-- <trading-experience></trading-experience>
+        </div> -->
+    </div>
+    <br>
+<div #tabsContentRef1></div>
+
+<div>
+
+    <trading-dealings #dealings></trading-dealings>
+</div>
+<div #tabsContentRef2></div>
+<br>
+    <div>
+        
+            <trading-introducer-details #introducerDetails></trading-introducer-details>
+        <!-- </div>
+        <div nz-col nzMd="12">
+            <trading-lead-details></trading-lead-details>
+        </div> -->
+    </div>
+<br>
+    <div>
+        <!-- <div nz-col nzMd="12"> -->
+            <trading-lead-conv-details #leadConvDetails></trading-lead-conv-details>
+        <!-- </div>
+        <div nz-col nzMd="12">
+            <trading-relative-geojit-employee></trading-relative-geojit-employee>
+        </div> -->
+    </div>
+<div #tabsContentRef3></div>
+<br>
+    <div *ngIf="clientType!='nonIndividual'">
+        <!-- <div nz-col nzMd="12"> -->
+            <trading-nominee-details #nomineeDetails></trading-nominee-details>
+        <!-- </div>
+        <div nz-col nzMd="12">
+            <trading-guardian-details></trading-guardian-details>
+        </div> -->
+    </div>
+<br>
+<div #tabsContentRef4></div>
+ 
+            <trading-agreement-status #agreementStatus></trading-agreement-status>
+        <br>
+        <div *ngIf="clientType!='nonIndividual'">
+            <trading-natch-details #natchDetails></trading-natch-details>
+        </div>
+        <div *ngIf="clientType=='nonIndividual'">
+            <fiss-ocbs-other></fiss-ocbs-other>
+        </div>
+    
+<br>
+<nz-card nzTitle="Other Details"  *ngIf="clientType=='nonIndividual'">
+    <div nz-row nzGutter="10" class="text-dark">
+            <h3 nz-checkbox class="mt-2">Is the entity involved / providing any of the following services</h3><br>
+            <h3 nz-checkbox class="mt-2">For Foreign Exchange / money Changer Services </h3><br>
+            <h3 nz-checkbox class="mt-2">Gaming / Gambling / Lottery Services (eg : Casinos, betting syndicates)</h3><br>
+            <h3 nz-checkbox class="mt-2">Money Lending / Pawing </h3><br>
+            <h3 nz-checkbox class="mt-2">Are you a Non-Profit Organisation </h3><br>
+        </div>
+    </nz-card>
+    
+<br>
+    <div nz-row nzGutter="10">
+        <div nz-col nzMd="24">
+            <trading-third-party-poa #thirdPartyPoa></trading-third-party-poa>
+        </div>
+        <br>
+        <div nz-col nzMd="24" *ngIf="clientType!='nonIndividual'">
+            <trading-additional-documents #additionalDocuments></trading-additional-documents>
+        </div>
+        <br>
+        <div nz-col nzMd="24" *ngIf="clientType=='nonIndividual'">
+            <member-details></member-details>
+        </div>
+    </div>
+
+    <p class="text-right">
+            <button nz-button nzType="primary" (click)="back()">Back</button>
+        <button nz-button nzType="primary" (click)="continueNext()">Next</button>
+        <!-- <button nz-button nzType="primary" class="float-right" (click)="next11()" *ngIf="branch == 'HOGT' || branch== 'HO'">Continue</button> -->
+         
+        <!-- <button nz-button nzType="primary" (click)="next11()">lazy next</button> -->
+    </p>
+    <window *ngIf="showPortal2" [imageData]="previewImageData2"></window> 
+    <app-loader *ngIf="spining"></app-loader> 

@@ -1,0 +1,79 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <nz-card [nzTitle]="title2">
+        <ng-template #title2>
+            <i nz-icon nzType="upload" nzTheme="outline" class="icon "></i>&nbsp;&nbsp;Proof/Application Form</ng-template>
+        <div nz-row nzGutter="5">
+            <div nz-col nzMd="24" *ngIf="saveButtonFlag">
+                <nz-form-item>
+                    <nz-form-control>                 
+                        <p style="color: red;"> Document updation only allowed after saving the entry. </p>
+                        <p *ngIf="fromnominee" style="color: red;"> The identification details of nominee(s)/ guardian (s) of the minor nominee is not mandatory. The proof submitted will be updated without validation.</p>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6">
+                <nz-form-item>
+                    <nz-form-label> Select Proof/Application Form
+                    </nz-form-label>
+                    <nz-form-control>
+                        <!-- <nz-select [(ngModel)]="ProofTypeData"  name="Img" [ngModelOptions]="{standalone: true}"  [disabled]="IsForAprove"> -->
+                        <nz-select [(ngModel)]="ProofTypeData"  name="Img" [ngModelOptions]="{standalone: true}" [disabled]="applicationStatus!='T'">
+                            <nz-option *ngFor="let data of ProofTypeList" [nzValue]="data.Document" [nzLabel]="data.Document">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3" style="text-align: center">
+                <nz-form-item>
+                    <nz-form-control>
+                            <nz-form-label style="margin-left: 1.5rem;">Upload
+                                </nz-form-label>
+                                   
+                        <nz-upload 
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="Prooflist" [nzShowUploadList]=false>
+                            <button nz-button [disabled]="ProofTypeData==''||ProofTypeData==undefined||ProofTypeData==null?true:false" ><i nz-icon type="upload"></i><span>Select File</span></button>
+                        </nz-upload>
+                      
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <!-- <div nz-col nzMd="3" style="text-align: center">
+                    <nz-form-item>
+                        <nz-form-control>
+                                <nz-form-label>Application Form Upload
+                                    </nz-form-label>
+                                       
+                            <nz-upload 
+                                [nzBeforeUpload]="applicationform" [(nzFileList)]="apllicationform" [nzShowUploadList]=false>
+                                <button nz-button ><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                          
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col >
+                <span style="color: red;" *ngIf="applicationReceived">Please upload signed application form</span>
+                </div>
+            <div nz-col nzMd="15">
+                <div nz-row nzGutter="5" *ngFor="let data of SupportFiles;let i=index">
+                        <div nz-col nzMd="10">
+                                {{data.DocnameText}}
+                        </div>
+                        <div nz-col nzMd="10">
+                                {{data.Docfile}}
+                        </div>
+                        <div nz-col nzMd="4" >
+                                <button nz-button nzType="primary" (click)="showModal(data)"><i nz-icon type="eye"></i></button>
+                                <!-- <button nz-button  *ngIf="data.Docname=='Application Form1'||data.Docname=='Application Form2'||data.Docname=='Application Form3'?!applicationReceived:!IsForAprove"  style="background:red;color: white;" (click)="Deleterow(data,i)"><i nz-icon type="delete"></i></button>
+                                 -->
+                                 <button nz-button  style="background:red;color: white;" (click)="Deleterow(data,i)" *ngIf="saveButtonFlag"><i nz-icon type="delete"></i></button>
+                        </div>
+               </div>
+            </div>
+        </div>
+    </nz-card>
+</form>
+<!-- <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+    [fileName]="filePreiewFilename"></app-file-preview> -->
+    <crf-app-image-preview *ngIf="filePreiewVisible" [imageData]="filePreiewContent" source="Proof"></crf-app-image-preview>

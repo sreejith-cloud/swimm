@@ -1,0 +1,740 @@
+<div class="main-content">
+  <!-- <h3 class="content-title">Booklet Recieved Marking</h3>
+    <div nz-col nzMd="24" nzLg="24" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="getData()" (onReset)="
+        reset()" (onSave)="save()" >
+        </form-handler>
+      </div> -->
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="10" [@slideInOutup]="showLeftSide">
+      <div nz-col nzMd="24">
+        <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+          <ng-template #findHead>
+            Find Booklet
+          </ng-template>
+          <div nz-col nzMd="24">
+            <div nz-row>
+              <div nz-col nzMd="3" style="margin-bottom: 10px;">
+                <!-- <fieldset class="fieldset_made">
+                          <legend class="fieldset-shadow-condensed">
+                          
+                          </legend> -->
+                <nz-radio-group [(ngModel)]="model.crforpostacc" (ngModelChange)="reset()" name="crforpostacc">
+                  <label title="Post Account Opening" style="font-size: 14px;" nz-radio nzValue="POSTACCOPEN">POST
+                    AOF</label>
+                  <label nz-radio nzValue="CRF">CRF</label>
+                </nz-radio-group>
+                <!-- </fieldset> -->
+              </div>
+            </div>
+            <div nz-row nzGutter="10">
+              <!-- <div nz-col nzMd="3" style="padding-top: 19px;">
+                <nz-radio-group [(ngModel)]="model.crforpostacc" (ngModelChange)="reset()" name="crforpostacc">
+                  <label title="Post Account Opening" style="font-size: 14px;" nz-radio nzValue="POSTACCOPEN">POST
+                    AOF</label>
+                  <label nz-radio nzValue="CRF">CRF</label>
+                </nz-radio-group>
+                
+              </div> -->
+              <div nz-col nzMd="3">
+                  <nz-form-item>
+                    <nz-form-label>Batch No.</nz-form-label>
+                    <nz-form-control>
+                      <master-find-ctrl name="batchNo" [options]="batchNoFindOption"
+                        [(ngModel)]="model.batchNo" (ngModelChange)="onChangeRegion($event)"></master-find-ctrl>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Pouch Serial No</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="pan" [options]="panFindOption" (ngModelChange)="onChangeRegion($event)"
+                      [(ngModel)]="model.PanNo">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>DP Account BenId</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="cin" (ngModelChange)="onChangeRegion($event)" [options]="cinFindOption"
+                      [(ngModel)]="model.Cin">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Client Code</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="uniqueCode" (ngModelChange)="onChangeRegion($event)"
+                      [options]="geojitUniqueCodeFindOption" [options]="cinFindOption" [(ngModel)]="model.uniqueCode">
+                    </master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Kit Number</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="kitno" (ngModelChange)="onChangeRegion($event)" [options]="kitnoFindOption"
+                      [(ngModel)]="model.kitno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Booklet Serial No</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="slno" (ngModelChange)="onChangeRegion($event)" [options]="slnoFindOption"
+                      [(ngModel)]="model.slno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Account Serial No</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl name="accslno" (ngModelChange)="onChangeRegion($event)"
+                      [options]="accslnoFindOption" [(ngModel)]="model.accslno"></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label class="boldinglabel">Scan Barcode</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input [textMask]="{mask: inputMasks.numeric}" #batch5 [(ngModel)]="barcodeid"
+                      (ngModelChange)="getBarcodeData()" type="text" name="barcodeid">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+              <!-- <div nz-col nzMd="3" >
+                            <nz-form-item>
+                              <nz-form-label class="boldinglabel">Scan Barcode</nz-form-label>
+                              <nz-form-control>
+                                  <master-find-ctrl name="barcodeid" (ngModelChange)="onChangeRegion($event)" [options]="barcodeFindOption"
+                                  [(ngModel)]="model.barcodeid">
+                                </master-find-ctrl>
+                              </nz-form-control>
+                            </nz-form-item>
+                          </div> -->
+            </div>
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="6" style="padding-top: 18px; float: right;">
+                <button [disabled]=buttonactive type="button" nz-button nzType="primary" (click)="PDFView()"
+                  style="float: right;">PDF View</button>
+                <button type="button" [disabled]=buttonactive type="button" nz-button nzType="primary"
+                  (click)="callURL()" style="float: right;">Documents View</button>
+                <button type="button" nz-button nzType="primary" (click)="reset()" style="float: right;">Reset</button>
+                <button type="button" [disabled]=buttonactive nz-button nzType="primary" (click)="getData()"
+                  style="float: right;">View</button>
+
+              </div>
+            </div>
+          </div>
+        </nz-card>
+      </div>
+    </div>
+    <div style="text-align:center;position: relative;"><i nz-icon type="up" *ngIf="showLeftSide===false"
+        (click)="toggleCenter()"></i><i nz-icon type="down" *ngIf="showLeftSide===true" (click)="toggleCenter()"></i>
+    </div>
+    <!-- <div nz-row nzGutter="5">
+  <div nz-col nzMd="4" style="margin-left: 6px;">
+    <nz-form-item>
+        <nz-form-label>Region</nz-form-label>
+        <nz-form-control>
+            <master-find-ctrl [options]="RegionFindopt" [(ngModel)]="model.region" name="region"
+                (ngModelChange)="onChangeRegion($event)">
+            </master-find-ctrl>
+        </nz-form-control>
+    </nz-form-item>
+</div>
+
+  <div nz-col nzMd="4" >
+        <nz-form-item>
+          <nz-form-label class="boldinglabel">Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" 
+              [(ngModel)]="model.Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div> 
+ <div nz-col nzMd="4" >
+    <nz-form-item>
+      <nz-form-label  class="boldinglabel">From Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [(ngModel)]="fromdate" name="FD" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div> 
+  <div nz-col nzMd="4">
+    <nz-form-item>
+      <nz-form-label  class="boldinglabel">To Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [(ngModel)]="todate" name="TD" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div> 
+
+  <div nz-col nzMd="4">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Type</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.mode" nzPlaceHolder="Type" name="Type" nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of FileTypelist" [nzLabel]="item.FileType" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  </div> -->
+
+    <app-loader *ngIf="isSpinning"></app-loader>
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="24">
+        <nz-card [nzTitle]=findHead1 style="margin-bottom: 10px;">
+          <ng-template #findHead1>
+            HO Review
+          </ng-template>
+          <div nz-col nzMd="24">
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="24">
+
+
+                <nz-form-item>
+                  <div nz-row nzGutter="5">
+                    <div nz-col nzMd="8">
+                      <fieldset class="fieldset_made">
+                        <legend class="fieldset-shadow-condensed">
+                          Account Type
+                        </legend>
+                        <div nz-row nzGutter="5">
+                          <div nz-col nzMd="6">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="Trading" readonly
+                                  [ngModelOptions]="{standalone: true}">Trading</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="6">
+                            <nz-form-control>
+                              <span>
+                                <label [disabled]="true" nz-checkbox [(ngModel)]="NSDL" readonly
+                                  [ngModelOptions]="{standalone: true}">NSDL</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="6">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="CDSL" readonly
+                                  [ngModelOptions]="{standalone: true}">CDSL</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="6">
+                            <nz-form-control>
+                              <span>
+                                <label class="boldinglabel" nz-checkbox [disabled]="true" [(ngModel)]="MTF" readonly
+                                  [ngModelOptions]="{standalone: true}">MTF</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                    <div nz-col nzMd="12">
+                      <fieldset class="fieldset_made">
+                        <legend class="fieldset-shadow-condensed">
+                          POA Details
+                        </legend>
+                        <div nz-row nzGutter="5">
+                          <div nz-col nzMd="4">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="poasigned" readonly
+                                  [ngModelOptions]="{standalone: true}">POA Signed</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="5">
+                            <!-- <nz-form-label class="required">POA Signed Date</nz-form-label> -->
+                            <nz-form-control>
+                              <nz-date-picker [(ngModel)]="poasigneddate" nzFormat="dd-MM-yyyy" name="poasigneddate">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="5">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="poadebited" readonly name="poadebited"
+                                  [ngModelOptions]="{standalone: true}">POA Debited</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="5">
+                            <!-- <nz-form-label class="required">POA Debited Date</nz-form-label> -->
+                            <nz-form-control>
+                              <nz-date-picker [(ngModel)]="poadebiteddate" nzFormat="dd-MM-yyyy" name="poadebiteddate">
+                              </nz-date-picker>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="5">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [(ngModel)]="poastamped" readonly
+                                  [ngModelOptions]="{standalone: true}">POA Stamped</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+                    <div nz-col nzMd="4">
+                      <fieldset class="fieldset_made">
+                        <legend class="fieldset-shadow-condensed">
+                          Client Type
+                        </legend>
+                        <div nz-row nzGutter="5">
+                          <div nz-col nzMd="12">
+                            <nz-form-control>
+                              <span>
+                                <label nz-checkbox [disabled]="true" [(ngModel)]="B2B" readonly
+                                  [ngModelOptions]="{standalone: true}">B2B</label>
+                              </span>
+                            </nz-form-control>
+                          </div>
+                          <div nz-col nzMd="12" *ngIf="B2B==true">
+                            <nz-form-control>
+                              <span>
+                                B2BPartner: {{B2BPartner}}
+
+                              </span>
+                            </nz-form-control>
+                          </div>
+                        </div>
+
+                      </fieldset>
+                    </div>
+
+
+                  </div>
+
+                </nz-form-item>
+
+              </div>
+            </div>
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>First
+                    Holder Name</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input [(ngModel)]="holdername" type="text" readonly name="holdername">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>First Holder
+                  Pan</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="holderpan" readonly type="text" name="holderpan">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Trading
+                  Account Type</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="code" type="text" readonly name="code">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Trading
+                  Account Description</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="acctype" readonly type="text" name="acctype">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Account
+                  Type</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="dpcode" readonly type="text" name="dpcode">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Account
+                  Sub Type</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="subtype" readonly type="text" name="subtype">
+                </nz-form-control>
+              </div>
+
+
+            </div>
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Trading
+                    Region Name</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input [(ngModel)]="tradingregionname" type="text" readonly name="tradingregionname">
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="2">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Location
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="TradingLocation" readonly type="text" name="TradingLocation">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="2">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Trading Code
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="tradecode" type="text" readonly name="tradecode">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label class="required">State</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="state" readonly name="state">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Trading
+                  Location Name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="tradinglocname" readonly type="text" name="tradinglocname">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Id
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="dpaccid" readonly type="text" name="dpaccid">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>DP Client Id
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="dpaccbenid" readonly type="text" name="dpaccbenid">
+                </nz-form-control>
+              </div>
+
+
+            </div>
+            <div nz-row nzGutter="10">
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>FirstHolder
+                  KRA Initial Status
+                </nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="initialstatus" readonly type="text" name="initialstatus">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>FirstHolder
+                  KRA Update Status</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="updatestaus" readonly type="text" name="updatestaus">
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="2">
+
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>No. Of
+                  Holders</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [(ngModel)]="holderno" readonly name="holderno">
+                </nz-form-control>
+
+              </div>
+              <div nz-col nzMd="2">
+
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Pouch Slno
+                </nz-form-label>
+                <nz-form-control>
+
+                  <input readonly nz-input [(ngModel)]="model.pouchno" name="pouchno">
+                </nz-form-control>
+
+              </div>
+
+              <div nz-col nzMd="3">
+                <nz-form-label class="required">Enroll Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="EnrolDate" name="EnrolDate">
+                  </nz-date-picker>
+                </nz-form-control>
+              </div>
+
+              <div nz-col nzMd="3" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label [disabled]="true" nz-checkbox [(ngModel)]="dcmntrecieved"
+                      [ngModelOptions]="{standalone: true}">
+                      Document Recieved</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+
+              <div nz-col nzMd="3">
+                <nz-form-label class="required">Received Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="receiveddate"
+                    name="accepteddate"> </nz-date-picker>
+                </nz-form-control>
+              </div>
+
+              <div nz-col nzMd="3" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label [disabled]="true" nz-checkbox [(ngModel)]="passedtoauditor"
+                      [ngModelOptions]="{standalone: true}">Paased
+                      To Auditor</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+            </div>
+            <div nz-row nzGutter="5">
+              <div nz-col nzMd="3">
+                <nz-form-label class="required">CA Verification Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="CAVerificationDate"
+                    name="CAVerificationDate"> </nz-date-picker>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-label>Audit Deviation Cleared Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [disabled]="true" nzFormat="dd-MM-yyyy" [(ngModel)]="AuditDeviationClearedDate"
+                    name="AuditDeviationClearedDate"> </nz-date-picker>
+                </nz-form-control>
+              </div>
+
+              <div nz-col nzMd="5" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label [disabled]="true" nz-checkbox [(ngModel)]="DeviationsByCA_In_AccOpen_Documents"
+                      [ngModelOptions]="{standalone: true}">Deviations By CA In AOF Documents</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="5" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label [disabled]="true" nz-checkbox [(ngModel)]="DeviationsByCA_In_DPMvsAOF_Documents"
+                      [ngModelOptions]="{standalone: true}">Deviations By CA In DPMvsAOF Documents</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="5" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label [disabled]="true" nz-checkbox [(ngModel)]="DeviationsByCA_In_Sup_Documents"
+                      [ngModelOptions]="{standalone: true}">Deviations By CA In Sup Documents</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="3">
+
+                <nz-form-label><i nz-icon nzType="idcard" nzTheme="outline" class="text-success space"></i>Final Status
+                </nz-form-label>
+                <nz-form-control>
+
+                  <input nz-input [(ngModel)]="FinalStatus" name="FinalStatus">
+                </nz-form-control>
+
+              </div>
+            </div>
+            <div nz-row nzGutter="5">
+              <div nz-col nzMd="3">
+                <nz-form-label class="required">AutoMail To Branches</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker [nzDisabledDate]="disabledFutureDate" [(ngModel)]="AutoMailBranchesOn"
+                    nzFormat="dd-MM-yyyy" name="AutoMailBranchesOn"> </nz-date-picker>
+                </nz-form-control>
+              </div>
+              <div nz-col nzMd="5" style="padding-top: 5px;">
+                <nz-form-control>
+                  <nz-form-label>&nbsp;</nz-form-label>
+
+                  <nz-form-control>
+                    <label nz-checkbox [(ngModel)]="ReadyforAuditorVerification"
+                      [ngModelOptions]="{standalone: true}">Ready for Auditor Verification</label>
+                  </nz-form-control>
+                </nz-form-control>
+              </div>
+
+              <div nz-col nzMd="2" style="padding-top: 18px; float: right;">
+
+                <button type="button" [disabled]=buttonactive nz-button nzType="primary" (click)="save()"
+                  style="float: right;">Save</button>
+                <!-- <button nz-button nzType="primary" (click)="processComplete()" style="float: right;">OK</button> -->
+              </div>
+              <!-- </div> -->
+
+            </div>
+
+
+          </div>
+        </nz-card>
+
+
+        <div nz-row nzGutter="10">
+
+          <div nz-col nzMd="24">
+            <nz-table #ClientChangeArraytable [nzData]="tablerow" [nzSize]="'small'" [nzShowPagination]="false"
+              [nzFrontPagination]="false">
+              <thead>
+                <tr style="background: rgba(137, 238, 204, 0.678);">
+                  <!-- <th nzWidth="1%"></th> -->
+                  <th style="padding-left: 10px;" nzWidth="2%">SL NO</th>
+                  <th style="padding-left: 10px;" nzWidth="15%">Audit Findings</th>
+                  <th style="padding-left: 10px;" nzWidth="15%">Solution</th>
+                  <th style="padding-left: 10px;" nzWidth="5%">HO Review Flag</th>
+                  <th style="padding-left: 10px;" [hidden]="hideval" nzWidth="5%">Auditor Remarks</th>
+                  <th style="padding-left: 10px;" [hidden]="hideval" nzWidth="5%">HO Remarks</th>
+                  <!-- <th  nzWidth="2%"></th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of tablerow; let i = index">
+                  <!-- <td> <label nz-checkbox [(ngModel)]="data.NSDL"  [ngModelOptions]="{standalone: true}"  ></label></td> -->
+                  <td style="color: #ef0410;cursor: pointer;" (click)="getHistoryData(i,data)">{{data.Slno}}</td>
+                  <td>
+                    <nz-form-control>
+                      <input nz-input readonly [(ngModel)]="data.AuditorFinding" type="text" (keyup.enter)="nextTextBoxFocus(i)" name="auditfindings{{i}}">
+                    </nz-form-control>
+                  </td>
+                  <!-- <td>  <nz-select nzAllowClear [(ngModel)]="data.Solution" autocompl nzPlaceHolder="Solution"  name="Mode{{i}}" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of Deviations" [nzLabel]="item.Solution" [nzValue]="item.Solution">
+                  </nz-option>
+                </nz-select></td> -->
+                  <nz-form-control>
+                    <input type="text" nz-input [(ngModel)]="data.Solution" name='Solution{{i}}'
+                      (ngModelChange)="getFilterdData($event)" [nzAutocomplete]="auto" />
+                    <nz-autocomplete #auto>
+                      <nz-auto-option *ngFor="let item of filteredData" [nzValue]="item" [nzLabel]="item.Solution"
+                        class="aleternateColor">
+                        <span [innerHTML]="item.Solution"></span>
+                      </nz-auto-option>
+                    </nz-autocomplete>
+                  </nz-form-control>
+                  <td>
+                    <nz-select [(ngModel)]="data.HOReviewFlag" nzPlaceHolder="HO Review Flag" name="HOReviewFlag{{i}}"
+                      nzDropdownMatchSelectWidth="true">
+                      <nz-option *ngFor="let item of HOReviewFlags" [nzLabel]="item.Mode" [nzValue]="item.code">
+                      </nz-option>
+                    </nz-select>
+                  </td>
+                  <!-- <td >  <nz-select [(ngModel)]="HOReviewFlag" nzPlaceHolder="HO Review Flag"  name="HOReviewFlag{{i}}" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of HOReviewFlags" [nzLabel]="item.Mode" [nzValue]="item.code">
+                  </nz-option>
+                </nz-select></td> -->
+                  <!-- <td> <nz-form-control>
+                  <input nz-input  [(ngModel)]="data.Solution" type="text" name="Solution{{i}}">
+                </nz-form-control></td> -->
+
+                  <td [hidden]="hideval">
+                    <nz-form-control>
+                      <input nz-input readonly [(ngModel)]="data.AuditorRemarks" type="text" name="AuditorRemarks{{i}}">
+                    </nz-form-control>
+                  </td>
+                  <td [hidden]="hideval">
+                    <nz-form-control>
+                      <input nz-input [(ngModel)]="data.HORemarks" type="text" name="HORemarks{{i}}">
+                    </nz-form-control>
+                  </td>
+
+                  <!-- <td><button nz-button nzType="primary" (click)="delete(i)" style="float: right;">Delete</button>
+                  <button nz-button nzType="primary" (click)="Addrow()" [hidden]="i==tablerow.length-1?false:true" style="float: right;">Add</button>
+                </td> -->
+
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+
+          <div nz-col nzMd="24" *ngIf="DetailDataTemp.length" [hidden]="history">
+            <fieldset class="fieldset_made">
+              <legend class="fieldset-shadow-condensed">
+                History Table
+              </legend>
+              <nz-table #ClientChangeArraytable [nzData]="DetailDataTemp" [nzSize]="'small'" [nzShowPagination]="false"
+                [nzFrontPagination]="false">
+                <thead>
+                  <tr style="background: rgba(137, 238, 204, 0.678);">
+
+                    <!-- <th nzWidth="2%">SL NO</th> -->
+                    <th nzWidth="4%">Batch No</th>
+                    <th nzWidth="15%">Audit Findings</th>
+                    <th nzWidth="15%">Solution</th>
+                    <th nzWidth="15%">Auditor Remarks</th>
+                    <th nzWidth="5%">HO Remarks</th>
+                    <th nzWidth="6%">LastUpdatedOn</th>
+                    <th nzWidth="5%">User</th>
+                    <!-- <th  nzWidth="2%"></th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of DetailDataTemp; let i = index">
+                    <!-- <td> <label nz-checkbox [(ngModel)]="data.NSDL"  [ngModelOptions]="{standalone: true}"  ></label></td> -->
+                    <!-- <td>{{data.Slno}}</td> -->
+                    <td>{{data.BatchNo}}</td>
+
+                    <td>{{data.AuditorFinding  }} </td>
+                    <td>{{data.Solution}} </td>
+                    <td>{{data.AuditorRemarks}} </td>
+                    <td>{{data.HORemarks}}</td>
+                    <td>{{data.LastUpdatedOn}} </td>
+                    <td>{{data.EUser}} </td>
+                    <!-- <td><button nz-button nzType="primary" (click)="delete(i)" style="float: right;">Delete</button>
+                          <button nz-button nzType="primary" (click)="Addrow(i,data)" [hidden]="i==tablerow.length-1?false:true" style="float: right;">Add</button>
+                        </td> -->
+
+                  </tr>
+                </tbody>
+              </nz-table>
+            </fieldset>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <nz-modal [(nzVisible)]="isVisibleRejection" nzTitle="Warning" (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleCancel()" nzWidth="70%">
+
+      <div style="font-size: 25px;color: red;"> Access denied! </div>
+    </nz-modal>
+  </form>
+  <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent"
+    [contentType]="filePreiewContentType" [fileName]="filePreiewFilename"></app-file-preview>
+</div>

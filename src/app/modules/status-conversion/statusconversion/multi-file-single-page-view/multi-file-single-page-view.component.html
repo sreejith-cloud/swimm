@@ -1,0 +1,23 @@
+<nz-modal [(nzVisible)]="isVisibleView" nztitle="Entries" (nzOnCancel)="handleCancelview()" [nzFooter]="modalFooter"
+    nzWidth="90%">
+    <h2>Document Verification</h2>
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 8 }">
+        <div nz-col class="gutter-row width20" [nzSpan]="6">
+            <div class="inner-box">
+                <div *ngFor="let item of documentDatas">
+                    <div class="documentHeadings" (click)="displayImage(item.Docdoc)">{{item.DocName}}</div>
+                </div>
+            </div>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="2">
+            <div class="inner-box overflowstyle">
+                <img [src]="myBase64" alt="">
+            </div>
+        </div>
+    </div>
+    <ng-template #modalFooter>
+        <button nz-button nzType="default" (click)="handleCancelview()">Close</button>
+    </ng-template>
+</nz-modal>
+
+<app-loader *ngIf="isSpining"></app-loader>

@@ -1,0 +1,120 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <nz-card nzTitle="Clearing Member Details">
+
+
+    <div nz-row nzGutter="5">
+
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Name of Stock Exchange
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="NameofStockExchange"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Name of Clearing Corporation
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="NameofClearingCorporation"/>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Clearing Member ID
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="ClearingMemberID"/>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>SEBI Registration No
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="SEBIRegistrationNo"/>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Trade Name
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="TradeName"/>
+                </nz-form-control>
+
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>CM-BP-id
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="CMBPID"/>
+                </nz-form-control>
+
+            </nz-form-item>
+
+        </div>
+    </div>
+    <nz-divider nzText="List of Family Members (Coparcener) " nzOrientation="left"></nz-divider>
+    <div nz-row nzGutter="5">
+
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Name of Coparcener / Member
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="NameofCoparcenerorMember"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Gender
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="Gender"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Date of Birth
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker formControlName="DateofBirth"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Relation with Kartha
+                </nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="RelationwithKartha"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Whether Coparcener / Member
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="WhetherCoparcenerorMember"></nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-card>
+</form>

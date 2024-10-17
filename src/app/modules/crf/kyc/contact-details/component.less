@@ -1,0 +1,32 @@
+:host {
+    ::ng-deep {
+        .cardHeight{
+     height: 347px!important;
+    }
+    @media screen and (max-width: 990px) {
+        .cardHeight{
+            height:auto!important;
+        }
+    }
+  
+}
+}
+.disableCards {
+    pointer-events: none!important;
+    opacity: 0.9!important;
+    cursor: not-allowed!important;
+}
+
+.ant-card {
+    margin-top:-10px!important
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+
+.disableCards:hover{
+    cursor: not-allowed;
+}

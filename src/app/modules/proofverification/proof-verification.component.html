@@ -1,0 +1,129 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title"> CRF Document Verification</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onReset)="Reset()" (onSave)="save()">
+        </form-handler>
+      </div>
+    </div>
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="6" nzLg="4">
+        <nz-form-item>
+          <nz-form-label>Serial Number</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="SerialNo" [options]="SerialNoFindOption" [(ngModel)]="serialNumber"
+              (ngModelChange)="view()">
+
+            </master-find-ctrl>
+            <!-- <input nz-input type="text" [(ngModel)]="serialNumber" name="serialno"/> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzLg="4">
+        <nz-form-item>
+          <nz-form-label>SPICE CRF Number</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="spicecrfno" [options]="SpiceCRFFindOption" [(ngModel)]="spicecrfno"
+              (ngModelChange)="spicecrfChange($event)">
+
+            </master-find-ctrl>
+            <!-- <input nz-input type="text" [(ngModel)]="serialNumber" name="serialno"/> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <div class="mb20">
+      <span class="headings">Request Info</span>
+      <nz-table class="tranTbl table-responsive table-themed" #Request [nzData]="RequestInfo">
+        <thead>
+          <tr>
+
+            <th *ngFor="let header of RequestInfoHead;let i = index">
+              {{header}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of Request.data" class="resulttable">
+            <td *ngFor="let header of RequestInfoHead">{{data[header]}}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+
+    </div>
+    <div class="mb20">
+      <span class="headings">Request Details <button nz-button *ngIf="FromSpiceFlag" nzType="link"
+          style="float:right;border-style:none;" (click)="openprofilechange()">View Full Details</button></span>
+      <nz-table class="tranTbl table-responsive table-themed" #RequestDetails [nzData]="DocumentDetails">
+        <thead>
+          <tr>
+            <th nzWidth="10%"> Request Type</th>
+            <th nzWidth="30%"> Description 1</th>
+            <th nzWidth="30%"> Description 2</th>
+            <th nzWidth="30%"> Description 3</th>
+            <!-- <th *ngFor="let header of DocumentDetailsHeads;let i = index">
+            {{header}}
+          </th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of RequestDetails.data" class="resulttable">
+            <td>{{data.Request_type}} </td>
+            <td nzBreakWord>{{data.Desc_1}} </td>
+            <td nzBreakWord>{{data.Desc_2}} </td>
+            <td nzBreakWord>{{data.Desc_3}} </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="mb10">
+      <span class="headings">Document Details </span>
+      <nz-table class="tranTbl table-responsive table-themed" #Documentdetails [nzData]="DocumentSubmited" [nzPageIndex]  [nzPageSize]="5" [nzShowPagination]="true" >
+        <thead>
+          <tr>
+            <th *ngFor="let header of DocumentSubmitedHead;let i = index">
+              {{header}}
+            </th>
+            <th nzRight="0px" *ngIf="DocumentSubmitedHead.length">
+              View
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of Documentdetails.data;let i = index" class="resulttable">
+            <td *ngFor="let header of DocumentSubmitedHead">
+              <span
+                *ngIf="header!='ReceivedFlag'&& header!='ReceivedDate'&& header!='ReceivedRemarks'">{{data[header]}}</span>
+              <label *ngIf="header=='ReceivedFlag'" nz-checkbox class="tooltip" [(ngModel)]="data[header]"
+                [nzDisabled]="data.disablecheck" (ngModelChange)="CheckBoxControl(i,$event)"
+                [ngModelOptions]="{standalone: true}">
+                <span *ngIf="data.disablecheck" class="tooltiptext" style="color:red">Click view to enable
+                  checkbox</span>
+              </label>
+
+              <nz-date-picker *ngIf="header=='ReceivedDate'" [(ngModel)]="data[header]" [nzDisabled]="data.disablecheck"
+                style="width:150px;" [ngModelOptions]="{standalone: true}">{{data[header]}}</nz-date-picker>
+              <input nz-input *ngIf="header=='ReceivedRemarks'" type="text" [(ngModel)]="data[header]"
+                [disabled]="data.disablecheck" [ngModelOptions]="{standalone: true}">
+            </td>
+            <td> <button nz-button nzType="link" style="float: left; border-style: none;" nzSize="small"
+                (click)="Preview(data)" >View</button></td>
+            <td *ngIf="header=='ReceivedDate'">
+
+     
+              <nz-date-picker></nz-date-picker>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </form>
+</div>
+<app-image-preview *ngIf="filePreiewVisible" [imageData]="filePreiewContent"></app-image-preview>
+<app-loader *ngIf="isSpining"></app-loader>
+<ng-template>tetsee</ng-template>

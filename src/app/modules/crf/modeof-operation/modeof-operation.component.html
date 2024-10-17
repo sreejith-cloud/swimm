@@ -1,0 +1,235 @@
+  <form nz-form nzLayout="vertical">
+    <nz-card [nzTitle]=findHead2 style="margin-bottom: 10px;">
+      <ng-template #findHead2>
+        Mode of operation
+      </ng-template>
+      <div nz-row nzGutter="24" >
+        <div nz-col nzMd="4">
+          <nz-form-item>
+          <nz-form-control>
+            <label nz-checkbox [disabled]="disableCheckBoxesFlag"  [(ngModel)]="jointlyCheckedFlag" name="jointly" (ngModelChange)="anyOneOfTheSurvivorCheckedFlag = !jointlyCheckedFlag;">Jointly</label>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="10">
+        <nz-form-item>
+          <nz-form-control>
+            <label nz-checkbox [disabled]="disableCheckBoxesFlag"  [(ngModel)]="anyOneOfTheSurvivorCheckedFlag" name="anyOneOfTheSurvivor" (ngModelChange)="jointlyCheckedFlag = !anyOneOfTheSurvivorCheckedFlag;">Any one of the survivor(s)</label>
+          </nz-form-control>
+        </nz-form-item>
+        </div>
+      </div>
+    </nz-card>
+
+    <nz-card [nzTitle]=findHead >
+      <ng-template #findHead>
+        Communication to be Sent to
+      </ng-template>
+      <div nz-row nzGutter="24">
+        <div nz-col nzMd="4">
+          <nz-form-item>
+          <nz-form-control>
+            <label nz-checkbox [disabled]="disableCheckBoxesFlag" [(ngModel)]="firstHolderFlag" name="firstHolder" (ngModelChange)="communicationSendToAllFlag = !firstHolderFlag;">First Holder</label>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="10">
+        <nz-form-item>
+          <nz-form-control>
+            <label nz-checkbox [disabled]="disableCheckBoxesFlag" [(ngModel)]="communicationSendToAllFlag" name="communicationSendToAll" (ngModelChange)="firstHolderFlag = !communicationSendToAllFlag;">All Account Holders(in electronic mode)</label>
+          </nz-form-control>
+        </nz-form-item>
+        </div>
+      </div>    
+    </nz-card>
+  
+    <div *ngIf="tab=='ModeofOperation'" style="margin-top: 10px; margin-bottom: 10px;">
+      <crf-image-upload></crf-image-upload>
+    </div>
+    <div nz-row nzGutter="5" >
+      <div nz-col nzMd="15">
+        <div nz-col nzSpan="5">
+          <nz-form-label>{{Remks}}</nz-form-label>
+        </div>
+        <div nz-col nzSpan="15">
+          <nz-form-item >
+            <nz-form-control>
+              <input nz-input [(ngModel)]="RejRemarks" name="rej" [nzAutocomplete]="remarks2"
+                [disabled]="applicationStatus!='P'&&!HO || applicationStatus == 'R'" />
+              <nz-autocomplete #remarks2>
+                <nz-auto-option *ngFor="let option of rejectionRemarks" [nzValue]="option.Remarks"
+                  [nzLabel]="option.Remarks" class="aleternateColor">
+                  <span [innerHTML]="option.Remarks"></span>
+                </nz-auto-option>
+              </nz-autocomplete>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div *ngIf="applicationStatus=='P'">
+          <div nz-col nzSpan="4">
+            <button nz-button nzType="primary" type="button" (click)="fetchReasons()"
+              title="Click here for Rejection Reasons">Select</button>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzMd="9">
+        <p class="text-right">
+          <button nz-button nzType="primary" type="button" (click)="onBackClick()">Back</button>
+          <button nz-button nzType="primary" type="submit" (click)="saveModeOfOperation('save')"
+            *ngIf="saveButtonFlag && applicationStatus!='T'">Save</button>
+          <button nz-button nzType="primary" type="submit" (click)="saveModeOfOperation('savefinalise')"
+            *ngIf="saveButtonFlag &&applicationStatus=='T'">Save and Finalize</button>
+          <button nz-button nzType="primary" type="button"
+            *ngIf="approveOrRejectButtonFlag || finalApproveOrRejectButtonFlag" (click)="Reject()">Reject</button>
+          <button nz-button nzType="primary" class="btnApprove1" type="button"
+            *ngIf="finalApproveOrRejectButtonFlag ||  (approveOrRejectButtonFlag && !editFlag)" (click)="Approve()">Final
+            Approve</button>
+        </p>
+      </div>
+  
+      <div *ngIf="checkBoxArray.length!=0 || AllcheckboxArray.length!=0">
+        <table class="RejectedTable">
+          <thead style="text-align: center; background-color: #32aa8d; color: white;">
+            <b>Rejected Reasons</b>
+          </thead>
+          <div *ngFor="let item of checkBoxArray; let i = index;">
+            <tbody _ngcontent-c61="">
+              <tr _ngcontent-c61="" class="ng-star-inserted">
+                <td class="Sno"><b>{{i+1}}</b>
+                </td>&nbsp;
+                <td _ngcontent-c61="" class="RejectedList">
+                  <b> <input type="hidden" [checked]="checkBoxSelected"
+                      [disabled]="Cbox_Disabled">{{item.Description}}</b>
+                </td>
+              </tr>
+            </tbody>
+          </div>
+          <div *ngFor="let item of AllcheckboxArray; let i = index;">
+            <tbody _ngcontent-c61="">
+              <tr _ngcontent-c61="" class="ng-star-inserted">
+                <td class="Sno"><b>{{i+1}}</b>
+                </td>&nbsp;
+                <td _ngcontent-c61="" class="RejectedList">
+                  <b> <input type="hidden" [checked]="checkBoxSelected" [disabled]="Cbox_Disabled">{{item}}</b>
+                </td>
+              </tr>
+            </tbody>
+          </div>
+        </table>
+      </div>
+      <br><br>
+  
+      <div *ngIf="applicationStatus=='R'&& reasonList.length!=0" class="rejectedReasonsData">
+        <nz-table [nzData]="reasonList" [nzShowPagination]=false nzSize="default" class="tranTbl">
+          <thead>
+            <tr>
+              <th>
+                <div style="margin-left: 24px;
+                          word-break: normal;color: white;">Sl no</div>
+              </th>
+              <th>
+                <div style="margin-left: -75pc;
+                          text-align: center;color: white;">Reasons</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <div class="ReasonCheckbox reasons">
+              <tr _ngcontent-c61="" class="ng-star-inserted" *ngFor="let data of reasonList; let i = index">
+                <td class="checkBox">
+  
+                  <div><a><input class="Rcheckboxes" #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                        [checked]="checkBoxSelect" (change)="changed($event,data)" [disabled]="applicationStatus=='R'" />
+                    </a>
+                  </div>
+                </td>
+                <td class="Sno"><span>{{i+1}}</span>
+                </td>
+                <td _ngcontent-c61="">
+                  <label><span> {{data.Description}}</span></label><br>
+                </td><br>
+              </tr>
+            </div>
+          </tbody>
+        </nz-table>
+        <br>
+      </div>
+      <div nz-col nzMd="15"
+        *ngIf="(applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F')&&  !editFlag">
+        <div nz-col nzSpan="5">Approval Remarks</div>
+        <div nz-col nzSpan="15">
+          <nz-form-item>
+            <nz-form-control>
+              <input nz-input [(ngModel)]="AppRemarks" name="apremark" [disabled]="applicationStatus!='P'&&!HO"
+                [nzAutocomplete]="remarks1" />
+              <nz-autocomplete #remarks1>
+                <nz-auto-option *ngFor="let option of approvelRemarks" [nzValue]="option.Remarks"
+                  [nzLabel]="option.Remarks" class="aleternateColor">
+                  <span [innerHTML]="option.Remarks"></span>
+                </nz-auto-option>
+              </nz-autocomplete>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div *ngIf="applicationStatus=='P'">
+        <div class="wrapper">
+          <nz-modal [(nzVisible)]="isVisible" nzTitle="Rejection Reasons" (nzOnCancel)="isVisible=false"
+            (nzOnOk)="popOut()" nzWidth="850px" [nzBodyStyle]="{ height: '610px', 'padding-bottom':'53px' }"
+            [nzStyle]="{top:'8px'}">
+            <table>
+              <thead>
+                <div>
+                  <div class="SelectAll">
+                    <div *ngIf="checkBoxArray.length==0 || checkedArray.length==0">
+                      <div class="tooltip">
+                        <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox" [checked]="checkBoxSelect"
+                          (change)="onSaveCheckBoxChanged($event)" [disabled]="applicationStatus=='R'" />
+                        <span class="tooltiptext">
+                          Proceed with this selection only if all the reasons provided below
+                          are
+                          applicable
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modalserialno" style="display: inline-block;margin-top: 10px;">
+                    <b>Sl No </b>
+                  </div>
+                  <div class="modalReasonList" style="display: inline-block;margin-left: 25%;margin-top: 10px;">
+                    <b>Reasons</b>
+                  </div>
+                </div>
+              </thead>
+              <br>
+              <tbody class="">
+                <div class="ReasonCheckbox">
+                  <div class="Popboxreasons ">
+                    <tr class="ant-modal-body" *ngFor="let data of reasonsList; let i = index;">
+  
+                      <td>
+                        <div><a><input class="PopupcheckBox" #saveUserNameCheckBox id="saveUserNameCheckBox"
+                              type="checkbox" [checked]="checkboxSelected[i]" (change)="changed($event,data)"
+                              [disabled]="applicationStatus=='R'" />
+                          </a></div>
+                      </td>
+                      <td><span class="SLno">{{i+1}}</span>
+                      </td>&nbsp;&nbsp;&nbsp;
+                      <td _ngcontent-c61="">
+                        <label><span class="RejectionList">{{data.Description}}</span></label><br>
+                      </td>
+                    </tr>
+                    <br>
+                  </div>
+                </div>
+              </tbody>
+            </table>
+          </nz-modal>
+        </div>
+      </div>
+    </div>
+  
+  
+  </form>
+  <app-loader *ngIf="isSpining"></app-loader>
+  <!-- </div> -->

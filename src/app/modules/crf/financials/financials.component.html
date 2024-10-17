@@ -1,0 +1,453 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+  <div nz-row>
+    <div nz-col nzMd="24">
+      <nz-card [nzTitle]="financialtitle" class="mb-20">
+        <ng-template #financialtitle><label *ngIf="this.tab !='Financials'" nz-checkbox formControlName="skipFin"
+            (ngModelChange)="showFin($event)">Skip </label>Financial</ng-template>
+        <div *ngIf="showWindow">
+          <div nz-row nzGutter="5" *ngIf="applicationStatus=='P' && HO && this.tab =='Financials'">
+            <button nz-button nzType="primary" class='editButton' type="button" (click)="editButton()">Edit</button>
+          </div>
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="8">
+              <nz-form-item>
+                <nz-form-label class="required1">Pep</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="pep" nzPlaceHolder="Choose pep" [class.disabled]="!isOccuVisible">
+                    <nz-option *ngFor="let data of pepSourceArray" [nzValue]="data.Occupation_category"
+                      [nzLabel]="data.Name">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label class="required1">Anual Income</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="anualIncome" nzPlaceHolder="Choose annual income">
+                    <nz-option *ngFor="let data of annualIncomeSourceArray" [nzValue]="data.IncomeId"
+                      [nzLabel]="data.Slab">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label class="required1">Networth</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="networth" [textMask]="{mask: inputmask.numeric}"
+                    (blur)="NetworthChange($event)" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label class="required1">As On Date</nz-form-label>
+                <nz-form-control>
+                  <nz-date-picker formControlName="networthasondate" [nzDisabledDate]="disabledFutureDate"
+                    [nzDisabled]="networthasvalue"></nz-date-picker>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="8">
+              <nz-form-item>
+                <nz-form-label class="required">Source of funds</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="sourceOfFund" (ngModelChange)="showinput($event)" nzAllowClear>
+                    <nz-option *ngFor="let funds of sourceoffund" [nzLabel]="funds.Fund" [nzValue]="funds.Fund">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" *ngIf="isvisibleprof_busi">
+              <nz-form-item>
+                <nz-form-label class="required">Professional/Business Name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="prof_busi" (keypress)="charrestrict($event)" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" *ngIf="isvisiblebusi">
+              <nz-form-item>
+                <nz-form-label class="required">Type of business activity</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="typeOfBusiActivity" (keypress)="charrestrict($event)" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" *ngIf="isotherSource">
+              <nz-form-item>
+                <nz-form-label class="required">Specify source of fund </nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="otherfunds" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row nzGutter="5" *ngIf="isOccuVisible">
+            <div nz-col nzMd="8">
+              <nz-form-item>
+                <nz-form-label class="required">Occupation Type</nz-form-label>
+                <nz-form-control>
+
+                  <nz-select formControlName="occupationType" nzAllowClear (ngModelChange)="showOccupation($event)">
+                    <nz-option *ngFor="let item of occupationArray" [nzValue]="item.OCCUPATIONTYPE"
+                      [nzLabel]="item.OCCUPATIONTYPE"></nz-option>
+                  </nz-select>
+
+
+                  <!-- <input type="text" nz-input formControlName="occupationType" [nzAutocomplete]="autoOccup"
+                  (keypress)="charrestrict($event)" (ngModelChange)="showOccupation($event)" />
+                <nz-autocomplete #autoOccup>
+                  <nz-auto-option *ngFor="let item of occupationArray" [nzValue]="item.OCCUPATIONTYPE"
+                    [nzLabel]="item.OCCUPATIONTYPE" class="aleternateColor">
+                    <span [innerHTML]="item.OCCUPATIONTYPE"></span>
+                  </nz-auto-option> 
+                </nz-autocomplete>-->
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div *ngIf="isOccupdetails">
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label>Name of Organisation</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="organisation" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label class="required">Designation</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="designation" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label>Name of Employer</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="nameofemployer" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label class="required">Office Address 1</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="officeaddress1" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label>Office Address 2</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="officeaddress2" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="8">
+                <nz-form-item>
+                  <nz-form-label>Office Address 3</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="officeaddress3" class='upper' />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="3">
+                <nz-form-item>
+                  <nz-form-label>Office PIN</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="offpin" [textMask]="{mask: inputmask.numeric}" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="5">
+                <nz-form-item>
+                  <nz-form-label>Email</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="email" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Mobile</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="mobile" [textMask]="{mask: inputmask.numeric}" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Phone</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="phone" [textMask]="{mask: inputmask.numeric}" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+
+    <div *ngIf="showWindow">
+      <div nz-col nzMd="24" *ngIf="derivativeStatus">
+        <nz-card [nzTitle]="title4">
+          <ng-template #title4>
+            <i nz-icon nzType="solution" nzTheme="outline" class="icon text-warning"></i> Derivative proof
+          </ng-template>
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="24">
+              <nz-form-item>
+                <nz-radio-group formControlName="derivativeProof" nzName="radiogroup">
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Copy of ITR Acknowledgement'>Copy of ITR Acknowledgement</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Copy of Form 16 in case of salary income'>Copy of Form 16 in case of salary
+                      income</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Salary Slip'>Salary Slip</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Bank account statement for last 6 months'>Bank account statement for last 6
+                      months</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Copy of demat account Holding statement'>Copy of demat account Holding
+                      statement</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Net worth certificate issues by a competent authority or CA'>Net worth
+                      certificate issues by a competent
+                      authority or CA</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Assets with valuation certificate'>Assets with valuation
+                      certificate</label>
+                  </div>
+                  <div nz-col nzMd="8">
+                    <label nz-radio nzValue='Other financial document'>Other financial document</label>
+                  </div>
+
+                </nz-radio-group>
+              </nz-form-item>
+            </div>
+          </div>
+
+        </nz-card>
+      </div>
+    </div>
+
+    <div nz-col nzMd="24" class="mb-20"
+      *ngIf="(tab=='Financials' && (applicationStatus=='P'||applicationStatus=='T'||applicationStatus=='A'||applicationStatus=='R' || applicationStatus=='F'))">
+      <app-crfipv [Heading]=ipvHeading></app-crfipv>
+    </div>
+
+    <div nz-col nzMd="24" class="mb-20" *ngIf="tab=='Financials'">
+      <crf-image-upload></crf-image-upload>
+    </div>
+    <div nz-col nzMd="24" *ngIf="tab=='Financials'">
+      <div nz-row nzGutter="5">
+        <div nz-col nzMd="15">
+          <div nz-col nzSpan="5">
+            <nz-form-label>{{Remks}}</nz-form-label>
+          </div>
+          <div nz-col nzSpan="15">
+            <nz-form-item>
+              <nz-form-control>
+                <input nz-input formControlName="RejRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                  [nzAutocomplete]="remarks2" />
+                <!-- <nz-autocomplete #remarks2>
+                   <nz-auto-option *ngFor="let option of rejectionRemarks" [nzValue]="option.Remarks"
+                    [nzLabel]="option.Remarks" class="aleternateColor">
+                    <span [innerHTML]="option.Remarks"></span>
+                  </nz-auto-option> 
+                </nz-autocomplete> -->
+              </nz-form-control>
+            </nz-form-item>
+
+            <div *ngIf="applicationStatus=='P' ">
+              <div nz-col nzSpan="2" style="margin-top: -33px; margin-left: 101%;">
+                <button nz-button nzType="primary" type="button" (click)="fetchReasons()"
+                  title="Click here for Rejection Reasons">Select</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div nz-col nzMd="9" style="text-align: right;">
+          <button nz-button nzType="primary" type="button" (click)="onBackClick()">Back</button>
+          <button nz-button nzType="primary" type="submit" (click)="Save('save')"
+            *ngIf="saveButtonFlag&&applicationStatus!='T'">Save</button>
+          <button nz-button nzType="primary" type="submit" (click)="Save('savefinalise')"
+            *ngIf="saveButtonFlag&&applicationStatus=='T'">Save and Finalize</button>
+          <button nz-button nzType="primary" type="button" (click)="BranchReject()"
+            *ngIf="saveButtonFlag&&applicationStatus=='T'&&!HO">Branch Reject</button>
+          <button nz-button nzType="primary" type="button" (click)="Reject()"
+            *ngIf="approveOrRejectButtonFlag || finalApproveOrRejectButtonFlag">Reject</button>
+          <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag && editFlag"
+            (click)="initialApprove()">First level Approve</button>
+          <button nz-button nzType="primary" class="btnApprove1" type="button"
+            *ngIf="finalApproveOrRejectButtonFlag || (approveOrRejectButtonFlag && !editFlag)" (click)="Approve()">Final
+            Approve</button>
+          <button nz-button nzType="primary" style="float: right;" type="button"
+            *ngIf="requestID!=''&&!(approveOrRejectButtonFlag ||finalApproveOrRejectButtonFlag) "
+            (click)="PrintForm()">Print {{tab}} Form</button>
+        </div>
+        <div *ngIf="checkBoxArray.length!=0 || AllcheckboxArray.length!=0">
+          <table class="RejectedTable">
+            <thead style="text-align: center; background-color: #32aa8d; color: white;">
+              <b>Rejected Reasons</b>
+            </thead>
+            <div *ngFor="let item of checkBoxArray; let i = index;">
+              <tbody _ngcontent-c61="">
+                <tr _ngcontent-c61="" class="ng-star-inserted">
+                  <td class="Sno"><b>{{i+1}}</b>
+                  </td>&nbsp;
+                  <td _ngcontent-c61="" class="RejectedList">
+                    <b> <input type="hidden" [checked]="checkBoxSelected"
+                        [disabled]="Cbox_Disabled">{{item.Description}}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </div>
+            <div *ngFor="let item of AllcheckboxArray; let i = index;">
+              <tbody _ngcontent-c61="">
+                <tr _ngcontent-c61="" class="ng-star-inserted">
+                  <td class="Sno"><b>{{i+1}}</b>
+                  </td>&nbsp;
+                  <td _ngcontent-c61="" class="RejectedList">
+                    <b> <input type="hidden" [checked]="checkBoxSelected" [disabled]="Cbox_Disabled">{{item}}</b>
+                  </td>
+                </tr>
+              </tbody>
+            </div>
+          </table>
+        </div>
+        <br><br>
+        <div *ngIf="applicationStatus=='R'&& reasonList.length!=0" class="rejectedReasonsData">
+          <div class="table_container">
+            <nz-table [nzData]="reasonList" [nzShowPagination]=false nzSize="small" class="tranTbl">
+              <thead>
+                <tr>
+                  <th>
+                    <div style="margin-left: 34px;
+                            word-break: normal;color: white;">Sl no</div>
+                  </th>
+                  <th>
+                    <div style="margin-left: -75pc;
+                            text-align: center;color: white;">Reasons</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <div class="ReasonCheckbox reasons">
+                  <tr _ngcontent-c61="" class="ng-star-inserted" *ngFor="let data of reasonList; let i = index">
+                    <td class="checkBox">
+
+                      <div><a><input class="Rcheckboxes" #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                            [checked]="checkBoxSelect" (change)="changed($event,data)"
+                            [disabled]="applicationStatus=='R'" />
+                        </a>
+                      </div>
+                    </td>
+                    <td class="Sno"><span>{{i+1}}</span>
+                    </td>
+                    <td _ngcontent-c61="">
+                      <label><span> {{data.Description}}</span></label><br>
+                    </td><br>
+                  </tr>
+                </div>
+              </tbody>
+            </nz-table>
+          </div>
+          <br>
+        </div>
+        <div nz-col nzMd="15"
+          *ngIf="(applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F')&&  !editFlag">
+          <div nz-col nzSpan="5">Approval Remarks</div>
+          <div nz-col nzSpan="15">
+            <nz-form-item>
+              <nz-form-control>
+                <input nz-input formControlName="AppRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                  [nzAutocomplete]="remarks1" />
+                <nz-autocomplete #remarks1>
+                  <nz-auto-option *ngFor="let option of approvelRemarks" [nzValue]="option.Remarks"
+                    [nzLabel]="option.Remarks" class="aleternateColor">
+                    <span [innerHTML]="option.Remarks"></span>
+                  </nz-auto-option>
+                </nz-autocomplete>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div *ngIf="applicationStatus=='P' || applicationStatus=='F'">
+          <div class="wrapper">
+            <nz-modal [(nzVisible)]="isVisible" nzTitle="Rejection Reasons" (nzOnCancel)="isVisible=false"
+              (nzOnOk)="popOut()" nzWidth="850px" [nzBodyStyle]="{ height: '610px', 'padding-bottom':'53px' }"
+              [nzStyle]="{top:'8px'}">
+              <table>
+                <thead>
+                  <div style="margin-top: 137%;">
+                    <div class="SelectAll">
+                      <div *ngIf="checkBoxArray.length==0 || checkedArray.length==0">
+                        <div class="tooltip">
+                          <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                            [checked]="checkBoxSelect" (change)="onSaveCheckBoxChanged($event)"
+                            [disabled]="applicationStatus=='R'" />
+                          <span class="tooltiptext">
+                            Proceed with this selection only if all the reasons provided below are applicable
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modalserialno">
+                      <b>Sl No</b>
+                    </div>
+                    <div class="modalReasonList">
+                      <b>Reasons</b>
+                    </div>
+                  </div>
+                </thead>
+                <br>
+                <tbody class="">
+                  <div class="ReasonCheckbox">
+                    <div class="Popboxreasons ">
+                      <tr class="ant-modal-body" *ngFor="let data of reasonsList; let i = index;">
+
+                        <td>
+                          <div><a><input class="PopupcheckBox" #saveUserNameCheckBox id="saveUserNameCheckBox"
+                                type="checkbox" [checked]="checkboxSelected[i]" (change)="changed($event,data)"
+                                [disabled]="applicationStatus=='R'" />
+                            </a></div>
+                        </td>
+                        <td><span class="SLno">{{i+1}}</span>
+                        </td>&nbsp;&nbsp;&nbsp;
+                        <td _ngcontent-c61="">
+                          <label><span class="RejectionList">{{data.Description}}</span></label><br>
+                        </td>
+                      </tr>
+                      <br>
+                    </div>
+                  </div>
+                </tbody>
+              </table>
+            </nz-modal>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<app-loader *ngIf="isSpining"></app-loader>

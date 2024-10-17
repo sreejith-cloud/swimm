@@ -1,0 +1,491 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <div nz-row nzGutter="10" formGroupName="generalDetials">
+        <div nz-col nzMd="16">
+            <nz-card nzTitle="General Details">
+                <!-- <nz-divider nzText="" nzOrientation="left"></nz-divider> -->
+
+                <div nz-row nzGutter="5">
+
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Serial No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="serialNO" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Trade Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="tradeCode" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="8">
+                        <nz-form-item>
+                            <nz-form-label>Trading a/c Holder</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="tradingAcHolder" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="Name" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+
+
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Risk Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="riskCountry" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="8" nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Account Type</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="AccType" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="8" nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>DIS Charge</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="disCharge" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="8">
+                        <nz-form-item>
+                            <nz-form-label>I declare I dont have</nz-form-label>
+                            <nz-form-control>
+                                <!-- <input nz-input  formControlName="declaration" readonly/> -->
+
+                                <nz-select formControlName="declaration" nzAllowClear>
+                                    <nz-option nzValue="Mobile" nzLabel="Mobile"></nz-option>
+                                    <nz-option nzValue="Email" nzLabel="Email"></nz-option>
+                                    <nz-option nzValue="Both" nzLabel="Both"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Date of declaration</nz-form-label>
+                            <nz-form-control>
+                                <!-- <input type="date"  formControlName="dateOfDeclaration" class=date> -->
+                                <nz-date-picker nzPlaceHolder="YYYY-MM-DD" formControlName="dateOfDeclaration"
+                                    [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+
+
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">KIT No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="kitNO" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Confirm KIT No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="confirmKitNO" (blur)="confirmCheck()" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">If account opening through free scheme</nz-form-label>
+                            <nz-form-control>
+                                    <nz-select formControlName="isAccountThroughFreeScheme">
+                                            <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                            <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                    </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="form.controls.generalDetials.value.isAccountThroughFreeScheme=='NO'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Voucher ID</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="VoucherId"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4"  *ngIf="form.controls.generalDetials.value.isAccountThroughFreeScheme=='YES'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Reciept No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}"  formControlName="RecieptNO"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+
+                    <!-- </div>
+                <div nz-row nzGutter="5" > -->
+
+                    <div nz-col nzMd="8" nzLg="4" *ngIf="clientType!='nonIndividual'">
+                        <nz-form-item>
+                            <nz-form-label>If geojit Employee</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="ifGeojitEmployee" nzAllowClear>
+                                    <nz-option nzValue="YES" nzLabel="YES" [nzDisabled]="!isGeojitEmp"></nz-option>
+                                    <nz-option nzValue="NO" nzLabel="NO" [nzDisabled]="isGeojitEmp"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+            </nz-card>
+        </div>
+        <div nz-col nzMd="8">
+            <nz-card [nzTitle]=Membership class="membership">
+                <ng-template #Membership class="required">Membership <span style="color: red;">*</span></ng-template>
+                <ul class="list-group list-group-flush" *ngIf="totalData.length">
+                    <li class="list-group-item" *ngFor="let Details of totalData">
+                        <div nz-row nzGutter="5" *ngIf="!((form.controls.generalDetials.value.ifGeojitEmployee=='YES')&&(Details[0].SegmentType=='FO'||Details[0].SegmentType=='CDS'||Details[0].SegmentType=='COM'))">
+                            <div nz-col nzMd="8">
+                                <div style="color: black;">
+                                    {{Details[0].SegmentType}}
+                                </div>
+                            </div>
+                            <div nz-col nzMd="16">
+                                <div *ngFor="let item of Details">
+                                    <label nz-checkbox [(ngModel)]="item.checked"
+                                        (ngModelChange)="membershipSelected(item)"
+                                        [ngModelOptions]="{standalone: true}">{{item.Product}}</label>
+                                    <label>{{item.EnrolDate|date}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!--
+                    <li class="list-group-item" *ngIf="isShowFOandCDS && isShowFOandCDS1">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="8">
+                                FO
+                            </div>
+                            <div nz-col nzMd="16">
+                                <label nz-checkbox>NSE</label>
+                                <label nz-checkbox>BSE</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item"  *ngIf="isShowFOandCDS && isShowFOandCDS1">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="8">
+                                CDS
+                            </div>
+                            <div nz-col nzMd="16">
+                                <label nz-checkbox>NSE</label>
+                                <label nz-checkbox>BSE</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="8">
+                                MFSS
+                            </div>
+                            <div nz-col nzMd="16">
+                                <label nz-checkbox>NSE</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="8">
+                                COM
+                            </div>
+                            <div nz-col nzMd="16">
+                                <label nz-checkbox>MCX</label>
+                                <label nz-checkbox>NCDEX</label>
+                                <label nz-checkbox>ICEX</label>
+                            </div>
+                        </div>
+                    </li>
+                   *ngIf="form.controls.generalDetials.value.isAccountThroughFreeScheme=='Y'" 
+                    <li class="list-group-item" >
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="12">
+                                Date of concent for trading
+                            </div>
+                            <div nz-col nzMd="12">
+                                <nz-date-picker></nz-date-picker>
+                            </div>
+                        </div>
+                    </li>
+                </ul> -->
+                <!-- <nz-table  #membership nzSize="middle" [nzData]="membershipData"  [nzShowPagination]="false" [nzScroll]="{y:'218px'}"  [nzFrontPagination]="false" class="tranTbl table-responsive">
+                    <thead>
+                        <tr>
+                            <th nzWidth="15%">&nbsp;&nbsp;</th>
+                            <th nzWidth="25%">Segment Type</th>
+                            <th nzWidth="30%">Product</th>
+                            <th nzWidth="30%">Enroll Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of membership.data">
+                          <td nzShowCheckbox [(nzChecked)]="item.checked"></td>
+                            <td>{{item.SegmentType}}</td>
+                            <td>{{item.Product}}</td>
+                            <td>{{item.EnrolDate}}</td>
+                        </tr>
+                    </tbody>
+                </nz-table> -->
+            </nz-card>
+        </div>
+    </div>
+    <br>
+    <div formGroupName="depositoryDetials">
+        <nz-card [nzTitle]="groupTitle">
+            <ng-template #groupTitle><label nz-checkbox formControlName="LinkingofotherDPs" [nzDisabled]="tradingOnly">Linking of other DPs to this
+                    trading account <span style="color:red">*</span>
+                </label>
+            </ng-template>
+
+            <div *ngIf="form.controls.depositoryDetials.value.LinkingofotherDPs">
+                <nz-table #basicDPDetailsTable [nzData]="dpArray" [nzShowPagination]="false" [nzFrontPagination]="false"
+                    class="tranTbl table-responsive table-themed" nzSize="medium" *ngIf="dpArray.length">
+                    <thead>
+                        <tr>
+                            <th>Depository Participant Name</th>
+                            <th>Depository Name</th>
+                            <th>Beneficiary Name</th>
+                            <th>DP ID</th>
+                            <th>Beneficiary ID (BO ID)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of basicDPDetailsTable.data">
+                            <td>{{data.ParticipantName}}</td>
+                            <td>{{data.DPName}}</td>
+                            <td>{{data.ClientName}}</td>
+                            <td>{{data.DPID}}</td>
+                            <td>{{data.DPClientID}}</td>
+                            <td>
+                                <label nz-checkbox [(ngModel)]="data.checked" (ngModelChange)="createDpIds(data)"
+                                    ngDefaultControl [ngModelOptions]="{standalone: true}"></label>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <!-- <div nz-col nzMd="4">
+                <nz-form-item>
+                        <nz-form-label>Linking of other DPs to this trading account</nz-form-label>     
+                           <nz-form-control>
+                                <nz-select>
+                                        <nz-option nzValue="true" nzLabel="YES"></nz-option>
+                                        <nz-option nzValue="false" nzLabel="NO"></nz-option>
+                                    </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+       </div> -->
+
+                <!-- <div nz-col nzMd="4">
+                <nz-form-item>
+                        <nz-form-label>Geojit DP</nz-form-label>     
+                           <nz-form-control>
+                                <nz-select>
+                                        <nz-option *ngFor="let dp of dpArray"  [nzValue]="dp.DPName" [nzLabel]="dp.DPName"></nz-option>
+                                    </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+                <nz-form-item>
+                        <nz-form-label> Select the DPs to be linked in Geojit DP
+                            </nz-form-label>     
+                           <nz-form-control>
+                            <input nz-input />  
+                        </nz-form-control>
+                    </nz-form-item>
+        </div> -->
+                <!-- <button (click)="depositoryData()">check</button> -->
+                <nz-divider nzText="Outside DP" nzOrientation="left"></nz-divider>
+                <div nz-row nzGutter="5">
+                    <!-- <div nz-col nzLg="4" nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label> Depository Participant Name
+                            </nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="ParticipantName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                    <div nz-col nzLg="4" nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label> Depository Name
+                            </nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="DPName" nzAllowClear>
+                                    <nz-option nzValue="NSDL" nzLabel="NSDL"></nz-option>
+                                    <nz-option nzValue="CDSL" nzLabel="CDSL"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzLg="4" nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label> Beneficiary Name
+                            </nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="ClientName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                    <div nz-col nzLg="4" nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>DP ID
+                            </nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="DPID"
+                              maxlength="8" />
+                              <!-- (blur)="getDPId(form.value.depositoryDetials.DPID)" maxlength="8" /> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="4" nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label> Beneficiary ID (BO ID)
+                            </nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="DPClientID"
+                                    [maxlength]="form.value.depositoryDetials.DPName=='NSDL'?8:16" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzLg="4">
+                    <nz-form-item>
+                            <nz-form-label>Primary DP
+                                </nz-form-label>     
+                               <nz-form-control>
+                                    <nz-select>
+                                            <nz-option nzValue="Y" nzLabel="YES"></nz-option>
+                                            <nz-option nzValue="N" nzLabel="NO"></nz-option>
+                                    </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+            </div> -->
+                    <!-- </div>
+        <div nz-row nzGutter="5"> -->
+                    <div nz-col nzLg="4" nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">CML Upload
+                            </nz-form-label>
+                            <nz-form-control>
+                                <!-- <button nz-button nzType="primary" *ngIf="fileList.length" (click)="showModal()"
+                                    style="float: right;"><i nz-icon type="eye"></i></button> -->
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="3">
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                </nz-upload>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label >&nbsp;
+                            </nz-form-label>
+                            <nz-form-control>
+                                <button nz-button nzType="primary"  (click)="AddDpTOList(otherDPButton)">
+                                    {{otherDPButton}}</button>
+                                <button nz-button nzType="danger" (click)="ClearOtherDpForm()">Reset</button>
+                            </nz-form-control>
+                        </nz-form-item>
+                  
+                    </div>
+                    <div nz-col nzMd="24">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="6" class="imageBox" nzLg="4" *ngFor="let items of CMLdocument;index as i">
+                                <!-- <div  nz-col nzMd="3" *ngFor="let items of CMLdocument;index as i"> -->
+                                <div nz-row>
+                                    <div nz-col nzMd="15">
+                                        CML Document{{i+1}}
+                                    </div>
+                                    <div nz-col nzMd="9">
+                                        <button nz-button nzType="primary" (click)="showModal(items)" title="Preview"
+                                            style="float: right;"><i nz-icon type="eye"></i></button>
+                                        <button nz-button nzType="delete" (click)="DeleteImage(i)"
+                                            style="background-color: red;color: white;float: right;" title="Delete"><i nz-icon
+                                                type="delete"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="4" nzMd="8" *ngIf="TotalDPIds1.length>1 && tradingOnly">
+                        <nz-form-item>
+                            <nz-form-label class="required">Which DP should be the primary DP
+                            </nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="primaryDP" nzAllowClear>
+                                    <nz-option *ngFor="let item of TotalDPIds1" [nzValue]="item.DPID"
+                                        [nzLabel]="item.DPID"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5" *ngIf="OtherDpList.length>0" x>
+                    <div nz-col nzMd="24">
+                        <nz-table nzSize="small" #OtherDp [nzData]="OtherDpList" class="tranTbl table-responsive"
+                            [nzFrontPagination]="false" [nzShowPagination]="false" [nzScroll]="{x:'1150px'}">
+                            <tr>
+                                <!-- <th nzWidth="200px">Participant Name</th> -->
+                                <th nzWidth="150px">Depository Name</th>
+                                <!-- <th nzWidth="200px">Beneficiary Name</th> -->
+                                <th nzWidth="150px">DP ID</th>
+                                <th nzWidth="150px">BO ID</th>
+                                <th nzWidth="150px" nzRight="120px">Proofs</th>
+                                <th nzWidth="150px" nzRight="0px">Actions</th>
+                            </tr>
+                            <tr *ngFor="let item of OtherDpList;index as i">
+                                <!-- <td nzWidth="200px">{{item.ParticipantName}}</td> -->
+                                <td nzWidth="150px">{{item.DPName}} </td>
+                                <!-- <td nzWidth="200px">{{item.ClientName}} </td> -->
+                                <td nzWidth="150px">{{item.DPID}} </td>
+                                <td nzWidth="150px">{{item.DPClientID}} </td>
+                                <td nzWidth="150px" nzRight="120px">
+                                    <button *ngFor="let im of item.CMLDocument" nz-button nzType="primary" title="Preview"
+                                        (click)="showModal(im)"><i nz-icon type="eye"></i></button>
+                                </td>
+                                <td nzWidth="150px" nzRight="0px">
+                                    <button nz-button nzType="primary" (click)="EditOterdp(item,i)">Edit</button>
+                                    <button nz-button nzType="delete" style="background-color: red;color: white;" title="Delete"
+                                        (click)="DeleteCML(i)"><i nz-icon type="delete"></i></button>
+                                </td>
+                            </tr>
+                        </nz-table>
+
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+</form>
+<app-loader *ngIf="spin"></app-loader>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+    [fileName]="filePreiewFilename"></app-file-preview>

@@ -1,0 +1,71 @@
+
+:host {
+    ::ng-deep {
+        .proofheight{
+            height: 100!important;
+    }
+    .input-lookup-filter::placeholder{
+        color:black;
+    }
+    .input-lookup-filter::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+      color: black;
+    }
+    .ant-form-item-label  .anticon{
+        margin-right: 5px;
+        font-size: 10px;
+        font-weight: bold;
+        margin-top: 7px!important;
+    
+    }
+    .address4Height{
+        height: 325px!important;
+    }
+    .proofAddress{
+        position: absolute!important;
+        width: 100%!important;
+         margin-top: -53px!important;
+        right: -33%!important;
+        padding-right: 40px!important;
+        padding-left: 10px!important;    
+}
+
+    @media screen and (max-width: 990px) {
+        .proofheight{
+            height:auto!important;
+        }
+        .address4Height{
+            height:auto!important;
+        }
+        .proofAddress{
+            position: static!important;
+            width: auto!important;
+             margin-top: 0px!important;
+            padding-right: 0px!important;
+            padding-left: 0px!important;    
+    }
+    }
+
+}
+}
+
+.disableCards {
+    pointer-events: none;
+    opacity: 0.9;
+}
+.ant-card {
+margin-top:-10px!important
+}
+ant-card-body {
+    padding-top: 5px!important;
+    padding-bottom: 5px!important;
+}
+
+.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+.pAddress{
+    font-size: 9px;
+    color:red
+}
+

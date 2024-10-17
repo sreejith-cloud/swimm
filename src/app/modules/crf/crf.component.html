@@ -1,0 +1,569 @@
+<div class="main-content" #mainwindow>
+  <nz-tabset [(nzSelectedIndex)]="activeTabIndex" class="fixedtab">
+    <nz-tab nzTitle="Profile Change" nzDisabled=true>
+      <form nz-form nzLayout="vertical">
+        <div nz-row nzGutter="10">
+          <div nz-col nzMd="24">
+            <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+              <ng-template #findHead>
+                Find Client
+              </ng-template>
+              <div nz-col nzMd="24">
+                <div nz-row nzGutter="10">
+                  <!-- <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>PAN</nz-form-label>
+                      <nz-form-control>   
+                        <div nz-row>
+                          <div nz-col nzMd="10">
+                              <input nz-input name="pan"  [(ngModel)]="model.Pan"
+                                style="text-transform: uppercase;"  autocomplete="off">
+                          </div> -->
+
+                  <!-- (ngModelChange)="onviewClick($event)"
+                                  
+                                  
+                                  <master-find-ctrl name="pan" [options]="panFindOption" [(ngModel)]="model.PanNo"
+                                  (ngModelChange)="onviewClick($event)" [disabled]="IsForConfirmation||IsRejectedRequest">
+                                </master-find-ctrl> -->
+                  <!-- <div nz-col nzMd="10">
+                                    <input nz-input name="pan"  [(ngModel)]="model.Pan"
+                                      style="text-transform: uppercase;"  autocomplete="off">
+                                </div> -->
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>PAN</nz-form-label>
+                      <nz-form-control>
+                        <div nz-row>
+                          <div nz-col nzMd="24">
+                            <lib-master-nonautofind [options]="panFindOption" [(ngModel)]="model.PanNo" name="PanNO"
+                            [ngModelOptions]="{standalone: true}" (ngModelChange)="onviewClick($event)" #client id="findclient">
+                            </lib-master-nonautofind>
+                          </div>
+                        </div>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>CIN</nz-form-label>
+                      <nz-form-control>
+                        <input nz-input name="cin" [(ngModel)]="model.Cin" style="text-transform: uppercase;"
+                          autocomplete="off">
+                        <!-- <master-find-ctrl name="cin" [options]="cinFindOption" [(ngModel)]="model.Cin"
+                          (ngModelChange)="onviewClick($event)" [disabled]="IsForConfirmation||IsRejectedRequest">
+                        </master-find-ctrl> -->
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>Geojit Unique Code</nz-form-label>
+                      <nz-form-control>
+                        <!-- <master-find-ctrl name="uniqueCode" [options]="geojitUniqueCodeFindOption"
+                              [(ngModel)]="model.uniqueCode" (ngModelChange)="onviewClick($event)"
+                              [disabled]="IsForConfirmation||IsRejectedRequest"></master-find-ctrl> -->
+                        <!-- <input nz-input name="uniqueCode" [(ngModel)]="model.uniqueCode"
+                          style="text-transform: uppercase;" autocomplete="off" (focusout)="uniqueCodeSearch()" (keyup.enter)="uniqueCodeSearch()"> -->
+                        <lib-master-nonautofind [options]="panFindOption2" [(ngModel)]="uniqueCode" name="PanNO2"
+                        [ngModelOptions]="{standalone: true}" (ngModelChange)="onviewClick($event)" #client2 id="findclient2">
+                          </lib-master-nonautofind>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="3" style="padding-top: 18px;">
+                    <button nz-button nzType="primary" class="searchBtn" (click)="onClientSearch()">Search</button>
+                  </div>
+
+                  <div nz-col nzMd="5" style="padding-top: 18px; float: right;">
+                    <div nz-row nzGutter="10">
+                      <div nz-col nzSpan="24">
+                        <button nz-button nzType="primary" (click)="onviewReset()" style="float: right;" [disabled]="clientStatus">Reset</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </nz-card>
+            <nz-card [nzTitle]=Proceed style="margin-bottom:10px;">
+              <ng-template #Proceed>
+                Select Action
+              </ng-template>
+              <div nz-col nzMd="24">
+                <div nz-row nzGutter="10">
+                  <!-- <div nz-col nzMd="24" *ngIf="!noDataflag&&!this.krakycCheck">
+                   <p style="color: red;"> This client has
+                  not completed KYC/CKYC. KYC/CKYC is mandatory to proceed. You cannot choose any of below option till you complete
+                  KYC/CKYC. </p>
+                  </div> -->
+                  <div nz-col nzMd="24">
+                    <nz-form-item>
+                      <nz-radio-group name="changereq" [(ngModel)]="changereq"
+                        (ngModelChange)="onradioButtonChange($event)"
+                        [class.disabled]="IsForConfirmation||IsRejectedRequest||noDataflag">
+                        <label nz-radio [ngStyle]="addressFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                          nzValue="Address" [nzDisabled]="!addressFlag">Address</label>
+                        <label nz-radio [ngStyle]="emailFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                          nzValue="Email" [nzDisabled]="!emailFlag">Email</label>
+                        <label nz-radio [ngStyle]="mobileFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                          nzValue="Mobile" [nzDisabled]="!mobileFlag">Mobile</label>
+                        <label [ngStyle]="telephoneFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="Telephone" [nzDisabled]="!telephoneFlag">Telephone</label>
+                        <label [ngStyle]="bankFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="Bank" [nzDisabled]="!bankFlag">Bank</label>
+                        <label [ngStyle]="nomineeFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="Nominee" [nzDisabled]="!nomineeFlag">Nominee</label>
+                        <label *ngIf="IndivitualClient"
+                          [ngStyle]="financialFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="Financials" [nzDisabled]="!financialFlag">Financial</label>
+                        <!-- <label nz-radio nzValue="Reactivation" [nzDisabled]>Reactivation</label> -->
+                        <!-- <label nz-radio nzValue="NoEmailMobile" >No Email
+                          or No Mobile</label> -->
+                        <!-- [nzDisabled]="!HO" -->
+                        <label nz-radio [ngStyle]="ckycFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                          nzValue="CKYC" [nzDisabled]="!ckycFlag">KYC/KRA/AnnualKYC</label>
+                          <label [ngStyle]="additionaltcflag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="Additionaltc" [nzDisabled]="!additionaltcflag">Additional T&C</label>
+                          <label [ngStyle]="SegmentAdditionflag?{'font-weight':'bold'} : {'font-weight': 'normal'}" nz-radio
+                          nzValue="SegmentAddition" [nzDisabled]="!SegmentAdditionflag">Segment Addition</label>
+                          <label nz-radio [ngStyle]="SignatureFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                        nzValue="SignatureUpdation" [nzDisabled]="!SignatureFlag">Signature Updation</label>
+                        <label nz-radio [ngStyle]="modeOfOperationFlag?{'font-weight':'bold'} : {'font-weight': 'normal'}"
+                          nzValue="ModeofOperation" [nzDisabled]="!modeOfOperationFlag">Mode Of Operation</label>
+                      </nz-radio-group>
+                    </nz-form-item>
+                  </div>
+                  <div *ngIf="this.serielno===0 && (changereq==='Address' || changereq==='Email'|| changereq==='Mobile'|| changereq==='Telephone' || changereq==='CKYC') " nz-col nzMd="24">
+                    <!-- <div nz-col nzLg="4">
+                      <nz-form-item>
+                        <nz-form-label>PAN</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input name="panNo" [disabled]="panNoDisable" (keypress)="validatePan($event)" [(ngModel)]="panNo" style="text-transform: uppercase;" autocomplete="off">
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div> -->
+                    <div nz-col nzLg="6">
+                      <nz-form-item>
+                        <nz-form-label>Name As in PAN</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input name="name" [disabled]="nameDisable" [maxlength]="maxname" style="text-transform: uppercase;" [(ngModel)]="name" autocomplete="off">
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="6">
+                      <nz-form-item>
+                        <nz-form-label>Date Of Birth</nz-form-label>
+                        <nz-form-control>
+                          <input nz-input name="dobText" [disabled]="dobDisable" [maxlength]="10" class="dobtext" (input)="formatInputDate($event)" placeholder="DD/MM/YYYY" [ngModelOptions]="{standalone: true}" [(ngModel)]="dobText" autocomplete="off">
+                          <!-- <button class="datepick" id="datepick" type="primary" style="padding-top: 3px;"  nz-button nzType="primary" class="mr-2" (click)="openDatePicker()">
+                            <span><i nz-icon type="calendar" theme="outline"></i></span>
+                            </button> -->
+                            <nz-date-picker  style="width: 13%;cursor: pointer !important;color: blue;" #datePicker id="datep" (ngModelChange)="changeDate($event)" nzPlaceHolder="       " nzFormat="dd/MM/yyyy" [(ngModel)]="dob"
+                                              [ngModelOptions]="{standalone: true}" 
+                                              [nzDisabledDate]="disabledFutureDate || dobDisable"
+                                              [nzAllowClear]="false"
+                                              [nzShowToday]="false"
+                                              >
+                          </nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzLg="4" >
+                      <nz-form-item>
+                        <nz-form-label>DOB 1</nz-form-label>
+                        <nz-form-control>
+                          
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div> -->
+                    <div nz-col nzLg="5" class="verifybtn">
+                      <button type="primary"  nz-button nzType="primary" class="mr-2" (click)="verify()">
+                      <span><i nz-icon type="save" theme="outline"></i>&nbsp;&nbsp;Verify</span>
+                      </button>
+                    </div>
+                  </div>
+                  <ng-container *ngIf="this.Link">
+                    <div nz-col nzMd="4" *ngIf="emialOrmobileVisibleStatus === 'Mobile' ">
+                      <nz-form-item>
+                        <nz-form-label>New Mobile</nz-form-label>
+                        <nz-form-control>
+                          <nz-form-control>
+                            <input [textMask]="{mask: inputMasks.numeric}" maxlength="10" minlength="10" nz-input
+                              [(ngModel)]="newMobile" name="newMobile" />
+                          </nz-form-control>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="emialOrmobileVisibleStatus === 'Email' ">
+                      <nz-form-item>
+                        <nz-form-label>New Email</nz-form-label>
+                        <nz-form-control>
+                          <nz-form-control>
+                            <input nz-input [(ngModel)]="newEmail" name="newEmail" [textMask]="{mask: inputMasks.email}"
+                              type="text" />
+                          </nz-form-control>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="2">
+                      <nz-form-item>
+                        <nz-form-label>&nbsp;</nz-form-label>
+                        <nz-form-control>
+                            <nz-form-control>
+                              <button nz-button nzType="primary" type="button" *ngIf="emialOrmobileVisibleStatus" (click)="sendMailOrTexMsg()">Send
+                                Link</button>
+                            </nz-form-control>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+            <div nz-col nzMd="24">
+              <div nz-row nzGutter="10">
+                <div nz-col nzMd="24">
+                  <ng-container *ngIf="this.showSendLink">
+                    <div nz-col nzMd="5">
+                      <span><b>Mobile</b> : {{this.Mobile}}</span>
+                    </div>
+                    <div nz-col nzMd="8">
+                      <span> <b>Email</b> : {{this.Email}}</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+              <!-- <div style="margin-top: -50px; color: red;"
+                  *ngIf="!noDataflag&&!this.krakycCheck">This client has
+                  not completed KYC/CKYC. KYC/CKYC is mandatory to proceed.You cannot choose any of below option till you complete
+                  KYC/CKYC. </div> -->
+            </nz-card>
+            <nz-card [nzTitle]=Details>
+              <ng-template #Details>
+                Current Accounts of Client With Us
+              </ng-template>
+              <div nz-row nzGutter="5" style="margin-top:-15px;">
+                <div nz-col nzMd="4">
+                  <b> Trading Accounts : {{accountCountArray.Trading_Accounts}}</b>
+                </div>
+                <div nz-col nzMd="4">
+                  <b>NSDL Accounts : {{accountCountArray.NSDL_Accounts}}</b>
+                </div>
+                <div nz-col nzMd="4">
+                  <b>CDSL Accounts : {{accountCountArray.CDSL_Accounts}}</b>
+                </div>
+                <div nz-col nzMd="4" *ngIf="showFundsGenieAccount">
+                  <b>Funds Genie Accounts : {{accountCountArray.FG_Accounts}}</b>
+                </div>
+                <div nz-col nzMd="4">
+                  <b>Total Accounts : {{accountCountArray.ALL_Accounts}}</b>
+                </div>
+              </div>
+              <div nz-row nzGutter="10">
+
+                <div nz-col nzMd="17">
+                  <nz-table #ClientChangeArraytable [nzData]="clientArrayTemp" [nzSize]="'small'"
+                    [nzShowPagination]="false" [nzFrontPagination]="false" [nzScroll]="{ x: '750px'}" [nzNoResult]="">
+                    <thead>
+                      <tr style="background: rgba(137, 238, 204, 0.678);">
+                        <th>Account Type</th>
+                        <th>Account Code</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Enrol Date</th>
+                        <th>DOB</th>
+                        <th nzAlign='center'>Applicable</th>
+                        <th>Account Status</th>
+                        <th>Account Type</th>
+                        <th>Account SubType</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let data of ClientChangeArraytable.data">
+                        <td>{{showFundsGenieAccount ? data.AccountType + ' (FG)' : data.AccountType}}</td>
+                        <td [class.linktext]="data.AccountSignature !=null&&HO" (click)="ShowSignature(data);">
+                          {{data.AccountCode}}</td>
+                        <td [class.linktext]="data.AccountType == 'TRADING'&&HO"
+                          (click)="ShowIpvHistory(data.AccountCode)">{{data.AccountName}}</td>
+                        <td [class.linktext]="data.AccountType != 'TRADING'" (click)="ShowHolderDetails(data)">
+                          {{data.AccountLocation}}</td>
+                        <td>{{data.AccountEnrolDate| slice:0:10 }}</td>
+                        <td>{{data.AccountDOB | slice:0:10}}</td>
+                        <td *ngIf="!(tableCheckBoxforTrading && data.AccountType == 'TRADING')" nzShowCheckbox nzAlign="left" [(nzChecked)]="changereq == 'ModeofOperation' && applicationStatus == '' ? data.AccountModeType =='Joint' && data.AccountFlag : data.AccountFlag" [nzDisabled]="changereq == 'ModeofOperation' ? data.AccountModeType!='Joint' : tableCheckBox"
+                        (change)="eventCheck($event.target,data.AccountCode)" nzAlign='center'> </td>
+                        <td *ngIf="tableCheckBoxforTrading && data.AccountType == 'TRADING'" nzShowCheckbox nzAlign="left" [(nzChecked)]="data.AccountFlag" [nzDisabled]="!tableCheckBoxforTrading"
+                        (change)="tradingAccountSelect(data.AccountCode)" nzAlign='center'> </td>
+                        <td> {{data.AccountStatus}}</td>
+                        <td>{{data.AccountClientType}}</td>
+                        <td>{{data.AccountClientSubType}}</td>
+                      </tr>
+                    </tbody>
+                  </nz-table>
+
+                </div>
+                <div nz-col nzMd="7">
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">KRA KYC Verified</div>
+                    <div style="display: inline-block; width: 20px;">
+                      <i *ngIf="this.krakyc.KRAKYC_Flag" nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'"
+                        [nzTwotoneColor]="'#52c41a'" style="font-size: 16px; margin-top: 5px;"></i><i
+                        *ngIf="!this.krakyc.KRAKYC_Flag" nz-icon [nzType]="'close-circle'" [nzTheme]="'twotone'"
+                        [nzTwotoneColor]="'#f5270c'" style="font-size: 16px;margin-top: 5px;"></i>
+                    </div>
+
+                    <div style="display: inline-block; font-weight: bold;"> {{this.krakyc.KRAKYC_Status}}</div>
+                  </div>
+
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">CKYC Verified</div>
+                    <div style="display: inline-block;width: 20px;"> <i *ngIf="this.krakyc.CKYC_Flag" nz-icon
+                        [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"
+                        style="font-size: 16px;margin-top: 5px;"></i><i *ngIf="!this.krakyc.CKYC_Flag" nz-icon
+                        [nzType]="'close-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#f5270c'"
+                        style="font-size: 16px; margin-top: 5px;"></i></div>
+
+                    <div style="display: inline-block;">CKYC No </div>
+                    <div style="display: inline-block; font-weight: bold;">{{this.krakyc.CKYC_No}}</div>
+                  </div>
+
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">CIN No</div>
+                    <div style="display: inline-block; font-weight: bold;"> {{this.krakyc.GeneratedCinNo}}</div>
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">Client Status</div>
+                    <div style="display: inline-block; font-weight: bold;">{{clientStatus}}</div>
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">Client Type</div>
+                    <div style="display: inline-block;font-weight: bold;">{{this.krakyc.PANTypeDesc}}</div>
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;">Pending Requests</div>
+                    <div style="display: inline-block;font-weight: bold;width: 30px">{{pendingcount}}</div>
+                    <div style="display: inline-block;font-weight: bold;">
+                      <button nz-button *ngIf="this.pendingRequests?.length>0" nzType="link"
+                        style="float: left; border-style: none;" nzSize="small" (click)="ShowPendigRequests()">View
+                        Pending</button>
+                    </div>
+
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;"> First level Approved </div>
+                    <div style="display: inline-block;font-weight: bold;width: 30px">{{frstLvlApprovalCount}}</div>
+                    <div style="display: inline-block;font-weight: bold;">
+                      <button nz-button *ngIf="this.FirstlevelApprove?.length>0" nzType="link"
+                        style="float: left; border-style: none;" nzSize="small"
+                        (click)="ShowFirstLevelApproveRequests()">View
+                        First Level Approved</button>
+                    </div>
+
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;"> Rejected Requests</div>
+                    <div style="display: inline-block;font-weight: bold;width: 30px">{{rejectionCount}}</div>
+                    <div style="display: inline-block;font-weight: bold;">
+                      <button nz-button *ngIf="this.rejectedRequests?.length>0" nzType="link"
+                        style="float: left; border-style: none;" nzSize="small" (click)="ShowRejectedRequests()">View
+                        Rejected</button>
+                    </div>
+
+                  </div>
+                  <div class="clientstatus">
+                    <div style="display: inline-block; width: 120px;"> Approved Requests</div>
+                    <div style="display: inline-block;font-weight: bold;width: 30px">{{approvedCount}}</div>
+                    <div style="display: inline-block;font-weight: bold;"> <button nz-button
+                        *ngIf="this.approvedRequest?.length>0" nzType="link" style="float: left; border-style: none;"
+                        nzSize="small" (click)="ShowApprovedRequests()">View Approved</button></div>
+                  </div>
+
+                </div>
+                <div nz-col nzMd="24" *ngIf="changereq=='NoEmailMobile'">
+                  <crf-image-upload></crf-image-upload>
+                </div>
+
+                <div nz-col nzMd="24">
+                  <div nz-row nzGutter="5" style="margin-top: 5px;">
+                    <div nz-col nzMd="3">
+                      <span
+                        *ngIf="changereq=='NoEmailMobile'&&applicationStatus=='P'||changereq=='NoEmailMobile'&&applicationStatus=='A'||changereq=='NoEmailMobile'&&applicationStatus=='R'||changereq=='NoEmailMobile'&&applicationStatus=='T'">
+                        Remarks </span>
+                    </div>
+                    <div nz-col nzMd="12">
+                      <div
+                        *ngIf="changereq=='NoEmailMobile'&&applicationStatus=='P'||changereq=='NoEmailMobile'&&applicationStatus=='A'||changereq=='NoEmailMobile'&&applicationStatus=='R'||changereq=='NoEmailMobile'&&applicationStatus=='T'">
+                        <input nz-input [(ngModel)]="RegectionReason" name="rejectionreason" [disabled]="isApproved" />
+                      </div>
+                    </div>
+                    <div nz-col nzMd="15" *ngIf="changereq=='NoEmailMobile'">
+                      <label class="bolding">I don't have </label>
+                      <label class="bolding" nz-checkbox [(ngModel)]="nomobileFlag" name="nomobileFlag">Mobile </label>
+                      <label class="bolding" nz-checkbox [(ngModel)]="noemailFlag" name="noemailFlag">Email </label>
+                      <!-- <label class="bolding"
+                        *ngIf="changereq=='NoEmailMobile'&&status=='N'" 
+                        nz-checkbox  [(ngModel)]="checkFlag" name="checkFlag" >I don't have email Mobile </label> -->
+                    </div>
+                    <div nz-col nzMd="9">
+                      <p style="text-align: right;">
+                        <button nz-button nzType="primary" (click)="onnextclick()"
+                          *ngIf="changereq!='NoEmailMobile'" [disabled]="clientStatus">Next</button>
+                        <button nz-button nzType="primary" type="button" (click)="SaveNoemailMobile('savefinalise')"
+                          *ngIf="changereq=='NoEmailMobile'&&saveButtonFlag&&applicationStatus=='T'" [disabled]="clientStatus">Save and
+                          Finalize</button>
+                        <button nz-button nzType="primary" type="button" (click)="BranchReject()"
+                          *ngIf="changereq=='NoEmailMobile'&&saveButtonFlag&&applicationStatus=='T'" [disabled]="clientStatus">Branch
+                          Reject</button>
+                        <button nz-button nzType="primary" type="button" (click)="SaveNoemailMobile('Save')"
+                          *ngIf="changereq=='NoEmailMobile'&&saveButtonFlag&&applicationStatus!='T'" [disabled]="clientStatus">Save</button>
+                        <button nz-button nzType="primary" type="button"
+                          *ngIf="changereq=='NoEmailMobile'&& approveOrRejectButtonFlag"
+                          (click)="Reject()" [disabled]="clientStatus">Reject</button>
+                        <button nz-button nzType="primary" type="button"
+                          *ngIf="changereq=='NoEmailMobile'&& approveOrRejectButtonFlag"
+                          (click)="Approve()" [disabled]="clientStatus">Approve</button>
+                        <a href="https://downloads.geojit.net/Forms/KYC%20Updation%20For%20Individuals.pdf"
+                          target="_blank">
+                            <button nz-button nzType="primary" type="button"
+                            *ngIf="changereq!=null&&!approveOrRejectButtonFlag&&changereq!='Bank'&&changereq!='Nominee'&&changereq!='Financials'  && changereq!='SignatureUpdation' && changereq!='ModeofOperation'"
+                            (click)="PrintForm()">Print {{changereq === 'SignatureUpdation' ? 'Signature Updation' : changereq == 'ModeofOperation' ? 'Mode of Operation' : changereq}} form</button>
+                          </a>
+                          <button nz-button nzType="primary" type="button"
+                          *ngIf="changereq!=null&&!approveOrRejectButtonFlag&&changereq=='Bank'||changereq=='Nominee'||changereq=='Financials' || changereq=='SignatureUpdation' || changereq=='ModeofOperation'"
+                          (click)="PrintForm()">Print {{changereq === 'SignatureUpdation' ? 'Signature Updation' : changereq == 'ModeofOperation' ? 'Mode of Operation' : changereq}} form</button>
+
+                      </p>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </nz-card>
+          </div>
+        </div>
+      </form>
+    </nz-tab>
+
+
+
+    <nz-tab nzTitle="{{edittabtitle}}" nzDisabled=true>
+      <crf-app-editwindow [tab]=edittabtitle [Data]=testdata #EditWindow></crf-app-editwindow>
+    </nz-tab>
+
+
+  </nz-tabset>
+  <nz-modal [(nzVisible)]="isVisiblePending" nzTitle="Pending Requests" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%" footer={null}>
+    <nz-table class="tranTbl table-responsive table-themed" #Pending [nzData]="pendingRequests">
+      <thead>
+        <tr>
+          <th *ngFor="let header of pendingRquestskeys;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of Pending.data" (click)="SetPendingdata('P',data)" class="resulttable">
+          <td *ngFor="let header of pendingRquestskeys">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisibleFrstApprove" nzTitle="First Level Approved List" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%" footer={null}>
+    <nz-table class="tranTbl table-responsive table-themed" #FrstLvlApprove [nzData]="FirstlevelApprove">
+      <thead>
+        <tr>
+          <th *ngFor="let header of  FirstlevelApprovekeys;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of FrstLvlApprove.data" (click)="SetFrstlvlApproveddata('F',data)" class="resulttable">
+          <td *ngFor="let header of FirstlevelApprovekeys">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisibleRejection" nzTitle="Rejected Requests" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%">
+    <nz-table class="tranTbl table-responsive table-themed" #Request [nzData]="rejectedRequests">
+      <thead>
+        <tr>
+          <th *ngFor="let header of rejectionRequestKeys;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of Request.data" (click)="SetPendingdata('R',data)" class="resulttable">
+          <td *ngFor="let header of rejectionRequestKeys">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisibleApproved" nzTitle="Approved Requests" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%">
+    <nz-table class="tranTbl table-responsive table-themed" #Approved [nzData]="approvedRequest">
+      <thead>
+        <tr>
+          <th *ngFor="let header of approvedRequestHeader;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of Approved.data" class="resulttable" (click)="SetPendingdata('A',data)">
+          <td *ngFor="let header of approvedRequestHeader">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isIpvHistory" nzTitle="IPV History" (nzOnCancel)="handleCancel()" (nzOnOk)="handleCancel()"
+    nzWidth="60%">
+    <nz-table class="tranTbl table-responsive table-themed" #IPVHis [nzData]="IPVHistory">
+      <thead>
+        <tr>
+          <th *ngFor="let header of IPVHistoryHeader;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of IPVHis.data" class="resulttable">
+          <td *ngFor="let header of IPVHistoryHeader">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisibleHolders" nzTitle="Holder details" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%">
+    <nz-table class="tranTbl table-responsive table-themed" #holder [nzData]="holderData" [nzShowPagination]="false">
+      <thead>
+        <tr>
+          <th *ngFor="let header of holderDataHeader;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of holder.data" class="resulttable">
+          <td *ngFor="let header of holderDataHeader">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-modal>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>
+<crf-app-image-preview *ngIf="filePreiewVisible" [imageData]="filePreiewContent" [source]="source" [acccode]="acc">
+</crf-app-image-preview>
+<app-assist-window *ngIf="AssistDisplay"></app-assist-window>

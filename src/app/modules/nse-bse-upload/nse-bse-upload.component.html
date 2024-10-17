@@ -1,0 +1,42 @@
+<ng-container>
+  <nz-card nzTitle="Permitted To Trade File Upload" style="margin-top: 1rem;" class="cardmargin">
+    <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+
+      <!-- <nz-breadcrumb style="font-size: 12px;">
+        <nz-breadcrumb-item (click)="backToFixedAssets()">
+          <a>Fixed Assets</a>
+        </nz-breadcrumb-item>
+        <nz-breadcrumb-item>
+          Upload Asset List
+        </nz-breadcrumb-item>
+      </nz-breadcrumb> -->
+
+      <div style="margin-top: 0rem;">
+        <nz-tabset [(nzSelectedIndex)]="activeTab">
+          <nz-tab nzTitle="Upload">
+            <app-upload *ngIf="activeTab===0" ></app-upload>
+          </nz-tab>
+
+          <nz-tab nzTitle="History">
+            <!-- <div class="main-content">
+              <form nz-form nzLayout="vertical"> -->
+            <app-history *ngIf="activeTab===1"></app-history>
+            <!-- </form>
+            </div> -->
+          </nz-tab>
+          <nz-tab nzTitle="View">
+            <!-- <div class="main-content">
+              <form nz-form nzLayout="vertical"> -->
+            <app-view-details *ngIf="activeTab===2"></app-view-details>
+            <!-- </form>
+            </div> -->
+          </nz-tab>
+        </nz-tabset>
+      </div>
+
+
+
+    </div>
+  </nz-card>
+</ng-container>
+<!-- <app-loader *ngIf="showLoading"></app-loader> -->

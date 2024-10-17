@@ -1,0 +1,61 @@
+  .markcard {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .markcard:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+  .h1 {white-space: nowrap;
+    width: calc(60%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    line-height: 40px;
+    pointer-events:none;text-align: center;
+    display: inline-block;/* display: block; */
+  }
+  .h1:after {
+    content:"";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 48px;
+    z-index: 1;
+    pointer-events:initial;
+  }
+  .h1:hover:after{
+    cursor: pointer;
+  }
+  .tooltip {
+    width: calc(60%);
+    visibility: hidden;
+    background-color: #fff;
+    padding: 20px;
+    -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .h1:hover + .tooltip {
+    visibility: visible;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+  }
+
+td{
+  text-align: center!important;
+}
+tr > th{
+  text-align: center!important;
+}
+.padding1{
+  padding: 0.3rem
+}
+.paddingtop-20{
+  padding-top: 20px;
+}

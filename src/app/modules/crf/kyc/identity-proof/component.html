@@ -1,0 +1,31 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <!-- <nz-divider nzText="Proof of Identity" nzOrientation="left"></nz-divider> -->
+
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label class="required" nzFor="name">Id Proof</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="idProof" nzPlaceHolder="Choose">
+                        <nz-option *ngFor="let data of ProofDetials" [nzValue]="data.Code" [nzLabel]="data.ProofName"
+                        ></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    <div nz-row nzGutter="5" *ngIf="formFeilds.length>0">
+        <div nz-col nzMd="8" *ngFor="let item of formFeilds;let i = index">
+                <nz-form-item>
+                        <nz-form-label class="required">{{item.label}}</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [(ngModel)]="item['proof'+i]"  [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Text'" required/>
+                            <nz-date-picker  [(ngModel)]="item['proof'+i]"  [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'" required ></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>   
+        </div>
+    </div>
+   
+  
+</form>

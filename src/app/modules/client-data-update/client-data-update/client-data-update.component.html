@@ -1,0 +1,281 @@
+<!-- <button nz-button nzType="primary" (click)="getData()">Click To Call Sadik API</button> -->
+<div class="main-content">
+  <nz-tabset nzSize="large" [(nzSelectedIndex)]="index" (nzSelectChange)="clearOnTabChange()">
+    <nz-tab nzValue="0" nzTitle="ERX Client Data Dashboard"></nz-tab>
+    <nz-tab nzValue="1" nzTitle="ERX Client Data Upload"></nz-tab>
+  </nz-tabset>
+  <!-- Dashboard -->
+  <div *ngIf="index == 0">
+    <form nz-form nzLayout="vertical">
+      <div nz-row nzGutter="15">
+        <div nz-col [nzSpan]="18">
+          <h1>Dashboard</h1>
+        </div>
+      </div><br />
+      <div nz-row nzGutter="24">
+        <div nz-col [nzSpan]="4">
+          <h4>From Date</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-date-picker style="width:100%" [nzDisabledDate]="disabledFutureDate" nzSize="medium"
+                [nzAllowClear]="false" [(ngModel)]="fromDate" name="fromDate"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="4">
+          <h4>To Date</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-date-picker style="width:100%" [nzDisabledDate]="disabledPastDate" nzSize="medium"
+                [nzAllowClear]="false" [(ngModel)]="toDate" name="toDate"></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="4">
+          <h4>Region</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="RegionFindopt"
+                (ngModelChange)="disableFilterFieldsBasedOnSelectionOnDashboard('region');"
+                [disabled]="regionButtonBooleanForDashboard" name="region" [(ngModel)]="selectedRegion">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="4">
+          <h4>Branch</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="BranchFindopt"
+                (ngModelChange)="disableFilterFieldsBasedOnSelectionOnDashboard('branch');"
+                [disabled]="branchButtonBooleanForDashboard" name="branch" [(ngModel)]="selectedBranch">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="4">
+          <h4>Trade Code</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="TradeFindopt"
+                (ngModelChange)="disableFilterFieldsBasedOnSelectionOnDashboard('tradecode');"
+                [disabled]="tradecodeButtonBooleanForDashboard" name="tradecode"
+                [(ngModel)]="selectedTradeCode"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="2">
+          <h4>&nbsp;</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary" (click)="getERXData()">View</button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col [nzSpan]="2">
+          <h4>&nbsp;</h4>
+          <button nz-button nzType="danger" (click)="clear()">Clear</button>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="24" style="margin-top: 50px;">
+        <div nz-col [nzSpan]="10">
+          <div *ngIf="erxResultSet.length">
+            <!-- <table style="width:250px;margin-top:-30px"> -->
+              <nz-table #DetailsTable [nzData]="erxResultSet" [nzShowPagination]="false">
+              <tbody>
+                <tr *ngFor="let item of DetailsTable.data">
+                  <td><span nz-typography><b>{{item.Label}}</b></span></td>
+                  <td><b>{{item.DataUpdated}}</b></td>
+                  <td><button nz-button nzType="primary" (click)="openPopup(item.Flag)">View</button></td>
+                </tr>
+              </tbody>
+            </nz-table>
+            <!-- <nz-list nzBordered>
+              <nz-list-item class="alignflex" *ngFor="let item of erxResultSet">
+                <span nz-typography><b>{{item.Label}}</b></span>
+                <b>{{item.DataUpdated}}</b>
+                <button nz-button nzType="primary" (click)="openPopup(item.Flag)">View</button>
+              </nz-list-item> -->
+              <!-- <nz-list-item *ngFor="let item of erxResultSet">
+                <span nz-typography><b>Data Updated</b></span>
+                <b class="count">{{item.DataUpdated}}</b>
+                <button nz-button nzType="primary" (click)="openPopup('U')">View</button>
+              </nz-list-item>
+              <nz-list-item *ngFor="let item of erxResultSet">
+                <span nz-typography><b>Data Reverted</b></span>
+                <b class="count">{{item.DataReverted}}</b>
+                <button nz-button nzType="primary" (click)="openPopup('R')">View</button>
+              </nz-list-item>
+              <nz-list-item *ngFor="let item of erxResultSet">
+                <span nz-typography><b>Data Pending</b></span>
+                <b class="count">{{item.DataPending}}</b>
+                <button nz-button nzType="primary" (click)="openPopup('P')">View</button>
+              </nz-list-item>
+              <nz-list-item *ngFor="let item of erxResultSet">
+                <span nz-typography><b>Total</b></span>
+                <b class="count">{{item.TotalCount}}</b>
+                <button nz-button nzType="primary" (click)="openPopup('T')">View</button>
+              </nz-list-item> -->
+            <!-- </nz-list> -->
+          </div>
+        </div>
+        <div nz-col [nzSpan]="14">
+          <div [hidden]="!chart">
+            <canvas id="canvasChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Dashboard Tab End -->
+  <!-- client update -->
+  <div *ngIf="index == 1">
+    <form nz-form nzLayout="vertical">
+      <div nz-row nzGutter="15">
+        <div nz-col [nzSpan]="18">
+          <h1>Client Data Upload</h1>
+        </div>
+
+      </div><br />
+      <div nz-row nzGutter="24">
+
+        <div nz-col [nzSpan]="3">
+          <h4>Region</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="RegionFindopt" name="region" [(ngModel)]="selectedRegion1"
+                (ngModelChange)="uploadCountIfWeChooseIncrementel=0;disableFilterFieldsBasedOnSelection('region');"
+                [disabled]="radioValue ==='A'|| (allBranchesBoolean) || (!allBranchesBoolean && regionButtonBoolean)">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="3">
+          <h4>Branch</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="BranchFindopt" name="branch" [(ngModel)]="selectedBranch1"
+                (ngModelChange)="uploadCountIfWeChooseIncrementel=0;disableFilterFieldsBasedOnSelection('branch')"
+                [disabled]="radioValue ==='A'|| (allBranchesBoolean) || (!allBranchesBoolean && branchButtonBoolean)">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="4">
+          <h4>Trade Code</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <master-find-ctrl [options]="TradeFindopt" name="tradecode"
+                (ngModelChange)="uploadCountIfWeChooseIncrementel=0;disableFilterFieldsBasedOnSelection('tradecode')"
+                [disabled]="radioValue ==='A'|| (allBranchesBoolean) || (!allBranchesBoolean && tradecodeButtonBoolean)"
+                [(ngModel)]="selectedTradeCode1"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="4">
+          <h4>&nbsp;</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="radioValue" name="radiovalue" [ngModelOptions]="{standalone: true}"
+                (ngModelChange)="radioValue==='B'? allBranchesBoolean=false : '';uploadCountIfWeChooseIncrementel=0">
+                <!-- allBranchesBoolean=false : '' -->
+                <label nz-radio nzValue="A"><b>Incremental</b></label>
+                <label nz-radio nzValue="B"><b>Full</b></label>
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="3" *ngIf="this.radioValue === 'A'">
+          <h4>Incremental No Of Day's</h4>
+          <nz-form-item>
+            <nz-form-control>
+            <input nz-input [(ngModel)]="incrNumOfDays" name="incrNumOfDays"
+            (keyup)="onIncrementNoOfDayChange();checkIncrementalNoOfDays()"style="width: 100%">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <!-- <div nz-col [nzSpan]="2">
+          <h4>&nbsp;</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <label nz-checkbox [(ngModel)]="allBranchesBoolean"
+                (ngModelChange)="choosedallBranchesBoolean();uploadCountIfWeChooseIncrementel=0"
+                [disabled]="radioValue==='B'" [ngModelOptions]="{standalone: true}"><b>All Branch</b></label>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+
+        <div nz-col [nzSpan]="1">
+          <h4>&nbsp;</h4>
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary" class="buttonBackground" (click)="getUploadCount()"
+                [disabled]="(!incrNumOfDaysStatus) && (!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && radioValue ==='A' && !allBranchesBoolean) || (!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && radioValue ==='B') || (uploadCountIfWeChooseIncrementel>0)"
+                >Get
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col [nzSpan]="2">
+          <h4>&nbsp;</h4>
+          <button nz-button nzType="primary" (click)="upload()" class="buttonBackground"
+            [disabled]="!incrNumOfDaysStatus && (!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && radioValue ==='A' && !allBranchesBoolean) || (uploadCountIfWeChooseIncrementel===0) || (!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && radioValue ==='B')"
+          >Upload</button>
+        </div>
+
+        <div nz-col [nzSpan]="2">
+          <h4>&nbsp;</h4>
+          <button nz-button nzType="danger" (click)="clearUploadData()">Clear</button>
+        </div>
+
+      </div>
+      <div nz-row nzGutter="24">
+        <div class="animitext">
+          <h3
+            *ngIf="(!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && !incrNumOfDays && radioValue ==='A' && !allBranchesBoolean) || (!selectedBranch1 && !selectedRegion1 && !selectedTradeCode1 && radioValue ==='B')">
+            Select one option to upload
+          </h3>
+        </div>
+        <div *ngIf="uploadCountIfWeChooseIncrementel>0" class="dataCountClass">
+          <h3>
+            {{uploadCountIfWeChooseIncrementel}} Records to Upload
+          </h3>
+        </div>
+      </div>
+
+      <br><br>
+    </form>
+  </div>
+  <!-- client update tab end -->
+  <nz-modal [(nzVisible)]="showtableModel" nzTitle="ERX Data View" (nzOnCancel)="showtableModel=false"
+  (nzOnOk)="showtableModel=false" nzWidth="60%">
+  <div nz-row>
+    <!-- class="modelheight" -->
+    <div nz-col class="padding1">
+      <nz-table #ContrBrkDtsTabl [nzData]="innerTableData" nzSize="middle" [nzPageSize]=8 [nzShowPagination]="true"
+        class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <th *ngFor="let head of innerTableDataHead">{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dat of ContrBrkDtsTabl.data;let i = index" class="resulttable">
+            <td *ngFor="let head of innerTableDataHead">{{dat[head]}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  </nz-modal>
+  <app-loader [hidden]="!isProcessing"></app-loader>
+</div>

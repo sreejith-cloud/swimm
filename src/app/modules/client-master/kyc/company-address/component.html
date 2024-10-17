@@ -1,0 +1,757 @@
+<div>
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <div nz-row nzGutter="20">
+        <div nz-col nzLg="12" formGroupName="correspondenceAddress">
+        <nz-card nzTitle="Address for Corespondence">
+
+            <div nz-row nzGutter="5">
+                <!-- <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Address</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input style="max-height: 100px;">
+                                </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>House Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                            <nz-form-item>
+                                <nz-form-label>House Number</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="houseNumber" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label>Street</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="street" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pincode" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                            <nz-form-item>
+                                <nz-form-label>City</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="city" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label>State</nz-form-label>
+                                    <nz-form-control>
+                                            <input nz-input formControlName="state" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                   
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Country</nz-form-label>
+                        <nz-form-control>
+                                <input nz-input formControlName="country" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+      
+      
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Proof Of Address</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="proofOfAddress">
+                                <nz-option nzValue="pan" nzLabel="pan"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Expiry Date</nz-form-label>
+                        <nz-form-control>
+                            <nz-date-picker formControlName="ExpiryDate">
+                            </nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Address Proof</nz-form-label>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="AddressProofModal1()" *ngIf="AddressProofList1.length" style="float: right;"><i nz-icon type="eye" ></i></button>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUploadAddressProofList1"  [(nzFileList)]="AddressProofList1" [nzLimit]="1">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Risk Country</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="riskCountry" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            </nz-card>
+        </div>
+        <div nz-col nzLg="12" formGroupName="RegisteredAddress">
+                <nz-card [nzTitle]="groupTitle">
+                
+      <ng-template #groupTitle>Registered Address <label nz-checkbox formControlName="sameascorrespondence" (ngModelChange)="selectSameAsCorrespondence($event)">Same as Corespondence address</label>
+                        </ng-template>
+            
+            
+            <div nz-row nzGutter="5">
+                <!-- <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Address</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input style="max-height: 100px;">
+                                    </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>House Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                            <nz-form-item>
+                                <nz-form-label>House Number</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="houseNumber" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label>Street</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="street" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pincode" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                            <nz-form-item>
+                                <nz-form-label>City</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="city" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label>State</nz-form-label>
+                                    <nz-form-control>
+                                            <input nz-input formControlName="state" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                   
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Country</nz-form-label>
+                        <nz-form-control>
+                                <input nz-input formControlName="country" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+      
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Proof Of Address</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="proofOfAddress">
+                                    <nz-option nzValue="pan" nzLabel="pan"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Expiry Date</nz-form-label>
+                        <nz-form-control>
+                            <nz-date-picker formControlName="ExpiryDate">
+                            </nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Address Proof</nz-form-label>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="AddressProofModal2()" *ngIf="AddressProofList2.length" style="float: right;"><i nz-icon type="eye" ></i></button>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUploadAddressProofList2"  [(nzFileList)]="AddressProofList2" [nzLimit]="1">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            </nz-card>
+        </div>
+        </div>
+<br>
+    <div nz-row>
+        <nz-card nzTitle="Details of Promoters/ Trustees/ Karta/Partners and Whole Time Directors">
+            <!-- <div nz-row>
+                    <div nz-col  nz-form nzLayout="inline">
+                        <nz-form-item>
+                            <nz-form-label>Enter number of Promoters/ Trustees/ Karta/Partners and Whole Time Directors : </nz-form-label>
+                            <nz-form-control class="ml-2">
+                                    <nz-input-number formControlName="noOfPromoter" [nzMin]="1" (ngModelChange)="noOfPromoter(noOfPromoter)"></nz-input-number>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div> -->
+    
+            <div nz-row nzGutter="5" formGroupName="detialsofPromoters">
+
+            
+            <!-- <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>Residential/Registered Address </nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input rows="3" style="max-height:100px;"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="Promotername" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+      
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>PAN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="PAN" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>House Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>House Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseNumber" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Street</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+
+
+        <div nz-col nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>Whether Politically Exposed</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="WhetherPoliticallyExposed" nzAllowClear>
+                            <nz-option nzValue="pea" nzLabel="PEA"></nz-option>
+                            <nz-option nzValue="rpep" nzLabel="Relative of PEA"></nz-option>
+                            <nz-option nzValue="notApplicable" nzLabel="Not Applicable"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>Relationship with Applicant</nz-form-label>
+                        <nz-form-control>
+                            <nz-select nzAllowClear formControlName="clientRelationship">
+                                <nz-option nzValue="Authorised Person" nzLabel="Authorised Person"></nz-option>
+                                <nz-option nzValue="Director" nzLabel="Director"></nz-option>
+                                <nz-option nzValue="Trustee" nzLabel="Trustee"></nz-option>
+                                <nz-option nzValue="Partner" nzLabel="Partner"></nz-option>
+                                <nz-option nzValue="Kartha" nzLabel="Kartha"></nz-option>
+                                <nz-option nzValue="Promoter" nzLabel="Promoter"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" *ngIf="form.value.detialsofPromoters.clientRelationship=='Director'">
+                        <nz-form-item>
+                            <nz-form-label>DIN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="DIN" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="form.value.detialsofPromoters.clientRelationship!='Director'">
+                        <nz-form-item>
+                            <nz-form-label>UID</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="UID" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+        <div nz-col nzMd="3">
+                <nz-form-item>
+                        <nz-form-label>Upload Photo </nz-form-label>
+                        <nz-form-control>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple [nzBeforeUpload]="beforeUploadphoto"  [(nzFileList)]="fileList1" [nzLimit]="1" >
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button> 
+                                   </nz-upload>
+                               
+                        </nz-form-control>
+                    </nz-form-item>
+            </div>
+            <div nz-col nzMd="3">
+                    <nz-form-item>
+                            <nz-form-label>Upload list of Partners
+                            </nz-form-label>
+                            <nz-form-control>
+                 <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple [nzBeforeUpload]="beforeUpload"  [(nzFileList)]="fileList" [nzLimit]="1" >
+                 <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                </nz-upload>
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+            <div nz-col nzMd="4">
+                <nz-form-item>
+                        <nz-form-label>Upload Coparceners Form HUF deed
+                        </nz-form-label>
+                        <nz-form-control>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple [nzBeforeUpload]="beforeUploadParterershipdeed"  [(nzFileList)]="fileList2" [nzLimit]="1" >
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                  </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+            </div>
+
+        <div nz-col nzMd="3">
+            <nz-form-item>
+                    <nz-form-label>Upload Partnership deed
+                    </nz-form-label>
+                    <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple [nzBeforeUpload]="beforeUploadcoparceners"  [(nzFileList)]="fileList3" [nzLimit]="1" >
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+        </div>
+
+
+        <div nz-col nzMd="3" class="pt-2">
+                <button *ngIf="isAdd" (click)="add()" class="m-1" nz-button nzType="primary">Add&nbsp;&nbsp;</button>
+                <button *ngIf="isUpdate" class="m-1" nz-button nzType="primary"
+                    (click)="update()">Update</button>
+                <button class="m-1" nz-button nzType="danger" (click)="reset()">Reset&nbsp;</button>
+
+            </div>
+    </div>
+    <br>
+    <div *ngIf="prometerDetails.length">
+  
+    <nz-table [nzSize]="'small'"[nzData]="prometerDetails" [nzFrontPagination]="false"
+        [nzShowPagination]="false" [nzScroll]="{x:'1750px'}" class="tranTbl table-responsive">
+        <tr>
+            <th  class="text-center"  nzWidth="50px" nzLeft="0px">&nbsp;</th>
+            <th  class="text-center"  nzWidth="150px">Promoter Name</th>
+            <th  class="text-center"  nzWidth="100px">HousName</th>
+            <th  class="text-center"  nzWidth="100px">House Number</th>
+            <th  class="text-center"  nzWidth="100px">Street</th>
+            <th  class="text-center"  nzWidth="150px">PAN</th>
+            <th  class="text-center"  nzWidth="200px">Whether Politically Exposed</th>
+            <th  class="text-center"  nzWidth="150px">Client Relationship</th>
+            <th  class="text-center"  nzWidth="100px">DIN</th>
+            <th  class="text-center"  nzWidth="100px">UID</th>
+            <th  class="text-center"  nzWidth="150px">Parterers List</th>
+            <th  class="text-center"  nzWidth="100px" >Photo</th>
+            <th  class="text-center"  nzWidth="150px">Parterership deed</th>
+            <th  class="text-center"  nzWidth="100px">coparceners</th>
+            <th  class="text-center"  nzWidth="100px" class="text-center">Action</th>
+        </tr>
+        <tr *ngFor="let data of prometerDetails;let i=index">
+            <td    class="text-center" nzLeft="0px">{{i+1}}</td>
+            <td  class="text-center" >{{data.Promotername}}</td>
+            <td  class="text-center" >{{data.houseName}}</td>
+            <td  class="text-center" >{{data.houseNumber}}</td>
+            <td  class="text-center" >{{data.street}}</td>
+            <td  class="text-center" >{{data.PAN}}</td>
+            <td  class="text-center" >{{data.WhetherPoliticallyExposed}}</td>
+            <td  class="text-center" >{{data.clientRelationship}}</td>
+            <td  class="text-center" >{{data.DIN}}</td>
+            <td  class="text-center" >{{data.UID}} &nbsp;</td>
+            <td  class="text-center"><button nz-button nzType="primary" (click)="ParterersListModal(data)"><i nz-icon type="eye" ></i></button> </td>
+            <td class="text-center"><button nz-button nzType="primary" (click)="photoListsModal(data)"><i nz-icon type="eye" ></i></button> </td>
+            <td  class="text-center"><button nz-button nzType="primary" (click)="ParterershipdeedModal(data)"><i nz-icon type="eye" ></i></button> </td>
+            <td   class="text-center"><button nz-button nzType="primary" (click)="coparcenersModal(data)"><i nz-icon type="eye" ></i></button> </td>
+            <td  class="text-center" nzRight="0px">
+                <button nz-button nzType="primary" (click)="edit(data,i)">Edit</button>
+            </td>
+        </tr>
+    </nz-table>
+</div>
+</nz-card>
+    </div>
+<br>
+<div #reference></div>
+    <!-- <div nz-row>
+        <div nz-col nzMd="6">
+          
+        </div>
+        <div nz-col nzMd="6">
+           
+        </div>
+        <div nz-col nzMd="6">
+           
+        </div>
+        <div nz-col nzMd="6">
+            
+        </div>
+
+    </div> -->
+    <div nz-row formGroupName="AuthorisedDetails">
+        <nz-card nzTitle="Authorised Persons details">
+<!-- <ng-template #extraTemplate>
+    <nz-badge [nzCount]="prometerDetails.length"></nz-badge> Authorised Persons details required
+</ng-template> -->
+        <!-- <div nz-row>
+                <div nz-col nzLayout="inline">
+                    <nz-form-item>
+                        <nz-form-label>Enter Number of Authorised Persons : </nz-form-label>
+                        <nz-form-control class="ml-2">
+                                <nz-input-number formControlName="noOfAuthorized" [nzMin]="1" (ngModelChange)="noOfAuthorized(noOfAuthorized)"></nz-input-number>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div> -->
+                <div nz-row nzGutter="5" *ngIf="prometerDetails.length">
+        <!-- <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Number of Authorised Persons</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="AuthorisedName"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Designation</nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="AuthorisedDesingnation" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="2">
+            <nz-form-item>
+                <nz-form-label>Signature link
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/"  nzMultiple [nzBeforeUpload]="beforeUploadAuthSignature"  [(nzFileList)]="fileList4" [nzLimit]="1" >
+                        <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                    </nz-upload>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Upload Authorised Signatory list with Signature
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/"  nzMultiple [nzBeforeUpload]="beforeUploadAuthSignatureList"  [(nzFileList)]="fileList5" [nzLimit]="1" >
+                        <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                    </nz-upload>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="4" class="pt-2">
+            <button *ngIf="AuthisAdd" (click)="Authadd()" class="m-1" nz-button nzType="primary">Add&nbsp;&nbsp;</button>
+            <button *ngIf="AuthisUpdate" class="m-1" nz-button nzType="primary"
+                (click)="Authupdate()">Update</button>
+            <button class="m-1" nz-button nzType="danger" (click)="Authreset()">Reset&nbsp;</button>
+
+        </div>
+    </div>
+    <div *ngIf="AuthorizedTableData.length">
+  
+        <nz-table [nzSize]="'small'"[nzData]="AuthorizedTableData" [nzFrontPagination]="false"
+        [nzShowPagination]="false" class="tranTbl table-responsive">
+            <tr>
+                <th  class="text-center">&nbsp;</th>
+                <th  class="text-center" >Name</th>
+                <th  class="text-center" >Designation</th>
+                <th  class="text-center" >Authorised Signture</th>
+                <th  class="text-center" >Authorised Signture</th>
+                <th  class="text-center"  class="text-center">Action</th>
+            </tr>
+            <tr *ngFor="let data of AuthorizedTableData;let i=index">
+                <td    class="text-center" nzLeft="0px">{{i+1}}</td>
+                <td  class="text-center" >{{data.AuthorisedName}}</td>
+                <td  class="text-center" >{{data.AuthorisedDesingnation}}</td>
+                <td  class="text-center"><button nz-button nzType="primary" (click)="AuthSignatureModal(data)"><i nz-icon type="eye" ></i></button> </td>
+                <td   class="text-center"><button nz-button nzType="primary" (click)="AuthSignatureListModal(data)"><i nz-icon type="eye" ></i></button> </td>
+                <td  class="text-center">
+                    <button nz-button nzType="primary" (click)="Authedit(data,i)">Edit</button>
+                </td>
+            </tr>
+        </nz-table>
+    </div>
+        </nz-card>
+    </div>
+    <br>
+    
+    <div nz-row>
+        <nz-card nzTitle="Details of Ultimate Beneficial Owner (natural person)">
+        <div nz-row>
+ 
+        </div>
+        <div nz-row nzGutter="5" formGroupName="UltimateBeneficialOwnerDetails">
+  
+                    <div nz-col nzMd="3">
+                            <nz-form-item>
+                                <nz-form-label>Name</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="UltimateBeneficialOwnerName"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                <div nz-col nzMd="2">
+                    <nz-form-item>
+                        <nz-form-label>Pan</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="UltimateBeneficialOwnerPan"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                  <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>House Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="UltimateBeneficialOwnerhouseName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>House Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="UltimateBeneficialOwnerhouseNumber" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Street</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="UltimateBeneficialOwnerstreet" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+                <div nz-col nzMd="3">
+                    <nz-form-item>
+                        <nz-form-label>Related Entity</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="UltimateBeneficialOwnerRelatedEntity"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+          
+                <div nz-col nzMd="3">
+                    <nz-form-item>
+                        <nz-form-label>Relationship with the entity
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-select nzAllowClear formControlName="UBORelationshipwiththeentity">
+                                <nz-option nzValue="Authorised Person" nzLabel="Authorised Person"></nz-option>
+                                <nz-option nzValue="Director" nzLabel="Director"></nz-option>
+                                <nz-option nzValue="Trustee" nzLabel="Trustee"></nz-option>
+                                <nz-option nzValue="Partner" nzLabel="Partner"></nz-option>
+                                <nz-option nzValue="Kartha" nzLabel="Kartha"></nz-option>
+                                <nz-option nzValue="Promoter" nzLabel="Promoter"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="3">
+
+                    <nz-form-item>
+                        <nz-form-label>Email</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="UltimateBeneficialOwnerEmail"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="2">
+                    <nz-form-item>
+                        <nz-form-label>Contact Number</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="UltimateBeneficialOwnerContactNumber"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>Share holding Pattern / Profit Sharing ratio
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-upload  nzAction="https://jsonplaceholder.typicode.com/posts/"  nzMultiple [nzBeforeUpload]="ShareholdingratioBeforeUpload"  [(nzFileList)]="fileList6" >
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4" class="pt-2">
+                        <button *ngIf="UBOisAdd" (click)="UBOadd()" class="m-1" nz-button nzType="primary">Add&nbsp;&nbsp;</button>
+                        <button *ngIf="UBOisUpdate" class="m-1" nz-button nzType="primary"
+                            (click)="UBOupdate()">Update</button>
+                        <button class="m-1" nz-button nzType="danger" (click)="UBOreset()">Reset&nbsp;</button>
+            
+                    </div>
+        </div>
+        <div nz-row ngGutter="5">
+            <div nz-col nzMd="6" nzLg="4" class="imageBox" *ngFor="let item of ShareholdingratioDocument;index as i">
+                <div nz-row>
+                    <div nz-col nzMd="15">
+                        <span>{{item.ShareholdingratioDocname}}{{i+1}}</span>
+                    </div>
+                    <div nz-col nzMd="9">
+                        <button nz-button class="floatright" nzType="primary" (click)="ShareHolderRationModal(item)" title="Preview"><i nz-icon
+                                type="eye"  ></i></button>
+                        <button nz-button class="floatright" style="background-color: red;color: white;" title="Delete"
+                            (click)="DeleteShareholdingratioDocument(i)"><i nz-icon type="delete"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="UBOTableData.length">
+                <nz-table [nzSize]="'small'"  [nzData]="UBOTableData" [nzFrontPagination]="false"
+                    [nzShowPagination]="false" [nzScroll]="{x:'1550px'}" class="tranTbl table-responsive">
+                    <tr>
+                        <th  class="text-center"  nzWidth="50px" nzLeft="0px">&nbsp;</th>
+                        <th  class="text-center"  nzWidth="150px">Name</th>
+                        <th  class="text-center"  nzWidth="150px">PAN</th>
+                        <th  class="text-center"  nzWidth="150px">House Name</th>
+                        <th  class="text-center"  nzWidth="100px">House Number</th>
+                        <th  class="text-center"  nzWidth="150px">Street</th>
+                        <th  class="text-center"  nzWidth="100px">Related Entity</th>
+                        <th  class="text-center"  nzWidth="150px">Relationship with the entity</th>
+                        <th  class="text-center"  nzWidth="100px">Email</th>
+                        <th  class="text-center"  nzWidth="100px">Contact Number</th>
+                        <th  class="text-center"  nzWidth="250px">Share holding Pattern / Profit Sharing ratio</th>
+                        <th  class="text-center"  nzWidth="100px" class="text-center">Action</th>
+                    </tr>
+                    <tr *ngFor="let data of UBOTableData;let i=index">
+                        <td    class="text-center" nzLeft="0px">{{i+1}}</td>
+                        <td  class="text-center" nzLeft="150px" >{{data.UltimateBeneficialOwnerName}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerPan}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerhouseName}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerhouseNumber}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerstreet}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerRelatedEntity}}</td>
+                        <td  class="text-center" >{{data.UBORelationshipwiththeentity}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerEmail}}</td>
+                        <td  class="text-center" >{{data.UltimateBeneficialOwnerContactNumber}} &nbsp;</td>
+                        <td   class="text-center">
+                            <td  class="text-center"><button nz-button nzType="primary" title="Preview"
+                                *ngFor="let data of data.Shareholdingratio" (click)="ShareHolderRationModal(data)"><i nz-icon
+                                    type="eye"></i>
+                            <!-- <button nz-button nzType="primary" (click)="coparcenersModal(data)"><i nz-icon type="eye" ></i>
+                             -->
+                            </button> </td>
+                        <td  class="text-center" nzRight="0px">
+                            <button nz-button nzType="primary" (click)="UBOedit(data,i)">Edit</button>
+                        </td>
+                    </tr>
+                </nz-table>
+            </div>
+
+
+        </nz-card>
+    </div>
+    <br>
+    <div nz-row>
+        <nz-card nzTitle="Mode of operation">
+    <div nz-row>
+               
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>Mode of operation</nz-form-label>
+                <nz-form-control>
+                    <nz-select nzAllowClear formControlName="modeOfOperation">
+                        <nz-option nzValue="singly" nzLabel="  Any one singly"></nz-option>
+                        <nz-option nzValue="Jointly" nzLabel="Jointly"></nz-option>
+                        <nz-option nzValue="Severally" nzLabel="Severally"></nz-option>
+                        <nz-option nzValue="asPerResoluton" nzLabel="As per resolution"></nz-option>
+                        <nz-option nzValue="Others" nzLabel="Others"></nz-option>
+
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+    </nz-card>
+    </div>
+</form>
+</div>
+<!-- <button (click)="getData()">check kyc address</button> -->
+
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+[fileName]="filePreiewFilename"></app-file-preview>

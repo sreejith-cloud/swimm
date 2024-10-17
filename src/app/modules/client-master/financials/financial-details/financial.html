@@ -1,0 +1,211 @@
+<form nz-form [formGroup]="financialForm" nzLayout="vertical" ngxScrollToFirstInvalid>
+    <nz-card [nzTitle]="title1">
+        <ng-template #title1>
+            <i nz-icon type="user" class="icon text-danger" nzTheme="outline"></i> Financial Details
+        </ng-template>
+        <div nz-row nzGutter="5">
+            <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label  class="required">Annual Income</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="AnnualIncome" nzAllowClear>
+                            <nz-option *ngFor="let income of annualincome" [nzLabel]="income.Slab" [nzValue]="income.IncomeId"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label>Specify annual income</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input nz-input formControlName="specificAnnInc"  type="number"> -->
+                        <!-- <nz-input-number formControlName="specificAnnInc"  [nzMin]="0"  style="width: 100%;color:black"
+
+                        ></nz-input-number> -->
+                        <input nz-input formControlName="specificAnnInc" type="text" [textMask]="{mask: inputMasks.decimal}" (keypress)="charresAndSymboltrict($event)"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label>Specify Networth</nz-form-label>
+                    <nz-form-control>
+                        <!-- <nz-input-number formControlName="specificNetWorth"  style="width: 100%;color:black" [nzMin]="0" 
+                           ></nz-input-number> -->
+                        <input nz-input formControlName="specificNetWorth" type="text" [textMask]="{mask: inputMasks.decimal}" (keypress)="charresAndSymboltrict($event)"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label [class.required]= "financialForm.value.specificNetWorth>0">Networth as on</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input type="date"  formControlName="networthasOn" class=date name="networthasOn"> -->
+
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD" formControlName="networthasOn" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4"  nzMd="10" *ngIf="clientType!='nonIndividual'">
+                <nz-form-item>
+                    <nz-form-label>Name of employer/establishment </nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="empName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4"  nzMd="8" *ngIf="clientType!='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label>Designation</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="designation" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzLg="4"  nzMd="6" *ngIf="clientType!='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label>Employer Address</nz-form-label>
+                        <nz-form-control>
+                                <textarea nz-input rows="2" style="height:60px;max-height: 100px;" formControlName="empAddress"></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                
+            <div nz-col nzLg="4" nzMd="5" >
+                <nz-form-item>
+                    <nz-form-label class="required">Source of funds</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="sourceOfFund" (ngModelChange)="showinput($event)" nzAllowClear>
+                            <nz-option *ngFor="let funds of sourceoffund"  [nzLabel]="funds.Fund" [nzValue]="funds.Fund"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+           
+            <div nz-col nzLg="3" nzMd="6"  *ngIf="isvisibleprof_busi">
+                <nz-form-item>
+                    <nz-form-label class="required">Professional/Business Name</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="prof_busi"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+    
+            <div nz-col nzLg="3"  nzMd="6" *ngIf="isvisiblebusi">
+                <nz-form-item>
+                    <nz-form-label class="required">Type of business activity</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="typeOfBusiActivity"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="3" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label>GST No</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="gst" (keypress)="charrestrict($event)"  maxlength="15" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="3" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label >GST No State</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="gststate" (keypress)="charrestrict($event)"  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6" >
+                <nz-form-item>
+                    <nz-form-label >GST No Received Date</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input type="date"  formControlName="gstdate" class=date name="gstdate"> -->
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD" formControlName="gstdate" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+ 
+            <div nz-col nzLg="6" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">Financial Details for Derivative Client</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="derivativedocuments" nzAllowClear>
+                            <nz-option *ngFor="let item of financialDetails" [nzLabel]="item.FinDetail" [nzValue]="item.Code"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+    
+            <div nz-col nzLg="20" nzMd="24" *ngIf="financialForm.value.derivativedocuments">
+                <nz-form-item>
+                    <nz-form-label>Upload Financial details for derivative client</nz-form-label>
+                    <nz-form-control>
+                        <!-- <button nz-button nzType="primary" (click)="showModal()" *ngIf="fileList.length" style="float: right;"><i nz-icon type="eye" ></i></button> -->
+                        <!-- <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload"  [(nzFileList)]="fileList" [nzLimit]="1">
+                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            <p *ngIf="fileList.length && fileList[0].Docname" class="filelistName">{{fileList[0].Docname}}</p>
+                                
+                        </nz-upload> -->
+
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/"
+                        [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList">
+                           <button nz-button  [disabled]="derivativeProofsArray.length==10"><i nz-icon type="upload"></i><span>Select File</span></button>
+                       </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+           <div nz-col nzLg="4" *ngIf="clientType=='nonIndividual'">
+                            <nz-form-item>
+                                <nz-form-label>Upload 2 years Balance Sheet</nz-form-label>
+                                <nz-form-control>
+                                        <button nz-button nzType="primary" (click)="showModal1()" *ngIf="fileList1.length" style="float: right;" title="Preview"><i nz-icon type="eye" ></i></button>
+                                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload1"  [(nzFileList)]="fileList1" [nzLimit]="1">
+                                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                        </nz-upload>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzLg="4" *ngIf="clientType=='nonIndividual'">
+                            <nz-form-item>
+                                <nz-form-label>Upload 2 years P& L </nz-form-label>
+                                <nz-form-control>
+                                        <button nz-button nzType="primary" (click)="showModal2()" *ngIf="fileList2.length" style="float: right;" title="Preview"><i nz-icon type="eye" ></i></button>
+                                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload2"  [(nzFileList)]="fileList2" [nzLimit]="1">
+                                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                        </nz-upload>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                         <!--
+                        <div nz-col nzLg="6" *ngIf="clientType=='nonIndividual'">
+                            <nz-form-item>
+                                <nz-form-label>Upload Financial details for derivative client</nz-form-label>
+                                <nz-form-control>
+                                    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" formControlName="uplaoadFinancialList">
+                                        <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                    </nz-upload>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>-->
+
+        </div>
+        <div nz-row nzGutter="10"  *ngIf="derivativeProofsArray.length">
+                <div nz-col nzMd="6" *ngFor="let file of derivativeProofsArray;let i=index" class="imageBox" >
+                    <div style="color: black;font-size:14px;">{{file.docname}} 
+                <button nz-button nzType="primary"   title="Preview" (click)="showModalforDerivativeProof(file)"   >
+                    <i nz-icon type="eye"></i>
+                 </button>
+                 <button  nz-button style="background:red;color: white;" title="Delete"
+                 (click)="Deleterow(i)"><i nz-icon type="delete"></i></button> 
+                    </div>
+                 </div>
+
+</div>
+    </nz-card>
+</form>
+<app-loader *ngIf="spin"></app-loader>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+[fileName]="filePreiewFilename"></app-file-preview>

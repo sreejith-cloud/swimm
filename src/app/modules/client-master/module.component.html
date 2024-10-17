@@ -1,0 +1,117 @@
+
+<div class="main-content">
+    <app-acmanagement></app-acmanagement>
+
+    <!-- <div nz-row nzGutter="5" class="acOpeningMenu">
+        <div nz-col nzMd="4" (click)="OpenNewTab('clientMaster')" class="acOpeningMenuItem">AC Opening</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('AcctOpeningrpt')" class="acOpeningMenuItem">AC Opening Approval</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('clientMaster')" class="acOpeningMenuItem">Profile View</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('crf')" class="acOpeningMenuItem">CRF</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('crfrpt')" class="acOpeningMenuItem">CRF Approval</div> 
+    </div> -->
+      <nz-tabset [(nzSelectedIndex)]="activeTabIndex"  [nzTabBarExtraContent]="extraTemplate" (nzSelectedIndexChange)="tabChange($event)" >
+    <!-- <nz-tab nzTitle="Summary">
+      <ng-template nz-tab>
+        <client-master-summary></client-master-summary>
+      </ng-template>
+    </nz-tab> -->
+    <!-- <nz-tab nzTitle="MTF T&C">
+       <app-mtfloc></app-mtfloc>
+      </nz-tab>
+    
+        enableTabACOpening: boolean = false;
+  enableTabKYC: boolean = false;
+  enableTabFinancials: boolean = false;
+  enableTabTrading: boolean = false;
+  enableTabDP: boolean = false;
+  enableTabRejections: boolean = false;
+
+    -->
+  
+      <nz-tab  nzTitle="AC OPENING" [nzDisabled]="enableTabACOpening">
+          <div  [ngClass]="{'disableCards':isEntryfinalised}">
+          <client-master-ac-opening></client-master-ac-opening>            
+          </div>
+        </nz-tab>
+    <nz-tab nzTitle="KYC" [nzDisabled]="!enableTabKYC">
+        <div *ngIf="enableTabKYC"  >
+        <client-master-kyc #Kyc></client-master-kyc>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="FINANCIALS" [nzDisabled]="!enableTabFinancials">
+        <div [ngClass]="{'disableCards':isEntryfinalised}"  *ngIf="enableTabFinancials">
+        <client-master-financials #Financials></client-master-financials>
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="TRADING" [nzDisabled]="!enableTabTrading">
+        <div [ngClass]="{'disableCards':isEntryfinalised}"  *ngIf="enableTabTrading">
+        <client-master-trading #Trading></client-master-trading>
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="DP" [nzDisabled]="!enableTabDP">
+        <div *ngIf="enableTabDP">
+        <app-dp #dp></app-dp>
+      </div>
+    </nz-tab>
+    <div *ngIf=!isClientProfileEdit>
+    <nz-tab nzTitle="SCHEMES" [nzDisabled]="!enableTabscheme">
+      <div [ngClass]="{'disableCards':isEntryfinalised}"  *ngIf="enableTabscheme">
+      <client-master-scheme></client-master-scheme>
+    </div>
+  </nz-tab>
+</div>
+
+  <div *ngIf=!isClientProfileEdit>
+    <nz-tab nzTitle="IMAGE UPLOAD" [nzDisabled]="!enableTabIU" >
+        <div [ngClass]="{'disableCards':isEntryfinalised}"  *ngIf="enableTabIU">
+      <client-master-imageupload></client-master-imageupload>
+        </div>
+  </nz-tab>
+</div>
+  <div *ngIf=!isClientProfileEdit>
+    <nz-tab nzTitle="APPROVE/REJECTIONS" [nzDisabled]="!enableTabRejections" >
+          <div *ngIf="enableTabRejections">
+        <client-master-rejections></client-master-rejections>
+          </div>
+    </nz-tab>
+  </div>
+  
+  </nz-tabset>
+  <ng-template #extraTemplate>
+    <!-- <button nz-button (click)="openTabSelection()">Overview</button> -->
+    <!-- <nz-dropdown [nzPlacement]="'bottomRight'" [nzTrigger]="'click'" [nzClickHide]="false">
+      <ul nz-menu>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="tradingChecked">Trading</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="dpChecked">DP</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="insuranceChecked">Insurance</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="fundsGenieChecked">Funds Genie</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="crfChecked">CRF</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="mfChecked">Mutual Fund</label>
+        </li>
+        <li nz-menu-item>
+          <label class="w-100" nz-checkbox [(ngModel)]="pmsChecked">PMS</label>
+        </li>
+      </ul>
+    </nz-dropdown> -->
+  </ng-template>
+</div>
+
+<nz-modal [(nzVisible)]="isTabSelectionVisible" nzTitle="Select an Option" (nzAfterClose)="handleTabSelectionClose()" (nzOnCancel)="handleTabSelectionCancel()"
+  (nzOnOk)="handleTabSelection()">
+  <nz-radio-group [(ngModel)]="tabSelection">
+    <label nz-radio [ngStyle]="radioStyle" [nzValue]="opt.value" *ngFor="let opt of tabOptions">
+      {{opt.label}}
+    </label>
+  </nz-radio-group>
+</nz-modal>

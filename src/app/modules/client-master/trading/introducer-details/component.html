@@ -1,0 +1,299 @@
+<form nz-form nzLayout="vertical"[formGroup]="form">
+<div nz-row nzGutter="10">
+    <div nz-col nzLg="24" nzMd="24" class="mb-2">
+            <nz-card nzTitle="Introducer Details">
+                    <div nz-row nzGutter="5">
+                        <div nz-col nzMd="8" nzLg="4">
+                            <nz-form-item>
+                                <nz-form-label>Status of Introducer</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select formControlName="statusOfIntroducer"  nzAllowClear>
+                                        <nz-option *ngFor="let item of introducerData" [nzValue]="item.Introducer" [nzLabel]="item.Introducer"></nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="8" nzLg="4" *ngIf="form.value.statusOfIntroducer=='GEOJIT CLIENT'">
+                                <nz-form-item>
+                                    <nz-form-label>Introducer client code</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="IntroducerClientCode"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                            <div nz-col nzMd="8" nzLg="4">
+                            <nz-form-item>
+                                <nz-form-label>Phone Number</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="IntroducerPhoneNumber" [textMask]="{mask: inputMasks.numeric}"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8" nzLg="4">
+                            <nz-form-item>
+                                <nz-form-label>Name of Introducer</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="nameOfIntroducer"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                            </div>
+                    
+
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Address1</nz-form-label>
+                            <nz-form-control>
+                                <input placeholder="House Name" nz-input formControlName="IntroducerhouseName" placeholder="house Name"/>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Address2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input placeholder="House Number" formControlName="IntroducerhouseNumber" placeholder="house Number" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>Address3</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input placeholder="Street" formControlName="Introducerstreet" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                   
+                    <div nz-col nzMd="8" nzLg="4" *ngIf="form.value.statusOfIntroducer=='AUTHORISED PERSON'">
+                        <nz-form-item>
+                            <nz-form-label>AP Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="IntroducerApCode"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                        <div nz-col nzMd="8" nzLg="4" *ngIf="isRemiser">
+                            <nz-form-item>
+                                <nz-form-label class="required">Remiser Code</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="IntroducerRemiserCode"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+            
+                        <div nz-col nzMd="8" nzLg="4" *ngIf="isRemiser">
+                            <nz-form-item>
+                                <nz-form-label class="required">Remiser ID</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="IntroducerRemiserID" [textMask]="{mask: inputMasks.numeric}" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col nzMd="8" nzLg="4" *ngIf="isRemiser">
+                            <nz-form-item>
+                                <nz-form-label class="required">Remiser Letter Upload link</nz-form-label>
+                                <nz-form-control>
+                                    <button nz-button nzType="primary" (click)="showModal()" *ngIf="fileList.length" style="float: right;" title="Preview"><i nz-icon type="eye" ></i></button>
+                                    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload"  [(nzFileList)]="fileList" [nzLimit]="1">
+                                        <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                    </nz-upload>
+                                    <p *ngIf="fileList.length && fileList[0].Docname" class="filelistName">{{fileList[0].Docname}}</p>
+                            
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                   
+                    </div>            
+                </nz-card>
+    </div>
+
+    <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+    [fileName]="filePreiewFilename"></app-file-preview>
+    <div nz-col nzMd="24" nzLg="24">
+            <nz-card nzTitle="Details of Lead Generator">
+
+            <div nz-row nzGutter="5" *ngIf="leadGenerator">
+                <div nz-col nzMd="8" nzLg="4" >
+                        <nz-form-item>
+                            <nz-form-label>LG Emp Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="leadGeneratorEmpCode"
+                                  (blur)="getEmpDetails($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label>LG Emp Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="leadGeneratorEmpName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+            </div>
+            <!-- <div nz-row nzGutter="5">
+                <div nz-col nzMd="8" nzLg="4" *ngIf="BSECashleadGenerator">
+                        <nz-form-item>
+                            <nz-form-label>BSE Cash LG Emp Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="BSECashleadGeneratorEmpCode"
+                                 (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'BSECashleadGeneratorEmpName')" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4" *ngIf="BSECashleadGenerator">
+                        <nz-form-item>
+                            <nz-form-label>BSE Cash LG Emp Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="BSECashleadGeneratorEmpName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+
+                    <div nz-col nzMd="8" nzLg="4" *ngIf="NSECashleadGenerator">
+                            <nz-form-item>
+                                <nz-form-label>NSE Cash LG Emp Code</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="NSECashleadGeneratorEmpCode" 
+                                    (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'NSECashleadGeneratorEmpName')"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="8" nzLg="4" *ngIf="NSECashleadGenerator">
+                            <nz-form-item>
+                                <nz-form-label>NSE Cash LG Emp Name</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="NSECashleadGeneratorEmpName" />
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSEFOleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE FO LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSEFOleadGeneratorEmpCode" 
+                            (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'NSEFOleadGeneratorEmpName')" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSEFOleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE FO LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSEFOleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSECDSleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE CDS LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSECDSleadGeneratorEmpCode" 
+                            (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'NSECDSleadGeneratorEmpName')"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSECDSleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE CDS LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSECDSleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+    
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSEMFSSleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE MFSS LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSEMFSSleadGeneratorEmpCode" 
+                            (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'NSEMFSSleadGeneratorEmpName')"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="NSEMFSSleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>NSE MFSS LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="NSEMFSSleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMMCXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMMCX LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMMCXleadGeneratorEmpCode" 
+                            (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'COMMCXleadGeneratorEmpName')"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMMCXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMMCX LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMMCXleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMNCDEXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMNCDEX LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMNCDEXleadGeneratorEmpCode" 
+                            (blur)="fillLgCode($event)" (ngModelChange)="getEmpDetails($event,'COMNCDEXleadGeneratorEmpName')"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMNCDEXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMNCDEX LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMNCDEXleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMICEXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMICEX LG Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMICEXleadGeneratorEmpCode" (blur)="fillLgCode($event)"
+                             (ngModelChange)="getEmpDetails($event,'COMICEXleadGeneratorEmpName')"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="8" nzLg="4" *ngIf="COMICEXleadGenerator">
+                    <nz-form-item>
+                        <nz-form-label>COMICEX LG Emp Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="COMICEXleadGeneratorEmpName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+
+            </div> -->
+        </nz-card>
+    </div>
+</div>
+   
+</form>

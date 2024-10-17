@@ -1,0 +1,569 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+        <!-- <form nz-form [formGroup]="form" nzLayout="vertical" > -->
+        <div nz-row nzGutter="8">
+            <div nz-col nzMd="20" nzLg="10">
+                <h3 class="content-title">KRA</h3>
+            </div>
+            <!-- <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+                <form-handler (onPreview)="view()" (onReset)="Reset()">
+                </form-handler>
+            </div> -->
+            <div nz-col nzMd="30" nzLg="10">
+                <button nz-button nzType="primary" style="float: right;margin-right:20px;width: 90px;"
+                    (click)="Reset()"><i nz-icon nzType="rollback" nzTheme="outline"></i>Reset</button>
+                <button nz-button nzType="primary" style="float: right;margin-right:20px;width: 90px;"
+                    (click)="Viewdata()"><i nz-icon nzType="eye" nzTheme="outline"></i>View</button>
+
+            </div>
+
+        </div>
+        <div nz-row nzGutter="5">
+            <div nz-col nzMd="4" style="margin-top: -5px;">
+                <nz-form-item>
+                    <nz-form-label class="required"><b>From Date</b>
+                    </nz-form-label>
+                    <nz-form-control>
+                        <!-- [(ngModel)]="dates.fromDate"  -->
+                        <nz-date-picker name="FD" [(ngModel)]="date.fd" nzFormat="dd-MM-yyyy"
+                            [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="4" style="margin-top: -5px;">
+                <nz-form-item>
+                    <nz-form-label class="required"><b>To Date</b>
+                    </nz-form-label>
+                    <nz-form-control>
+                        <!-- [(ngModel)]="dates.toDate" -->
+                        <nz-date-picker name="TD" [(ngModel)]="date.td" nzFormat="dd-MM-yyyy"
+                            [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <!-- <div nz-col nzMd="1" style="margin-top: -5px;">&nbsp;</div> -->
+            <div nz-col nzMd="4" style="margin-top: -5px;">
+                <nz-form-item>
+                    <nz-form-label> </nz-form-label><br>
+                    <nz-form-control>
+                        <!-- <nz-radio-group name="process_type" 
+                            style="margin-left:5px; margin-bottom:-7px;" formControlName="nc" nzName="radiogroup"> -->
+                        <nz-radio-group name="process_type" [(ngModel)]="date.nc" (ngModelChange)="newClient($event)"
+                            style="margin-left:5px; margin-bottom:-7px;" required nzName="radiogroup">
+                            <!-- <label nz-radio nzValue="N" (click)="newClient('N')" style="font-weight:200;">New Client
+                            </label>
+                            <label nz-radio nzValue="C" (click)="newClient('C')" style="font-weight:200;">CRF </label> -->
+                            <label nz-radio nzValue="N" style="font-weight:300;">New Client
+                            </label>
+                            <label nz-radio nzValue="C" style="font-weight:300;">CRF </label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="3" style="margin-top: -5px;" *ngIf="processData">
+                <!-- <div nz-col nzMd="3" style="margin-top: -5px;" > -->
+
+                <nz-form-item>
+                    <nz-form-label> </nz-form-label><br>
+                    <nz-form-control>
+                        <!-- <nz-select [(ngModel)]="date.doctype" nzPlaceHolder="Type" name="docstatus">
+                            <nz-option nzValue="DCOB" nzLabel="Digital"></nz-option>
+                            <nz-option nzValue="Physical" nzLabel="Scan"></nz-option>
+                            <nz-option nzValue="" nzLabel="All"></nz-option>
+                       </nz-select>
+                          <nz-select [(ngModel)]="ReportTypes" name="ReportTypes"
+                                            nzDropdownMatchSelectWidth="true" (ngModelChange)="getReportType($event)"
+                                            nzShowSearch nzPlaceHolder="Select a Report Type">
+                                            <nz-option *ngFor="let item of Reporttypes" [nzLabel]="item.ReportType"
+                                                [nzValue]="item.ReportType" nzVisible>
+                                            </nz-option>
+                                        </nz-select> -->
+                       <nz-select [(ngModel)]="dropDownOpt" name="dropDownOpt"
+                                            nzDropdownMatchSelectWidth="true" (ngModelChange)="getOptions($event)"
+                                            nzShowSearch nzPlaceHolder="Select a value">
+                                            <nz-option *ngFor="let option of options" [nzLabel]="option.DROPDOWN"
+                                                [nzValue]="option.DROPDOWN" nzVisible>
+                                            </nz-option>
+                                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <hr>
+
+        <!-- <br> -->
+
+        <!-- <div nz-row nzGutter="5" class="colStyle" *ngIf="progressData"> -->
+        <div nz-row nzGutter="10">
+            <div nz-col nzMd="5" class="colStyle" *ngIf="progressData">
+
+                <!-- <nz-card class="summary"> -->
+                <div nz-row nzGutter="10">
+                    <div nz-col nzMd="7" class="totalCount" style="margin-right:2%" (click)="download('T')" nz-tooltip
+                        nzTitle="Download Total KRA">Total <br>{{TOTAL}}</div>
+                    <div nz-col nzMd="7" class="doneCount" style="margin-right:2%" (click)="download('D')" nz-tooltip
+                        nzTitle="Download KRA Done">Done<br>{{DONE}}</div>
+                    <div nz-col nzMd="7" class="pendingCount" (click)="download('P')" nz-tooltip
+                        nzTitle="Download Pending">Pending<br>{{PENDING}}</div>
+                </div>
+                <br>
+                <!-- <div id="divChart">
+                        <canvas id="pieChart" class="pietop" ></canvas>
+                    </div> -->
+                <!-- <div id="divChart">
+                        <canvas id="canvas" class="pietop" ></canvas>
+                    </div>  -->
+                <!-- <div >
+                        <canvas id="canvas"></canvas>
+                      </div> -->
+                <!-- <div>
+                        <h1>3. Doughnut chart</h1>
+                        <canvas #doughnutCanvas style="height:150px; width:150px"></canvas>
+                        <hr color="red">
+                    </div>    -->
+                <!-- </nz-card> -->
+                <nz-card class="detailCard"><br>
+                    <div *ngFor="let data of kraCilents; let i=index;">
+                        <b>
+                            <!-- <li [ngStyle]="{color:'#52c41a' }"> (click)="modalView(i)" style="cursor:pointer;"-->
+                            <li [ngStyle]="{'color':data.Colour}"  >
+                                <span nz-icon nzType="caret-right" nzTheme="outline"></span>&nbsp;{{data.HEADING}} :
+                                {{data.VAL}}
+                                <!-- <nz-badge nzStatus="success" nzText="{{data.HEADING}} : {{data.VAL}}" [nzStyle]="{color: 'red' }"></nz-badge> -->
+                                <!-- {{data.HEADING}}<nz-badge nzSize="default" [nzCount]="data.VAL" [nzOverflowCount]="9999"
+                                [nzStyle]="{ backgroundColor: '#52c41a' }">
+                                  </nz-badge> -->
+                            </li>
+                        </b> <br>
+                    </div>
+                </nz-card>
+                <!-- <li *ngFor="let data of kraCilents;" style="list-style-type: circle;color: blueviolet;"><b>{{data.HEADING}} : {{data.VAL}} </b><br><br></li> -->
+            </div>
+            <!-- </div> -->
+            <!-- <div nz-col nzMd="1"><span></span></div> -->
+            <!-- </div> -->
+            <!-- <div nz-row nzGutter="8"> nzMd="18"-->
+            <div nz-col style="margin-right:1%;">
+                <br>
+                <!-- <nz-tabset nzType="card" nzSize="large" nzCentered="'true'" > -->
+                <nz-tabset nzType="card" nzSize="large" nzCentered="'true'" *ngIf="progressData">
+                    <nz-tab nzTitle="Dashboard" nzCentered="'true'">
+                        <!-- <div nz-row nzGutter="5"> -->
+
+                        <!-- <div nz-col nzSpan="24"> -->
+                        <!-- <div> -->
+                        <!-- <div nz-col *ngIf="clientData == true && totalXml && totalPdf"> -->
+                        <nz-table class="table-responsive kraTable" [nzData]="progressData" [nzShowPagination]="false">
+                            <!-- <nz-table class="table-responsive" [nzData]="ClientRow"> -->
+                            <thead>
+                                <!-- class="content_header ant-row ng-star-inserted" -->
+                                <tr>
+                                    <th class="content_header">Process</th>
+                                    <!-- <th class="content_header"></th> -->
+                                    <th class="content_header">Records</th>
+                                    <th class="content_header">Progress</th>
+                                    <th class="content_header">Reporting Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of progressData; let i=index;">
+                                    <!-- <td class="link"><span class="linkdesign"
+                                            (click)="showDrawer(i)">{{data.Progress}}</span>
+                                    </td> -->
+                                    <!-- style="color: #395d99;font-size: 1rem;" -->
+                                    <td class="link"><span [ngClass]="{'linkdesign':i==1 || i==2}"
+                                            style="color: #395d99;font-size: 1rem;"
+                                            (click)="showDrawer(i)">{{data.Progress}}</span>
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 14px;font-weight: 600;">Total :
+                                            {{data.Total}}</span><br>
+                                        <span class="success">Success :
+                                            {{data.Success}}</span><br>
+                                        <span class="failed">Failed :
+                                            {{data.Fail}}</span><br>
+                                        <span class="pending" *ngIf="data.Others!=0">Pending :
+                                            {{data.Pending}}</span><br>
+                                        <!-- <span  style="color:rgb(115, 153, 235);font-size: 14px;" *ngFor="let kraData of kraXmlData2">Pending : {{kraData['Total KRA Pending']}}</span> -->
+                                    </td>
+                                    <td>
+                                        <!-- nzTitle="{{data['Success Percentage'] | number}}% Success and {{data.FailurePercentage | number}}% failed" -->
+                                        <nz-progress nz-tooltip [nzStrokeColor]="'rgb(42, 188, 42)'" [nzWidth]="60"
+                                            nzType="circle" nzTitle="{{data['Success Percentage'] | number}}% Success"
+                                            [nzPercent]="data['Success Percentage'] | number: '1.0-0'">
+                                        </nz-progress>
+                                        <!-- <nz-progress nz-tooltip [nzStrokeColor]="'rgb(255, 0, 0)'"
+                                                [nzWidth]="60" nzType="circle" [nzSuccessPercent]="20"
+                                                [nzPercent]="data['Success Percentage'] | number: '1.0-0'">
+                                            </nz-progress> -->
+                                        <!-- <nz-progress
+                                            nz-tooltip
+                                            nzTitle="{{data['Success Percentage'] | number}}% Success and {{data.FailurePercentage | number}}% failed {{totalXml}}%"
+                                            [nzPercent]="totalXml"
+                                            [nzSuccessPercent]="data['Success Percentage'] | number: '1.0-0'"
+                                          ></nz-progress> -->
+
+                                        <!-- <nz-statistic
+                                          [nzValue]="(data.FailurePercentage | number: '1.0-2')"
+                                          [nzTitle]="'Failed'"
+                                          [nzPrefix]="prefixTplOne"
+                                          [nzSuffix]="'%'" nzSize="small"
+                                          [nzValueStyle]="{ color: '#CF1322' }" 
+                                        ></nz-statistic>
+                                        <ng-template #prefixTplOne><span nz-icon nzType="arrow-down"></span></ng-template>
+                                        <nz-statistic
+                                        [nzValue]="(data['Success Percentage']| number: '1.0-2')"
+                                        [nzTitle]="'Success'"
+                                        [nzPrefix]="prefixTplTwo"
+                                        [nzSuffix]="'%'" nzSize="small"
+                                        [nzValueStyle]="{ color: '#3F8600' }"
+                                      ></nz-statistic>
+                                      <ng-template #prefixTplTwo><span nz-icon nzType="arrow-up"></span></ng-template> -->
+
+                                    </td>
+                                    <td>
+                                        <nz-alert *ngIf="data['Reporting Status']!=''" nzType="info"
+                                            nzMessage="{{data['Reporting Status']}}" style="width:260px">
+                                        </nz-alert>
+                                        <!-- nzShowIcon  nzWidth="30"-->
+                                        <!-- <nz-tag *ngIf="reportingStatus!=''" [nzColor]="'blue'" >{{data['Reporting Status']}}</nz-tag> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+
+                        <!-- <div>
+                            <canvas
+                                baseChart 
+                                [chartType]="'pie'"
+                                [datasets]="pieTotalcount"
+                                [labels]="pieSource"
+                                [colors]="pieColor">
+                            </canvas>
+                          </div> -->
+                        <!-- </div> -->
+                        <!-- </div> -->
+                        <!-- </div> -->
+                    </nz-tab>
+                    <!-- <br> -->
+                    <nz-tab nzTitle="Data" nzCentered="'true'">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label>Report Type </nz-form-label>
+                                    <nz-form-control>
+                                        <!-- <nz-select [(ngModel)]="date.doctype" nzPlaceHolder="Type" name="docstatus">
+                                    <nz-option nzValue="DIGITAL" nzLabel="Digital"></nz-option>
+                                    <nz-option nzValue="SCAN" nzLabel="Scan"></nz-option>
+                                    <nz-option nzValue="" nzLabel="All"></nz-option>
+                                    </nz-select> -->
+                                        <nz-select [(ngModel)]="ReportTypes" name="ReportTypes"
+                                            nzDropdownMatchSelectWidth="true" (ngModelChange)="getReportType($event)"
+                                            nzShowSearch nzPlaceHolder="Select a Report Type">
+                                            <nz-option *ngFor="let item of Reporttypes" [nzLabel]="item.ReportType"
+                                                [nzValue]="item.ReportType" nzVisible>
+                                            </nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4" nzLg="4">
+                                <!-- <div> -->
+                                <!-- [nzBeforeUpload]="beforeUpload1" -->
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    *ngIf="uploadButton " [nzBeforeUpload]="fileChangeEvent()" 
+                                    [(nzFileList)]="nomineeIdfileList1" [nzLimit]="1">
+                                    <button nz-button *ngIf="uploadButton"
+                                        style="float:right;margin-left:35px;background-color:#b05c6f;color: white;"><i
+                                            nz-icon type="upload"></i><span>{{buttonContent}}</span></button>
+                                </nz-upload>
+                                <!-- <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    *ngIf="uploadButton && downloadXml" 
+                                    [nzBeforeUpload]="fileChangeEvent()"
+                                    [(nzFileList)]="nomineeIdfileList1" [nzLimit]="1">
+                                    <button nz-button *ngIf="uploadButton && downloadXml"
+                                        style="float:right;margin-left:35px;background-color:#b05c6f;color: white;"><i
+                                            nz-icon type="upload"></i><span>{{buttonContent}}</span></button>
+                                </nz-upload> -->
+                                <!-- <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    *ngIf="uploadButton && downloadPdf" [nzBeforeUpload]="fileChangeEvent2()"
+                                    [(nzFileList)]="nomineeIdfileList2" [nzLimit]="1">
+                                    <button nz-button *ngIf="uploadButton && downloadPdf"
+                                        style="float:right;margin-left:35px;background-color:#b05c6f;color: white;"><i
+                                            nz-icon type="upload"></i><span>{{buttonContent}}</span></button>
+                                </nz-upload> -->
+                                <!-- [disabled]="nomineeIdfileList1.length==1" -->
+                            </div>
+                            <div nz-col nzMd="4" nzLg="3">
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <button nz-button
+                                    style="margin-right:15px;width: 90px;background-color:#947296;color: white;"
+                                    (click)="downloadView()">View</button>
+                            </div>
+                            <!-- <div nz-col nzMd="4" nzLg="3">
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <button nz-button *ngIf="!uploadButton"
+                                    style="margin-right:15px;width: 90px;background-color:#947296;color: white;"
+                                    (click)="downloadView('V')">View</button>
+                                <button nz-button *ngIf="uploadButton && downloadXml"
+                                    style="margin-right:15px;width: 90px;background-color:#947296;color: white;"
+                                    (click)="downloadView('X')">View</button> -->
+                            <!-- xml -->
+                            <!-- <button nz-button *ngIf="uploadButton && downloadPdf"
+                                    style="margin-right:15px;width: 90px;background-color:#947296;color: white;"
+                                    (click)="downloadView('P')">View</button> -->
+                            <!-- pdf -->
+                            <!-- </div> -->
+                            <div nz-col nzMd="4" nzLg="1">
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <button nz-button style="background-color:#5179bf;color: white;"
+                                    (click)="download('C')"><span nz-icon nzType="download"
+                                        nzTheme="outline"></span></button>
+                                <!-- <button nz-button style="background-color:#5179bf;color: white;" *ngIf="downloadExcel"
+                                    (click)="download('C')"><span nz-icon nzType="download"
+                                        nzTheme="outline"></span></button>
+                                <button nz-button style="background-color:#5179bf;color: white;" *ngIf="downloadXml"
+                                    (click)="download('X')"><span nz-icon nzType="download"
+                                        nzTheme="outline"></span></button>
+                                <button nz-button style="background-color:#5179bf;color: white;" *ngIf="downloadPdf"
+                                    (click)="download('F')"><span nz-icon nzType="download"
+                                        nzTheme="outline"></span></button> -->
+                            </div>
+                            <!-- <p>{{urlDATA}}</p> -->
+                            <br><br>
+
+                            <!-- <div  > 
+                                <iframe *ngIf="urlDATA"  id="monitor" name="monitor" frameborder="0" width="100%" height="412"
+                                [src]="urlDATA"> </iframe>
+                            </div> -->
+                            <!-- <iframe ngFor="let i=index" *ngIf="urlDATA"  id="monitor" name="monitor" frameborder="0" width="100%" height="412"
+                            [src]="uints"> </iframe> -->
+                            <!-- <div nz-col nzMd="4" nzLg="4">
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <button nz-button *ngIf="uploadButton"
+                                    style="margin-right:20px;width: 90px;background-color:#947296;color: white;"
+                                    (click)="poolData()">Pool</button>
+                            </div> -->
+                            <!-- <div nz-col nzMd="4" nzLg="4">
+                                <nz-form-label>&nbsp;</nz-form-label>
+                                <button nz-button
+                                    style="margin-right:20px;width: 90px;background-color:#7d5680;color: white;"
+                                    (click)="onChange($event.target.files)">Pool</button>
+                            </div> -->
+                            <!-- <div>
+                                <input type="file" (change)="onChange($event.target.files)">
+                                <div>
+                                    <h3>File Content</h3>
+                                    <pre> {{fileContent}} </pre>
+                                </div>
+                            </div> -->
+                        </div>
+                        <br>
+                        <!-- <div nz-row nzGutter="5" *ngIf="tableContents">
+                            <div nz-col nzMd="4" style="margin-top: -5px;">
+                                <nz-form-item>
+                                    <nz-form-label>Search by PAN</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input name="panSearch" [(ngModel)]="panSearch"
+                                            nzPlaceHolder="Enter a PAN number" style="text-transform: uppercase;"
+                                            autocomplete="off">
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="2" style="margin-top:12px;padding-left: -15px;">
+                                <nz-form-label> </nz-form-label>
+                                <button nzValue="P" (click)="filter('P')" nz-button nzType="primary"
+                                    class="searchBtn">Search</button>
+                            </div>
+                          
+                            <div nz-col nzMd="2" style="margin-top:16px;">
+                                <nz-form-label> </nz-form-label>
+                                
+                                <i nz-icon nzType="sync" nzTheme="outline" nzSize="large" (click)="downloadView()"
+                                    style="color:#0a78f7; margin-right: 10px; cursor: pointer;
+                                        font-size: 15px;"></i>
+                            </div>
+                        </div> -->
+
+                        <!-- </div> -->
+                        <br>
+
+                        <!-- <div *ngIf="tableContents"> -->
+                        <div *ngIf="tableContentsTrue">
+
+                            <nz-table class="table table-bordered table-responsive " [nzData]="tableContents"
+                                style="font-size:500; " [nzShowPagination]="false" [nzSize]="'small'">
+                                <thead class="sticky-header">
+                                    <tr style="text-align: center; padding: 5px; margin: auto;color:white;"
+                                        class="sticky-header">
+                                        <th *ngFor="let cols of headers">{{cols}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr> -->
+                                    <tr *ngFor="let data of tableContents" class="reportTable">
+                                        <td *ngFor="let cols of headers">
+                                            {{data[cols]}}</td>
+                                        <!-- [ngClass]="{'numbers':isNumber(data[cols])}" -->
+                                        <!-- <td  *ngIf="URL"><img [src]="URL" /> </td> -->
+                                    </tr>
+                                </tbody>
+                            </nz-table><br>
+                            <nz-pagination (nzPageIndexChange)="pageIndexChanged($event, 'V')" [nzSize]="'small'"
+                                [nzTotal]="totalPages" [(nzPageIndex)]="pageIndexVal"
+                                *ngIf="totalPages>10 && tableContents">
+                            </nz-pagination>
+                        </div>
+                        <!-- <div *ngIf="urlDATA">
+                            <img [src]="urlDATA" width='500' height='600'>
+                        </div> -->
+                        <!-- <div *ngIf="urlDATA" >
+                            <div *ngFor="let url of uints">
+                                <img [src]="url" width='400' height='500'>
+                            </div>
+                        </div> -->
+                        <br>
+
+                    </nz-tab>
+                </nz-tabset>
+            </div>
+        </div>
+        <div *ngIf="showdrwer==true && !isLoading">
+            <nz-drawer placement="left" [nzClosable]="true" [nzVisible]="showdrwer" nzPlacement="right"
+                [nzWidth]="'55%'" (nzOnClose)="close('X')">
+
+                <!-- <h3>{{data.Progress}}</h3> -->
+                <h3>{{drawerName}}</h3>
+                <hr><br>
+                <!-- <button nz-button nzType="primary" style="margin: right 20px; float: right;" (click)="download('A')">Download
+                    <span nz-icon nzType="download" nzTheme="outline"></span></button> -->
+                <br>
+                <div nz-row nzGutter="5">
+                    <!-- <nz-form-item>
+                        <nz-form-control>
+                            <nz-radio-group name="process_type" [(ngModel)]="date.searchBtns">
+                                <label nz-radio nzValue="P" (click)="searchFilter('P')"
+                                    style="font-weight:400;">PAN</label>
+                                <label nz-radio nzValue="A" (click)="searchFilter('A')"
+                                    style="font-weight:400;">Application No</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item> -->
+                </div>
+                <!-- <div nz-row nzGutter="5"> -->
+                <div nz-row nzGutter="5" *ngIf="filterSearch== true;" style="margin-top: -5px;">
+                    <div nz-col nzMd="5" style="margin-top: -5px;">
+                        <nz-form-item>
+                            <!-- <nz-form-label>PAN</nz-form-label> -->
+                            <label>PAN</label>
+                            <nz-form-control *ngIf="filterSearchPan== true;">
+                                <input nz-input name="panSearch" [(ngModel)]="panSearch"
+                                    style="text-transform: uppercase;" autocomplete="off">
+                            </nz-form-control>
+                            <!-- <nz-form-control *ngIf="filterSearchApp== true;">
+                                <input nz-input name="appSearch" [(ngModel)]="appSearch"
+                                    style="text-transform: uppercase;" autocomplete="off">
+                            </nz-form-control> -->
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" style="margin-top: -6px;">
+                        <nz-form-item>
+                            <!-- <nz-form-label>&nbsp;</nz-form-label> -->
+                            <label>&nbsp;</label>
+                            <nz-form-control>
+                                <button *ngIf="filterSearchPan== true;" nzValue="P" (click)="filter('P')" nz-button
+                                    nzType="primary" class="searchBtn">Search</button>
+                                <!-- <button *ngIf="filterSearchApp== true;" nzValue="A" (click)="filter('A')" nz-button
+                                    nzType="primary" class="searchBtn">Search</button> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="1" style="margin-top:10px;">
+                        <nz-form-item>
+                            <label>&nbsp;</label>
+                            <nz-form-control>
+                                <i nz-icon nzType="sync" nzTheme="outline" nzSize="large" (click)="showDrawer(i)" style="color:#0a78f7;float:right; margin-right: 10px; cursor: pointer;
+                        font-size: 15px;"></i>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+
+                </div>
+                <!-- (click)="onClientSearch()" -->
+                <br>
+                <div nz-row nzGutter="5">
+                    <!-- <div nz-col nzMd="2">
+                        <i nz-icon nzType="sync" nzTheme="outline" nzSize="large" (click)="showDrawer('X')" style="color:#0a78f7;float:right; margin-right: 10px; cursor: pointer;
+                                font-size: 15px;" ></i>
+                    </div>
+                    <div nz-col nzMd="5">
+                        <span>
+                            <label nz-checkbox name="poasigned" [(ngModel)]="failedRecords" (ngModelChange)="failed($event,'A')"
+                            >Failed Records Only</label>
+                        </span>
+                    </div> -->
+                </div>
+                <br><br>
+                <!-- [nzShowPagination]="recordTableLength>5"  -->
+                <!-- <nz-table #xmlTable class="table-responsive table-themed tranTbl xmlTable" [nzShowPagination]="true"
+                    nzPaginationType="small" [nzData]="recordTable" (nzPageIndexChange)="pageIndexChanged($event)"
+                    [nzTotal]="totalPages" [nzPageIndex]="pageIndexVal" nzSize="small" [nzPageSize]="10" > -->
+
+                <nz-table #xmlTable class="table-responsive" nzSize="small" [nzData]="drawerTable"
+                    [nzShowPagination]="false">
+                    <thead class="sticky-header">
+                        <tr style="background-color:#61a0c5;">
+                            <th *ngFor="let head of heading">{{head}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- style="text-align: center; padding: 5px;"  -->
+                        <!-- <tr> -->
+                        <tr *ngFor="let datas of drawerTable" class="drawerTable">
+                            <td *ngFor="let head of heading">
+                                {{datas[head]}}</td>
+                            <!-- [ngClass]="{'numbers':isNumber(data[cols])}" -->
+                            <!-- <td  *ngIf="URL"><img [src]="URL" /> </td> -->
+                        </tr>
+                    </tbody>
+                    <!-- <thead>
+                        <tr style="background-color:#61a0c5;">
+                            <th>Serialno</th>
+                            <th>PAN</th>
+                            <th>KITNO</th>
+                            <th>KRA Upload Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of drawerTable">
+                            <td>{{data.Serialno}}</td>
+                            <td>{{data.PANNO}}</td>
+                            <td>{{data.KITNO}}</td>
+                            <td>{{data.KRAUploadStatus}}</td>
+                        </tr>
+                    </tbody> -->
+
+                </nz-table>
+
+                <br>
+                <nz-pagination *ngIf="totalDrwerPages>10 && drawerTable"
+                    (nzPageIndexChange)="pageIndexChanged($event,'X')" [nzTotal]="totalDrwerPages"
+                    [(nzPageIndex)]="pageIndexVal" [nzSize]="'small'"></nz-pagination>
+            </nz-drawer>
+        </div>
+        <!-- <nz-modal nzWidth="800"
+        [(nzVisible)]="modalVisible" nzTitle={{modalHeader}}  (nzOnCancel)="handleCancel()"
+        [nzFooter]="modalFooter" >
+            <p >Modal Content</p>
+            <span [innerHTML]="htmlmodal" ></span>
+            <ng-template #modalFooter>
+                <button nz-button nzType="primary" (click)="handleCancel()">OK</button>
+              </ng-template>
+        </nz-modal> -->
+    </form>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

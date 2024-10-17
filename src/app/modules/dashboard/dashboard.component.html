@@ -1,0 +1,22 @@
+<div class="main-content " *ngIf = "totalData.length>0">
+  <div nz-row nzGutter="10" *ngFor="let dataset of totalData;let i=index;">
+    <h2 class="title">{{dataset[0][0][0].Project}}</h2>
+    <div nz-row nzGutter="10" *ngFor="let projects of dataset">
+    <div nz-col nzMd="6" *ngFor="let types of projects;let i=index;" style="margin-bottom:10px">
+      <nz-card [nzTitle]="Brokerag" [@zooming]="zooming">
+        <ng-template #Brokerag>
+        <div  class="header" [ngStyle]="{'background': types[0].color}" >{{types[0].Type}}</div>  
+        </ng-template>
+
+      <div nz-card-grid style="width: 100%" class="addressPadding" *ngFor="let data of types;let id=index;">
+          <div class="amount2">{{data.Sub_Type|nrFormat}}</div>
+          <div class="label2">{{data.Value|nrFormat}}</div>
+        </div>
+    </nz-card>
+  </div>
+  </div>
+  </div>
+</div>
+<div class="main-content" *ngIf="totalData.length==0">
+<h1>Welcome to CRD Platform</h1>
+</div>

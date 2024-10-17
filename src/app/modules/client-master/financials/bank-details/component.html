@@ -1,0 +1,886 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <nz-card [nzTitle]="title1">
+        <ng-template #title1>
+            <i nz-icon type="user" class="icon text-danger" nzTheme="outline"></i> Bank Details
+        </ng-template>
+        <nz-divider nzText="Trading Bank" nzOrientation="left"></nz-divider>
+        <div nz-row nzGutter="10" formGroupName="masterBank">
+            <!--<div nz-col nzMd="12">-->
+            <div nz-row nzGutter="5">
+                <!-- <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>Bank</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="bank" nzPlaceHolder="Choose">
+                                <nz-option [nzValue]="1" nzLabel="Bank 1"></nz-option>
+                                <nz-option [nzValue]="2" nzLabel="Bank 2"></nz-option>
+                                <nz-option [nzValue]="3" nzLabel="Bank 3"></nz-option>
+                                <nz-option [nzValue]="4" nzLabel="Bank 4"></nz-option>
+                                <nz-option [nzValue]="5" nzLabel="Bank 5"></nz-option>
+                                <nz-option [nzValue]="6" nzLabel="Bank 6"></nz-option>
+                                <nz-option [nzValue]="7" nzLabel="Bank 7"></nz-option>
+                                <nz-option [nzValue]="8" nzLabel="Bank 8"></nz-option>
+                                <nz-option [nzValue]="9" nzLabel="Bank 9"></nz-option>
+                                <nz-option [nzValue]="10" nzLabel="Bank 10"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Name of client as in Bank</nz-form-label>
+                        <nz-form-control>
+                            <input formControlName="clntname" nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Bank Ac Type</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="bankAcType" nzPlaceHolder="Choose" nzAllowClear>
+                                <nz-option *ngFor="let item of tradingBankAccType" [nzValue]="item.AccountType"
+                                    [nzLabel]="item.AccountType"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5" nzLg="4" *ngIf="clientType!='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Mode of operation</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="modeOfOperation" required nzAllowClear>
+                                <nz-option *ngFor="let item of ModeOfOperation" [nzValue]="item.Mode"
+                                    [nzLabel]="item.Mode"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">IFSC Code</nz-form-label>
+                        <nz-form-control>
+                            <input type="text" nz-input  (ngModelChange)="getIfscdetails($event)" formControlName="ifscCode" (keypress)="symbolrestrict($event)" [nzAutocomplete]="ifscauto" minlength="11" maxlength="11" />
+                            <nz-autocomplete #ifscauto>
+                                <nz-auto-option *ngFor="let option of ifscresultArray" [nzValue]="option.IFSC"
+                                    [nzLabel]="option.IFSC" class="aleternateColor">
+                                    <span [innerHTML]="option.IFSC"></span>
+                                </nz-auto-option>
+                            </nz-autocomplete>
+
+                            
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Bank Name</nz-form-label>
+                        <!-- <nz-form-control>
+                            <input type="text" nz-input  formControlName="bankname"  [nzAutocomplete]="auto1" />
+                            <nz-autocomplete #auto1>
+                              <nz-auto-option *ngFor="let option of bankListArray"  [nzValue]="option.BankName" [nzLabel]="option.BankName"  class="aleternateColor">
+                              <span [innerHTML]="option.BankName"></span>
+                              </nz-auto-option>
+                            </nz-autocomplete>
+                        </nz-form-control> -->
+                        <nz-form-control>
+                            <nz-select formControlName="bankname" nzPlaceHolder="Choose" nzAllowClear>
+                                <nz-option *ngFor="let item of BankNameList" [nzValue]="item.BANK_NAME"
+                                    [nzLabel]="item.BANK_NAME"></nz-option>
+
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label>Address</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input rows="4" style="max-height: 80px;" formControlName="address"
+                                readonly></textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">MICR</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="micr"   [textMask]="{mask: inputMasks.numeric}" maxlength="9" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Country</nz-form-label>
+                        <nz-form-control>
+                            <nz-form-control>
+                                <input type="text" nz-input formControlName="country" [nzAutocomplete]="auto" />
+                                <nz-autocomplete #auto>
+                                    <nz-auto-option *ngFor="let option of resultArray" [nzValue]="option.Country"
+                                        [nzLabel]="option.Country" class="aleternateColor">
+                                        <span [innerHTML]="option.Country|highlight:citizenship"></span>
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">State</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="state" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">City</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="city" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Pin</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="pin" autocomplete="off" [textMask]="{mask: inputMasks.numeric}" minlength="6"
+                                maxlength="6" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Account Number</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="accntNumber" autocomplete="off" [textMask]="{mask: inputMasks.numeric}"
+                                type="password" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Confirm Account Number</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="confrmAccntNumber" (blur)="masterbankConfirmCheck()"
+                                [textMask]="{mask: inputMasks.numeric}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label  class="required">Online Fund Transfer</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="oft" nzPlaceHolder="Choose" nzAllowClear>
+                                <nz-option [nzValue]="'Y'" nzLabel="Yes"></nz-option>
+                                <nz-option [nzValue]="'N'" nzLabel="No"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label [ngClass]="IsResidentInd?'required':''">RBI Reference Number</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="rbirefNo"  [textMask]="{mask: inputMasks.numeric}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label [ngClass]="IsResidentInd?'required':''" >RBI Approval Date</nz-form-label>
+                        <nz-form-control>
+                            <!-- <input type="date"  formControlName="rbiapprvldt" class=date name="rbiapprvldt"> -->
+                            <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [nzDisabledDate]="disabledFutureDate"
+                                formControlName="rbiapprvldt"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzLg="4" nzMd="6" *ngIf="clientType=='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Upload Selling only Letter
+                        </nz-form-label>
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="SellingLetterDocumentModal()"
+                                *ngIf="SellingLetterfileList.length" style="float: right;" title="Preview" ><i nz-icon
+                                    type="eye"></i></button>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                [nzBeforeUpload]="beforeUploadSellingLetter" [(nzFileList)]="SellingLetterfileList"
+                                [nzLimit]="1">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4" *ngIf="clientType=='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Upload MICR Proof
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                [nzBeforeUpload]="NREbeforeUpload" [(nzFileList)]="NREfileList" [nzLimit]="1">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4" *ngIf="clientType=='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Firm's Bank proof upload
+                        </nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="1">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+     
+            </div>
+
+            <div nz-row ngGutter="5">
+                <div nz-col nzMd="6" nzLg="4" *ngIf="clientType!='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Upload Bank Proof </nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="3">
+                                <button nz-button type="button"><i nz-icon type="upload"></i><span>Select
+                                        File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4" class="imageBox mt-2" *ngFor="let item of bankProofDocument;index as i">
+                    <div nz-row>
+                        <div nz-col nzMd="15">
+                            <span>{{item.bankDocname}} Proof {{i+1}}</span>
+                        </div>
+                        <div nz-col nzMd="9">
+                            <button nz-button class="floatright" nzType="primary" (click)="showModal(item)" title="Preview"><i nz-icon
+                                    type="eye"  ></i></button>
+                            <button nz-button class="floatright" style="background-color: red;color: white;" title="Delete"
+                                (click)="DeleteProofrow(i)"><i nz-icon type="delete"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div nz-row ngGutter="5">
+                <div nz-col nzLg="4" nzMd="6" *ngIf="showNREdetails && clientType!='nonIndividual'">
+                    <nz-form-item>
+                        <nz-form-label class="required">Upload NRE PIS Letter</nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                [nzBeforeUpload]="NREbeforeUpload" [(nzFileList)]="NREfileList" [nzLimit]="3">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4" class="imageBox mt-2" *ngFor="let item of NREPISletter;index as i">
+                    <div nz-row>
+                        <div nz-col nzMd="15">
+                            <span>{{item.nreDocname}} proof {{i+1}}
+                            </span>
+                        </div>
+                        <div nz-col nzMd="9">
+                            <button nz-button class="floatright" nzType="primary" title="Preview" (click)="showModal(item)"><i nz-icon
+                                    type="eye"></i></button>
+                            <button nz-button class="floatright" style="background-color: red;color: white;" title="Delete"
+                                (click)="DeletePIsLetter(i)"><i nz-icon type="delete"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div nz-row nzGutter="10">
+                <div nz-col nzMd="8" nzLg="4">
+                    <button *ngIf="isAdd" (click)="add()" class="m-1" nz-button
+                        nzType="primary">Add&nbsp;&nbsp;</button>
+                    <button *ngIf="isUpdate" class="m-1" nz-button nzType="primary" (click)="update()">Update</button>
+                    <button class="m-1" nz-button nzType="danger" (click)="reset()">Reset&nbsp;</button>
+
+                </div>
+            </div>
+            <div *ngIf="bankDetails.length>0">
+                <br>
+                <nz-table [nzSize]="'small'" [nzData]="bankDetails" [nzFrontPagination]="false"
+                    [nzShowPagination]="false" [nzScroll]="{x:'3200px'}" class="tranTbl table-responsive">
+                    <tr>
+                        <th nzWidth="150px" nzLeft="0px">Trading Bank</th>
+                        <th nzWidth="200px">Name of client as in Bank</th>
+                        <th nzWidth="150px">Bank Account Type</th>
+                        <th nzWidth="150px">Mode of Operation</th>
+                        <th nzWidth="150px">IFSC Code</th>
+                        <th nzWidth="150px">Bank Name</th>
+                        <th nzWidth="300px">Address</th>
+                        <th nzWidth="150px">MICR</th>
+                        <th nzWidth="150px">Country</th>
+                        <th nzWidth="150px">State</th>
+                        <th nzWidth="150px">City</th>
+                        <th nzWidth="150px">Pin</th>
+                        <th nzWidth="150px">Account No.</th>
+                        <th nzWidth="150px">Confirm Account No.</th>
+                        <th nzWidth="150px">Online Fund Transfer</th>
+                        <th nzWidth="150px">RBI Reference No.</th>
+                        <th nzWidth="150px">RBI Approval Date</th>
+                        <th nzWidth="150px" class="text-center" *ngIf="showNREdetails || clientType=='nonIndividual'"
+                            nzRight="250px">
+                            <span *ngIf="showNREdetails">NRE PIS letter</span>
+                            <span *ngIf="clientType == 'nonIndividual'">MICR Proof</span>
+                        </th>
+                        <th nzWidth="150px" class="text-center" nzRight="120px">
+                            <span *ngIf="clientType != 'nonIndividual'">Bank Proof</span>
+                            <span *ngIf="clientType == 'nonIndividual'">Firm's Bank proof</span>
+                        </th>
+                        <th nzWidth="150px" nzRight="0px" class="text-center">Action</th>
+                    </tr>
+                    <tr *ngFor="let data of bankDetails;let i=index">
+                        <td nzLeft="0px">Bank {{i+1}}</td>
+                        <td>{{data.clntname}}</td>
+                        <td>{{data.bankAcType}}</td>
+                        <td>{{data.modeOfOperation}}</td>
+                        <td>{{data.ifscCode}}</td>
+                        <td>{{data.bankname}}</td>
+                        <td>{{data.address}}</td>
+                        <td>{{data.micr}}</td>
+                        <td>{{data.country}}</td>
+                        <td>{{data.state}}</td>
+                        <td>{{data.city}}</td>
+                        <td>{{data.pin}}</td>
+                        <td>{{data.accntNumber}}</td>
+                        <td>{{data.confrmAccntNumber}}</td>
+                        <td>{{data.oft}}</td>
+                        <td>{{data.rbirefNo}}</td>
+                        <td>{{data.rbiapprvldt|date: 'dd/MM/yyyy'}}</td>
+                        <td nzRight="250px" *ngIf="showNREdetails || clientType=='nonIndividual'" class="text-center">
+                            <button nz-button nzType="primary" *ngFor="let d of data.pisLetter" title="Preview"
+                                (click)="showNREModal(d)"><i nz-icon type="eye"></i></button> </td>
+                        <td nzRight="120px" class="text-center"><button nz-button nzType="primary" title="Preview"
+                                *ngFor="let data of data.bankProof" (click)="showModal(data)"><i nz-icon
+                                    type="eye"></i></button> </td>
+                        <td nzRight="0px" class="text-center">
+                            <button nz-button nzType="primary" (click)="edit(data,i)">Edit</button>
+                            <button nz-button [ngStyle]="{'background-color':isUpdate ? '#801212' :'red'  }" title="Delete"
+                                style="color: white;" [disabled]="isUpdate" (click)="Deleterow(i)"><i nz-icon
+                                    type="delete"></i></button>
+                        </td>
+                    </tr>
+                </nz-table>
+            </div>
+        </div>
+        <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent"
+            [contentType]="filePreiewContentType" [fileName]="filePreiewFilename"></app-file-preview>
+
+        <div nz-row nzGutter="10" formGroupName="DpBank">
+            <nz-divider nzText="First Holder DP Bank" nzOrientation="left"></nz-divider>
+            <label nz-checkbox formControlName="sameastrading" (ngModelChange)="viewdpbank($event)">Same as
+                Trading
+                Bank</label>
+            <br><br>
+            <div *ngIf="isvisibledpbnk">
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Client Name as in Bank</nz-form-label>
+                            <nz-form-control>
+                                <input formControlName="dpBankClientName" nz-input />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Bank Ac Type</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="dpBankAcType" nzPlaceHolder="Choose" nzAllowClear>
+                                    <nz-option *ngFor="let item of dpBankAccType" [nzValue]="item.AccountType"
+                                        [nzLabel]="item.AccountType"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="5" nzLg="4" *ngIf="clientType!='nonIndividual'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Mode of operation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="dpBankModeOfOperation" nzAllowClear required>
+                                    <nz-option *ngFor="let item of ModeOfOperation" [nzValue]="item.Mode"
+                                        [nzLabel]="item.Mode"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">IFSC Code</nz-form-label>
+                            <nz-form-control>
+                                <input type="text" nz-input  (ngModelChange)="getDPbnkIfscdetails($event)" (keypress)="symbolrestrict($event)" formControlName="dpBankifscCode" [nzAutocomplete]="ifscauto1" minlength="11" maxlength="11" />
+                                <nz-autocomplete #ifscauto1>
+                                    <nz-auto-option *ngFor="let option of ifscresultArray1" [nzValue]="option.IFSC"
+                                        [nzLabel]="option.IFSC" class="aleternateColor">
+                                        <span [innerHTML]="option.IFSC"></span>
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-form-control>
+                   
+                 
+                      
+        
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Bank Name</nz-form-label>
+                            <!-- <nz-form-control>
+               
+                                <input type="text" nz-input  formControlName="dpBankname"  [nzAutocomplete]="auto2" />
+                            <nz-autocomplete #auto2>
+                              <nz-auto-option *ngFor="let option of bankListArray2"  [nzValue]="option.BankName" [nzLabel]="option.BankName"  class="aleternateColor">
+                              <span [innerHTML]="option.BankName"></span>
+                              </nz-auto-option>
+                            </nz-autocomplete>
+                            </nz-form-control> -->
+                            <nz-form-control>
+                                <nz-select formControlName="dpBankname" nzPlaceHolder="Choose" nzAllowClear>
+                                    <nz-option *ngFor="let item of DPBankNameList" [nzValue]="item.BANK_NAME"
+                                        [nzLabel]="item.BANK_NAME"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">MICR</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankMicr"  [textMask]="{mask: inputMasks.numeric}" maxlength="9"  />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="4" nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address</nz-form-label>
+                            <nz-form-control>
+                                <textarea nz-input rows="4" style="max-height:80px;" formControlName="dpBankAddress"
+                                    readonly></textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Country</nz-form-label>
+                            <nz-form-control>
+                                <nz-form-control>
+                                    <input type="text" nz-input formControlName="dpBankCountry"
+                                        [nzAutocomplete]="auto" />
+                                    <nz-autocomplete #auto>
+                                        <nz-auto-option *ngFor="let option of resultArray1" [nzValue]="option.Country"
+                                            [nzLabel]="option.Country" class="aleternateColor">
+                                            <span [innerHTML]="option.Country|highlight:citizenship"></span>
+                                        </nz-auto-option>
+                                    </nz-autocomplete>
+                                </nz-form-control>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankState" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">City</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankCity" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="3" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Pin</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankPin" [textMask]="{mask: inputMasks.numeric}"
+                                    minlength="6" maxlength="6" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="5" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Account Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankAccntNumber"
+                                    [textMask]="{mask: inputMasks.numeric}" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Confirm Account Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="dpBankConfrmAccntNumber" (blur)="DPbankConfirmCheck()"
+                                    [textMask]="{mask: inputMasks.numeric}" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Currency Code</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="currencyCodeinDpBank" nzPlaceHolder="Choose" nzAllowClear>
+                                    <nz-option *ngFor="let item of Currency" [nzValue]="item.Currency"
+                                        [nzLabel]="item.Currency"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Upload Bank Proof </nz-form-label>
+                            <nz-form-control>
+                                <!-- <button nz-button nzType="primary" (click)="DPshowModal()" *ngIf="DPfileList.length"
+                                    style="float: right;"><i nz-icon type="eye"></i></button> -->
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    [nzBeforeUpload]="DPbeforeUpload" [(nzFileList)]="DPfileList" [nzLimit]="1">
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select
+                                            File</span></button>
+                                </nz-upload>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6" nzLg="4" *ngIf="clientType == 'nonIndividual'">
+                        <nz-form-item>
+                            <nz-form-label class="required"> Upload MICR Proof </nz-form-label>
+                            <nz-form-control>
+                                <button nz-button nzType="primary" (click)="DPMICRshowModal()" title="Preview"
+                                    *ngIf="DPMICRfileList.length" style="float: right;"><i nz-icon
+                                        type="eye"></i></button>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                    [nzBeforeUpload]="DPMICRbeforeUpload" [(nzFileList)]="DPMICRfileList" [nzLimit]="1">
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select
+                                            File</span></button>
+                                </nz-upload>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6" class="imageBox" nzLg="4" *ngFor="let data of DPBankProof;index as i">
+                        <div nz-row>
+                            <div nz-col nzMd="15">
+                                DP Bank Proof {{i+1}}
+                            </div>
+                            <div nz-col nzMd="9">
+                                <button nz-button class="floatright" nzType="primary" (click)="DPshowModal(data)" title="Preview"><i
+                                        nz-icon type="eye"></i></button>
+                                <button nz-button class="floatright" title="Delete" style="background-color: red;color: white;"
+                                    (click)="DeleteDpImage(i)"><i nz-icon type="delete"></i></button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <br>
+
+    <nz-card [nzTitle]="title2" formGroupName="NREdirectDebitBank" *ngIf="showNREdetails" >
+        <ng-template #title2>
+            <!-- <i nz-icon type="user" class="icon text-danger" nzTheme="outline"></i> Direct Bank Details
+            *ngIf="showNREdetails"
+            -->
+           
+            <i nz-icon type="user" class="icon text-danger" nzTheme="outline" ></i>   Direct Debit Bank Details 
+            <label nz-checkbox [nzDisabled]="form.value.DpBank.sameastrading" formControlName="sameAsDP" (ngModelChange)="selectsameAsDP($event)"  >Same as DP  Bank</label>
+        </ng-template>
+        <div nz-row nzGutter="10">
+            <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label>Bank Ac Type</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="drbnkbankAcType" nzPlaceHolder="Choose" nzAllowClear>
+                            <nz-option *ngFor="let item of debitBankAccType" [nzValue]="item.AccountType"
+                                [nzLabel]="item.AccountType"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>IFSC Code</nz-form-label>
+                    <nz-form-control>
+                            <!-- <input type="text" nz-input formControlName="drbnkifscCode" (keypress)="symbolrestrict($event)" minlength="11" maxlength="11" /> -->
+                            <input type="text" nz-input formControlName="drbnkifscCode" [readonly]="sameAsDPBankChoosen" (ngModelChange)="getNREIfscdetails($event)" (keypress)="symbolrestrict($event)" minlength="11" maxlength="11" [nzAutocomplete]="ifscauto2" />
+                            <nz-autocomplete #ifscauto2>
+                                <nz-auto-option *ngFor="let option of ifscresultArray2" [nzValue]="option.IFSC"
+                                    [nzLabel]="option.IFSC" class="aleternateColor">
+                                    <span [innerHTML]="option.IFSC"></span>
+                                </nz-auto-option>
+                            </nz-autocomplete>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>Bank Name</nz-form-label>
+                  
+                    <nz-form-control>
+                        <nz-select formControlName="drbnkbankname" nzPlaceHolder="Choose" [nzDisabled]="sameAsDPBankChoosen"  nzAllowClear>
+                            <nz-option *ngFor="let item of nreBankNameList" [nzValue]="item.BANK_NAME"
+                                [nzLabel]="item.BANK_NAME"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>MICR</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="drbnkmicr"   [textMask]="{mask: inputMasks.numeric}" maxlength="9"  [readonly]="sameAsDPBankChoosen"  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label >Account Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="drbnkaccntNumber"  [readonly]="sameAsDPBankChoosen" [textMask]="{mask: inputMasks.numeric}" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        </div>
+        <div nz-row nzGutter="10">
+            <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label>Address</nz-form-label>
+                    <nz-form-control>
+                        <textarea nz-input rows="4" style="max-height: 80px;" [readonly]="sameAsDPBankChoosen"  formControlName="drbnkaddress"
+                            readonly></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>Country</nz-form-label>
+                    <nz-form-control>
+                        <nz-form-control>
+                            <nz-form-control>
+                                <input type="text" nz-input formControlName="drbnkcountry"  [readonly]="sameAsDPBankChoosen" [nzAutocomplete]="auto" />
+                                <nz-autocomplete #auto>
+                                    <nz-auto-option *ngFor="let option of resultArray2" [nzValue]="option.Country"
+                                        [nzLabel]="option.Country" class="aleternateColor">
+                                        <span [innerHTML]="option.Country"></span>
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                            </nz-form-control>
+                        </nz-form-control>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>State</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="drbnkstate" [readonly]="sameAsDPBankChoosen"  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>City</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="drbnkcity" [readonly]="sameAsDPBankChoosen"  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="4" nzLg="2">
+                <nz-form-item>
+                    <nz-form-label>Pin</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="drbnkpin" [readonly]="sameAsDPBankChoosen"  [textMask]="{mask: inputMasks.numeric}" minlength="6"
+                            maxlength="6" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="4" nzLg="2">
+                <nz-form-item>
+                    <nz-form-label>&nbsp;</nz-form-label>
+                    <nz-form-control>
+                        <label nz-checkbox formControlName="drsigned">Signed</label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label>Signed Date</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input type="date"  formControlName="drsignedDate" class=date name="drsignedDate"> -->
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD" formControlName="drsignedDate" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="8">
+                <nz-form-item>
+                    <nz-form-label>Upload Direct Debit Bank mandate </nz-form-label>
+                    <nz-form-control>
+                        <!-- <button nz-button nzType="primary" (click)="DirectshowModal()" *ngIf="DirectfileList.length"
+                            style="float: right;"><i nz-icon type="eye"></i></button> -->
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                            [nzBeforeUpload]="DirectbeforeUpload" [(nzFileList)]="DirectfileList" [nzLimit]="1">
+                            <button nz-button [disabled]="sameAsDPBankChoosen"><i nz-icon type="upload"></i><span>Select File</span></button>
+                            <!-- <p *ngIf="DirectfileList.length && DirectfileList[0].Docname" class="filelistName">
+                                {{DirectfileList[0].Docname}}</p> -->
+
+                        </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div nz-row nzGutter="5">
+            <div nz-col nzMd="6" class="imageBox" nzLg="4" *ngFor="let data of DirectDebitBank;index as i">
+                <div nz-row>
+                    <div nz-col nzMd="15">
+                        Direct Debit Bank proof {{i+1}}
+                    </div>
+                    <div nz-col nzMd="9">
+                        <button nz-button class="floatright" nzType="primary" (click)="DirectshowModal(data)" title="Preview"><i nz-icon
+                                type="eye"></i></button>
+                        <button nz-button class="floatright" style="background-color: red;color: white;"
+                            (click)="DirectDelete(i)" title="Delete"><i nz-icon type="delete"></i></button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nz-card>
+    <!-- <div nz-row nzGutter="5">
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Direct Debit Bank</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="directDebitBank">
+                                <nz-option [nzValue]="'bank1'" nzLabel="Bank 1"></nz-option>
+
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Account No</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="accNo" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Confirm Accout No</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="cnfAccNo" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <div nz-row>
+                        <div nz-col nzMd="12">
+                            <nz-form-item>
+                                <nz-form-label>DP Bank</nz-form-label>
+                                <nz-form-control>
+                                    <label nz-checkbox formControlName="dpBank"></label>
+
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                        <div nz-col nzMd="12">
+                            <nz-form-item>
+                                <nz-form-label>Trading Bank</nz-form-label>
+                                <nz-form-control>
+                                    <label nz-checkbox formControlName="tradingBank"></label>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            
+            <div nz-row nzGutter="5">
+
+                <div nz-col nzMd="6" *ngIf="showNREdetails">
+                    <nz-form-item>
+                        <nz-form-label>PIS Bank</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="pisBank" required="true">
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" *ngIf="showNREdetails">
+                    <nz-form-item>
+                        <nz-form-label>RBI Reference No</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="rbiRefNo" required="true" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" *ngIf="showNREdetails">
+                    <nz-form-item>
+                        <nz-form-label>RBI Approval Date</nz-form-label>
+                        <nz-form-control>
+                            <nz-date-picker formControlName="rbiApprovalDate" required="true"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Online FT</nz-form-label>
+                        <nz-form-control>
+                            <label nz-checkbox formControlName="onlineFt"></label>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </div> 
+             <div nz-col nzMd="12">
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>IFSC Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="ifscCode" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="20">
+                        <textarea nz-input rows="4" style="max-height: 100px;" formControlName="address"></textarea>
+                    </div>
+
+
+                </div>
+            </div> -->
+
+</form>
+<br />

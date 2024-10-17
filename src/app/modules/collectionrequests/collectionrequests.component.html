@@ -1,0 +1,261 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <!-- header section -->
+    <nz-card nzTitle="Collection Requests" style="margin-bottom: 15px;">
+      <div nz-row style="position: relative; bottom: 10px;">
+        <div class="header__icons_set" nzMd="24" nzLg="24" nz-col>
+          <form-handler class="header__icons" (onPreview)="preview()" (onReset)="resetForm()">
+          </form-handler>
+        </div>
+      </div>
+      <!-- filter section -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <!-- <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>Client</nz-form-label>
+            <nz-form-control >
+              <master-find-ctrl [options]="dpClientIdFindopt" (ngModelChange)="filldata($event)"
+                [(ngModel)]="model.Dpclientid" name="Dpclientid">
+              </master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+        
+
+        <div nz-col nzMd="3">
+          <nz-form-item>
+            <nz-form-label>Location</nz-form-label>
+            <nz-form-control >
+              <master-find-ctrl *ngIf="locationview==false" [options]="locationFindopt" [(ngModel)]="model.Location" name="Location" (ngModelChange)="onChangeLocation($event)">
+              </master-find-ctrl>
+              <input nz-input [disabled]="true" *ngIf="locationview==true" type="text" maxlength="10" [(ngModel)]="model.Location.Location"
+                    name="locationname">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label>Tradecode</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="TradecodeFindopt" (ngModelChange)="showResult($event)" [(ngModel)]="model.Tradecode" name="Tradecode"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        
+        
+        
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <!-- <nz-form-label class="required">Date</nz-form-label> -->
+            <label class="required">From Date</label>
+            <nz-form-control >
+              <nz-date-picker #fromdate nzFormat="dd-MM-yyyy" [(ngModel)]="fdate" name="date" [nzDisabledDate]="disabledFutureDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="3">
+          <nz-form-item>
+            <!-- <nz-form-label class="required">Date</nz-form-label> -->
+            <label class="required">To Date</label>
+            <nz-form-control >
+              <nz-date-picker #fromdate nzFormat="dd-MM-yyyy" [(ngModel)]="tdate" name="tdate" [nzDisabledDate]="disabledFutureDate">
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="3"> 
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control >
+              <ng-container>
+                <label nz-checkbox [(ngModel)]="showallpending" name="showallpending">Show All Pending</label>
+            </ng-container>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div nz-col nzMd="3">
+          <nz-form-item>
+            <nz-form-label>Kit No</nz-form-label>
+            <nz-form-control>
+              <input nz-input  maxlength="255" [(ngModel)]="model.kitno" name="type" />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+        <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+
+        <div nz-col nzMd="3"> 
+          <nz-form-item>
+            <nz-form-label>PayType</nz-form-label>
+            <nz-form-control >
+              <ng-container>
+              <nz-select name="paytye" [(ngModel)]="model.paytype" (ngModelChange)="paytypeChange()">
+                  <nz-option nzValue="QRCODE" nzLabel="QRCODE"></nz-option>
+                  <nz-option nzValue="UPI" nzLabel="UPI"></nz-option>
+              </nz-select>
+            </ng-container>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+
+        <div nz-col nzMd="4"> 
+          <nz-form-item>
+            <nz-form-label>Status</nz-form-label>
+            <nz-form-control >
+              <nz-select name="status" [(ngModel)]="model.Status">
+                <ng-container *ngFor="let data of getStatuslist">
+                  <nz-option [nzValue]="data.status" [nzLabel]="data.status">
+                  </nz-option>
+                </ng-container>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      
+      <!-- result table -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzMd="24" style="margin-top: 10px;" *ngIf="model.paytype=='UPI'">
+          <nz-table class="tranTbl table-responsive table-themed" #basicInnerTable [nzData]="tableData"
+            *ngIf="tableData.length > 0" [nzSize]="'small'" [nzPageSize]="20"
+            [nzShowPagination]="tableData.length > 20">
+            <thead>
+              <tr>
+                <th *ngFor="let header of ReportResponseHeader;let i = index"
+                  style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">
+                  <b *ngIf="header!='Colour' && header!='showSendIcon'">{{header}}</b>
+                </th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicInnerTable.data; let i = index">
+                <td nzWidth="7%" nzAlign='left'>{{data.Location}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.ClientCode}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Dpid}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Kitno}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.TransType}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.InvoiceNo}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Amount}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Mode}}</td>
+                
+                <td nzWidth="7%" nzAlign='left'>
+                  <span class="status_color" [ngStyle]="{'background': data.Colour}">
+                    {{data.CollectionStatus}}
+                  </span> 
+                </td>
+                <td nzWidth="7%" nzAlign='left'>
+                  <input type="text" nz-input (keypress)="onKeyPress($event)" maxlength="13" [(ngModel)]="data.Mobile" [ngModelOptions]="{standalone: true}" />
+                </td> 
+                <td nzAlign='left'>
+                  <button nz-button nzType="primary" (click)="sendSMSLink(data,i)">
+                    <i nz-icon nzType="up-square" nzTheme="outline" *ngIf="!data.showSendIcon"></i> 
+                    <i nz-icon nzType="check-circle" nzTheme="fill" *ngIf="data.showSendIcon"></i>
+                    Send link
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+
+        <div nz-col nzMd="24" style="margin-top: 10px;" *ngIf="model.paytype=='QRCODE'">
+          <nz-table class="tranTbl table-responsive table-themed" #basicInnerTable [nzData]="tableData"
+            *ngIf="tableData.length > 0" [nzSize]="'small'" [nzPageSize]="20"
+            [nzShowPagination]="tableData.length > 20">
+            <thead>
+              <tr>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Location</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">ClientCode</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Dpid</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Kitno</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Type</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">InvoiceNo</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Amount</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">Mode</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);">CollectionStatus</th>
+                <th style="padding: 5px 5px; color: black;background-color: rgba(137, 238, 204, 0.678);"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicInnerTable.data; let i = index">
+                <td nzWidth="7%" nzAlign='left'>{{data.Location}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.ClientCode}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Dpid}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Kitno}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.TransType}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.InvoiceNo}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Amount}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Mode}}</td>
+                <td nzWidth="7%" nzAlign='left'>
+                  <span class="status_color" [ngStyle]="{'background': data.Colour}">
+                    {{data.CollectionStatus}}
+                  </span> 
+                </td>
+                <td nzAlign='left'>
+                  <button nz-button nzType="primary" [disabled]="data.CollectionStatus=='Success'" (click)="showqrcode(data,i)">
+                    Show QRCODE </button>
+                </td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+
+      </div>
+     
+
+    </nz-card>
+
+  </form>
+</div>
+
+<nz-modal [(nzVisible)]="isVisibleMod" nzMask=true nzOkText="Save" (nzOnCancel)="handleCancelUPI()"
+(nzOnOk)="ValidateupiRefNo()" nzMaskClosable="false">
+<div>
+  <img class="Logogeojit" src="https://www.geojit.com/img/New-Logo.jpg" alt="Bootstrap" width="30" height="24">
+</div>
+<div style="display: inline-block;">
+  <div style="display: inline-block;"><h3>Name: {{name}}</h3></div> &emsp; <div style="display: inline-block;" *ngIf="tcode"><h3>&emsp;{{tcode}}</h3></div>
+  <div><h3>{{kitnoName}}: {{dpclntid}}</h3></div>
+</div>
+
+
+<table>
+  <thead>
+    <tr>
+      <th width="70%"></th>
+      <th width="30%"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="70%"><img style="max-width: 50%" [src]="qrcodeurl"></td>
+      <td width="30%">
+        <div><h3>{{pa}}</h3></div>
+        <div><h3>{{amount}}</h3></div>
+        <div><h3>{{invoiceNo}}</h3></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p><b>Please Enter The UPI Ref No<b style="color: red;">*</b></b></p>
+<div nz-row nzGutter="8" style="margin-left: 12px">
+  <div nz-col nzMd="8">
+    <nz-form-item>
+      <nz-form-control>
+        <input nz-input [minlength]="12" 
+          [(ngModel)]="upirefno" name="upirefno" [maxlength]="12" [minlength]="12" (keypress)="numberOnly($event)"/>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  
+</div>
+</nz-modal>
+
+<app-loader *ngIf="isLoading"></app-loader>

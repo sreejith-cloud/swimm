@@ -1,0 +1,225 @@
+<div class="main-content">
+  <div nz-row>
+    <div nz-col nzMd="20" nzLg="12" class="padding1">
+      <h3 class="content-title">Brokerage Revision Request Report</h3>
+    </div>
+    <div nz-col nzMd="20" nzLg="12">
+      <form-handler (onPreview)="view()" (onExportExcel)="excelExport()" (onReset)="reset()">
+      </form-handler>
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+
+      <nz-form-item>
+        <label class="boldinglabel">State</label>
+        <nz-form-control class="padding-top5">
+          <master-find-ctrl #config [options]="stateFindopt" (ngModelChange)="stateCodeChange()" [(ngModel)]="stateCode" name="statecode">
+          </master-find-ctrl>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+
+      <nz-form-item>
+        <label class="boldinglabel">Region</label>
+        <nz-form-control class="padding-top5">
+          <master-find-ctrl #config [options]="regionFindopt" (ngModelChange)="regionCodeChange()" [(ngModel)]="regionCode" name="regioncode">
+          </master-find-ctrl>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+
+      <nz-form-item>
+        <label class="boldinglabel">Location</label>
+        <nz-form-control class="padding-top5">
+          <master-find-ctrl #config [options]="locationFindopt" (ngModelChange)="locationCodeChange()" [(ngModel)]="locationCode" name="locationcode">
+          </master-find-ctrl>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+
+      <nz-form-item>
+        <label class="boldinglabel">Tradecode</label>
+        <nz-form-control class="padding-top5">
+          <master-find-ctrl #config [options]="tradeFindopt" [(ngModel)]="tradeCode" name="Tradecode">
+          </master-find-ctrl>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <!-- <label class="required">Date</label> -->
+        <label class="boldinglabel">From Date</label>
+        <nz-form-control class="pading-top">
+          <nz-date-picker nzFormat="dd-MM-yyyy" nzPlaceHolder="From Date" [(ngModel)]="fromDate" name="date"
+            [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <!-- <label class="required">Date</label> -->
+        <label class="boldinglabel">To Date</label>
+        <nz-form-control class="pading-top">
+          <nz-date-picker nzFormat="dd-MM-yyyy" nzPlaceHolder="To Date" [(ngModel)]="toDate" name="tdate"
+            [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <label class="boldinglabel">Type</label>
+        <nz-form-control class="pading-top">
+          <nz-select [(ngModel)]="brokerageType" nzAllowClear nzPlaceHolder="Type" name="brokerageType" class="w-100">
+            <nz-option nzValue="U" nzLabel="Upward"></nz-option>
+            <nz-option nzValue="D" nzLabel="Downward"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <label class="boldinglabel">Status</label>
+        <nz-form-control class="pading-top">
+          <nz-select [(ngModel)]="approvalStatus" name="approvalStatus" class="w-100">
+            <nz-option nzValue="P" nzLabel="Pending"></nz-option>
+            <nz-option nzValue="A" nzLabel="Final Approved"></nz-option>
+            <nz-option nzValue="R" nzLabel="Rejected"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row *ngIf="detailData.length>0">
+    <div nz-col class="padding1">
+      <nz-table #basicDPDetailsTable [nzData]="detailData" [nzPageSize]=10 [nzShowPagination]="true" nzSize="small"
+        [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+
+            <th *ngFor="let header of detailDataHeads;let i= index"
+              [ngClass]="[header=='selectedtopool' ? 'display':'',header=='rowId' ? 'display':'']">
+              {{header}}
+
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+            <td *ngFor="let header of detailDataHeads">
+              <!-- <span *ngIf="header.trim() !=='SymbolWise' && header !=='ED Approved' && header !=='SalesHead Approved' && header !=='SH Approved' && header !=='RM Approved'">{{data[header]}}</span> -->
+              <!-- <span *ngIf="header.trim() !=='SymbolWise' && ( header ==='ED Approved' || header ==='SalesHead Approved' || header ==='SH Approved' || header ==='RM Approved')">{{data[header]?'Y':'N'}}</span> -->
+              <span
+                *ngIf="data[header]  && data[header].toString().length<30 && header.trim() !=='SymbolWise' && header !=='ED Approved' && header !=='SalesHead Approved' && header !=='SH Approved' && header !=='RM Approved'">{{data[header]}}</span>
+              <span style="text-align: left;"
+                *ngIf="data[header] && data[header].toString().length>=30 && header.trim() !=='SymbolWise' && header !=='ED Approved' && header !=='SalesHead Approved' && header !=='SH Approved' && header !=='RM Approved'"
+                nz-tooltip nzPlacement="top" class="popup" [nzTitle]="tootiptitle">
+                <span style="width: 50px;"
+                  *ngIf="data[header].toString().length>30">{{data[header].toString().slice(0,30)+'...'}}</span>
+                <ng-template #tootiptitle class="tooltip">{{data[header]}}</ng-template>
+              </span>
+              <span
+                *ngIf="header.trim() !=='SymbolWise' && ( header ==='ED Approved' || header ==='SalesHead Approved' || header ==='SH Approved' || header ==='RM Approved')">{{data[header]?'Y':'N'}}</span>
+              <span *ngIf="data[header] && data[header].toString().length<30 && header.trim() ==='SymbolWise'" id="txt"
+                (click)="detailsView(i)">{{data[header]}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+  <!-- <span style="text-align: left;"  *ngIf="data.UploadRemarks && data.UploadRemarks.length<20">{{data.UploadRemarks}}</span>
+              <span style="text-align: left;"  *ngIf="data.UploadRemarks && data.UploadRemarks.length>=20" nz-tooltip nzPlacement="top" class="popup"
+                [nzTitle]="tootiptitle">
+                <span style="width: 50px;"
+                  *ngIf="data.UploadRemarks.length>20">{{data.UploadRemarks.slice(0,20)+'...'}}</span>
+                <ng-template #tootiptitle class="tooltip">{{data.UploadRemarks}}</ng-template>
+              </span> -->
+  <nz-modal [(nzVisible)]="showtableModel" nzTitle="Symbolwise Brokerage View" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%">
+    <div nz-row>
+      <!-- class="modelheight" -->
+      <div nz-col class="padding1">
+        <nz-table #ContrBrkDtsTabl [nzData]="contrBrkDtsTable" nzSize="middle" [nzPageSize]=3 [nzShowPagination]="true"
+          class="tranTbl table-responsive table-themed">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Symbol</th>
+              <th>Old Brokerage</th>
+              <th>New Brokerage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dat of ContrBrkDtsTabl.data;let i = index" class="resulttable">
+              <!-- "Futures_Product"
+                    "Futures_Symbol"
+                    "present_Brokerage"
+                    "Futures_Brokerage"
+                    "UporDown" -->
+              <td>{{dat.Futures_Product}}</td>
+              <td>{{dat.Futures_Symbol}}</td>
+              <td>{{dat.present_Brokerage}}</td>
+              <td>{{dat.Futures_Brokerage}}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+    <div nz-row>
+      <!-- class="modelheight" -->
+      <div nz-col class="padding1">
+        <nz-table #commodityTabl [nzData]="commodityTable" [nzPageSize]=3
+         nzSize="middle" [nzShowPagination]="true"
+          class="tranTbl table-responsive table-themed">
+          <thead>
+            <tr>
+              <!-- <th>Slno</th> -->
+              <th>Instrument</th>
+              <th>Product</th>
+              <th>Symbol</th>
+              <th>Present - Normal Brokerage Per Lot</th>
+              <th>New - Normal Brokerage Per Lot</th>
+              <th>Present - Intraday Brokerage Per Lot</th>
+              <th>New - Intraday Brokerage Per Lot</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let dat of commodityTabl.data;let i = index" class="resulttable">
+              <!-- "Brok_slno"
+"Location"
+"Tradecode"
+"ClientId"
+"Instrument"
+"Product"
+"Symbol"
+"NormalBrokeragePerLot"
+"IntradayBrokeragePerLot"
+"OldNormalBrokeragePerLot"
+"OldIntradayBrokeragePerLot" -->
+              <td>{{dat.Instrument}}</td>
+              <td>{{dat.Product}}</td>
+              <td>{{dat.Symbol}}</td>
+              <td>{{dat.OldNormalBrokeragePerLot }}</td>
+              <!-- CurNormalBrok -->
+              <td>{{dat.NormalBrokeragePerLot}}</td>
+              <!-- NormalBrok -->
+              <td>{{dat.OldNormalBrokeragePerLot}}</td>
+              <!-- CurIntradayBrok -->
+              <td>{{dat.IntradayBrokeragePerLot}}</td>
+              <!-- IntradayBrok -->
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </nz-modal>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

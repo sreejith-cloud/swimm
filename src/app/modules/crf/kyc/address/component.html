@@ -1,0 +1,799 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <div nz-row nzGutter="10">
+        <div nz-col nzLg="12" [ngSwitch]="form.value.address1.proofOfAddress">
+            <nz-card [nzTitle]="title1">
+                <ng-template #title1>
+                    <i nz-icon nzType="home" nzTheme="outline" class="icon text-warning"></i> Local/ Permanent address
+                </ng-template>
+                <!-- <nz-divider nzText="Current / Permanent / Overseas Address" nzOrientation="left"></nz-divider> -->
+                <div nz-row nzGutter="5" formGroupName="address1">
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="home" nzTheme="outline"
+                                    class="text-info"></i>Address 1</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input (keypress)="charrestrict($event)" formControlName="houseName" maxlength="36"
+                                    [readonly]="disableKrarelatedFields" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label class="required"><i nz-icon nzType="home" nzTheme="outline" class="text-danger"></i>House Number</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="houseNumber" placeholder="house Number" />
+                                    </nz-form-control>
+                                </nz-form-item>     
+                            </div> -->
+
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="car" nzTheme="outline"
+                                    class="text-primary"></i>Address 2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street" [readonly]="disableKrarelatedFields" maxlength="36"
+                                    (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class=""><i nz-icon nzType="home" nzTheme="outline"
+                                    class="text-info"></i>Address 3<span class="pAddress">(Details entered in Address 3 line will be updated only in BO and will NOT be updated in Exchange / DPM)</span></nz-form-label>
+                            <nz-form-control>
+                                <input nz-input (keypress)="charrestrict($event)" formControlName="landmark"
+                                    [readonly]="disableKrarelatedFields" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required"> <i nz-icon nzType="environment" nzTheme="outline"
+                                    class="text-warning"></i> Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pinCode" [textMask]="{mask: inputMasks.numeric}"
+                                    [readonly]="disableKrarelatedFields" (keyup)="getPinData($event,'address1')"
+                                    maxlength="6" [readonly]="disableKrarelatedFields" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="environment" nzTheme="outline"
+                                    class="text-success"></i>City</nz-form-label>
+                            <nz-form-control *ngIf="isAdd1Pin">
+                                <input nz-input formControlName="city" [readonly]="disableKrarelatedFields"
+                                    (keypress)="charrestrict($event)"/>
+                            </nz-form-control>
+                            <nz-form-control *ngIf="!isAdd1Pin">
+                                <nz-select formControlName="city" nzPlaceHolder="Choose" (ngModelChange)="changResCity($event)">
+                                    <nz-option *ngFor="let data of A1district"
+                                        [nzValue]="data" [nzLabel]="data"
+                                        style="word-break:break-word;"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="environment" nzTheme="outline"
+                                    class="text-danger"></i>District</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="district" [readonly]="disableKrarelatedFields"
+                                    (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="environment" nzTheme="outline"
+                                    class="text-info"></i>State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="state" [readonly]="disableKrarelatedFields"
+                                    (keypress)="charrestrict($event)" />
+                                <!-- <nz-select formControlName="state">
+                                        </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required"><i nz-icon nzType="flag" nzTheme="outline"
+                                    class="text-warning"></i>Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="country" [readonly]="disableKrarelatedFields"
+                                    (keypress)="charrestrict($event)" />
+                                <!-- <nz-select formControlName="country">
+                                </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address Type</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="addressType" nzAllowClear>
+                                    <nz-option *ngFor="let data of addressTypeArray" [nzValue]="data.Code"
+                                        [nzLabel]="data.Code"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required"> <i nz-icon nzType="idcard" nzTheme="outline"
+                                    class="text-primary"></i> Proof Of Address</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="proofOfAddress">
+                                    <nz-option *ngFor="let data of PermanentAddressProofDetails" [nzValue]="data.Code"
+                                        [title]="data.Description" [nzLabel]="data.Description"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+
+                </div>
+                <div nz-row nzGutter="5" *ngIf="Address1formFeilds.length>0">
+                    <div nz-col nzMd="8" *ngFor="let item of Address1formFeilds;let i = index">
+                        <nz-form-item>
+                            <nz-form-label class="required" *ngIf="item.type=='Text'"><i nz-icon nzType="reconciliation"
+                                    nzTheme="outline" class="text-danger"></i>{{item.label}}</nz-form-label>
+                            <nz-form-label class="required" *ngIf="item.type=='Date'"><i nz-icon type="calendar"
+                                    nzTheme="outline" class="text-success"></i>{{item.label}}</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="charrestrict($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text'&& (item.label!='Aadhar No'&& item.label!='Pan No')"
+                                    [maxlength]="item.label=='Passport No'?10:30" required />
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="ValidatePan($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Pan No'" minlength="10" maxlength="10"
+                                    required readonly />
+                                <input nz-input [(ngModel)]="item['proof'+i]"
+                                    (keypress)="numberOnly(item.label,$event,'A1')"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Aadhar No'" minlength="12" maxlength="12"
+                                     required />
+                                     <!-- (ngModelChange)="maskAdharNum(item.label,$event)" -->
+                                <!-- <input type="date"  class=date [(ngModel)]="item['proof'+i]"   [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'" required (ngModelChange)="validateDate1(item.label,$event)"> -->
+                                <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [(ngModel)]="item['proof'+i]"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'" required
+                                    [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                    (ngModelChange)="validateDate1(item.label,$event)"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <div nz-col nzLg="12" [ngSwitch]="form.value.address2.proofOfAddress">
+            <nz-card [nzTitle]="groupTitle" formGroupName="address2">
+
+                <ng-template #groupTitle>
+                    <i nz-icon type="environment" nzTheme="outline" class="icon text-warning"></i>
+                    Correspondence/ Foreign address <label nz-checkbox *ngIf="!disableKrarelatedFields"
+                        formControlName="sameAsPermant" (ngModelChange)="selectPermantADD($event)">Same as Permanent
+                        address</label>
+                </ng-template>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address 1</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" maxlength="36"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)"/>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <!-- <div nz-col nzMd="8">
+                                <nz-form-item>
+                                    <nz-form-label class="required">House Number</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="houseNumber" />
+                                    </nz-form-control>
+                                </nz-form-item>
+        
+                            </div> -->
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address 2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected" maxlength="36"
+                                    (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="">Address 3<span class="pAddress">(Details entered in Address 3 line will be updated only in BO and will NOT be updated in Exchange / DPM)</span></nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="landmark"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required">Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pinCode" (keyup)="getPinData($event,'address2')"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="6"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required">City</nz-form-label>
+                            <nz-form-control *ngIf="isAdd2Pin">
+                                <input nz-input formControlName="city"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)"/>
+                            </nz-form-control>
+                            <nz-form-control *ngIf="!isAdd2Pin">
+                                <nz-select formControlName="city" nzPlaceHolder="Choose" [class.disabled]="isPemantSelected"  (ngModelChange)="changCurCity($event)">
+                                    <nz-option *ngFor="let data of A2district"
+                                        [nzValue]="data" [nzLabel]="data"
+                                        style="word-break:break-word;"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">District</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="district"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="state"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)" />
+                                <!-- <nz-select formControlName="state">
+                                        </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="country"
+                                    [readonly]="disableKrarelatedFields||isPemantSelected"
+                                    (keypress)="charrestrict($event)"
+                                    (ngModelChange)="getCorrsAddCountryName($event)" />
+                                <!-- <nz-select formControlName="country">
+                                </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Proof Of Address</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="proofOfAddress" nzPlaceHolder="Choose"
+                                    [nzDisabled]="isPemantSelected">
+                                    <nz-option *ngFor="let data of CorrespondanceAddressProofDetails"
+                                        [nzValue]="data.Code" [nzLabel]="data.Description"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+                <div nz-row nzGutter="5" *ngIf="Address2formFeilds.length>0">
+                    <div nz-col nzMd="8" *ngFor="let item of Address2formFeilds;let i = index">
+                        <nz-form-item>
+                            <nz-form-label class="required">{{item.label}}</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="charrestrict($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text'&& (item.label!='Aadhar No'&& item.label!='Pan No')"
+                                    [maxlength]="item.label=='Passport No'?10:30" required
+                                    [readonly]="isPemantSelected" />
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="ValidatePan($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Pan No'" minlength="10" maxlength="10"
+                                    required readonly />
+                                <input nz-input [(ngModel)]="item['proof'+i]"
+                                    (keypress)="numberOnly(item.label,$event,'A2')"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Aadhar No'" minlength="12" maxlength="12"
+                                    (ngModelChange)="maskAdharNum2(item.label,$event)" [readonly]="isPemantSelected"
+                                    required />
+                                <!-- <input type="date"  class=date [(ngModel)]="item['proof'+i]"   [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'" (ngModelChange)="validateDate2(item.label,$event)" required > -->
+                                <nz-date-picker [(ngModel)]="item['proof'+i]" nzPlaceHolder="YYYY-MM-DD"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'"
+                                    [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                    (ngModelChange)="validateDate2(item.label,$event)" required
+                                    [nzDisabled]="isPemantSelected"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+            </nz-card>
+        </div>
+    </div>
+    <br>
+    <div nz-row nzGutter="10" class="mb-2">
+        <div nz-col nzLg="12" [hidden]='hide' [ngSwitch]="form.value.address3.proofOfAddress">
+
+            <nz-card [nzTitle]="title2">
+                <ng-template #title2>
+                    <i nz-icon type="environment" nzTheme="outline" class="icon text-danger"></i> Additional
+                    Correspondence Address
+
+                </ng-template>
+
+                <div nz-row nzGutter="5" formGroupName="address3">
+                    <!-- <div nz-col nzMd="8">
+                    <nz-form-item>
+                        <nz-form-label>Address</nz-form-label>
+                        <nz-form-control>
+                            <textarea nz-input formControlName="address" rows="3" style="max-height: 100px;">
+                                            </textarea>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Address 1</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" maxlength="36" (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <!-- <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>House Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseNumber" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div> -->
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Adress 2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street"  maxlength="36" (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Adress 3</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="landmark" (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pinCode" (keyup)="getPinData($event,'address3')"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="6" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- (ngModelChange)="getPinData($event,'address3')" maxlength="6" -->
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>City</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="city" (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>District</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="district" (keypress)="charrestrict($event)" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="state" (keypress)="charrestrict($event)" />
+                                <!-- <nz-select formControlName="state">
+                                        </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label>Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="country" (keypress)="charrestrict($event)" />
+                                <!-- <nz-select formControlName="country">
+                                </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="8" nzLg="16">
+                        <nz-form-item>
+                            <nz-form-label>Proof Of Address</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="proofOfAddress" nzPlaceHolder="Choose" nzAllowClear>
+                                    <nz-option *ngFor="let data of CorrespondanceAddressProofDetails"
+                                        [nzValue]="data.Code" [nzLabel]="data.Description"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+                <div nz-row nzGutter="5" *ngIf="Address3formFeilds.length>0">
+                    <div nz-col nzMd="8" *ngFor="let item of Address3formFeilds;let i = index">
+                        <nz-form-item>
+                            <nz-form-label>{{item.label}}</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="charrestrict($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text'&& (item.label!='Aadhar No'&& item.label!='Pan No')"
+                                    [maxlength]="item.label=='Passport No'?10:30" required />
+                                <input nz-input [(ngModel)]="item['proof'+i]"
+                                    (keypress)="numberOnly(item.label,$event,'A3')"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Aadhar No'" minlength="12"
+                                    (ngModelChange)="maskAdharNum3(item.label,$event)" maxlength="12" required />
+                                <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="ValidatePan($event)"
+                                    [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text' && item.label=='Pan No'" minlength="10" maxlength="10"
+                                    required readonly />
+                                <!-- <input type="date"  class=date [(ngModel)]="item['proof'+i]"   [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'" (ngModelChange)="validateDate3(item.label,$event)" required > -->
+                                <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [(ngModel)]="item['proof'+i]"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'"
+                                    [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                    (ngModelChange)="validateDate3(item.label,$event)" required></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+
+            </nz-card>
+
+        </div>
+    </div>
+    <div nz-row nzGutter="10">
+        <div nz-col nzMd="24" nzLg="24">
+            <nz-card [nzTitle]="title3">
+                <ng-template #title3>
+                    <i nz-icon type="idcard" nzTheme="outline" class="icon text-success"></i> Proof of Identity
+                </ng-template>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required" nzFor="name">Id Proof</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="idProof" nzPlaceHolder="Choose">
+                                    <nz-option *ngFor="let data of identityProofDetails" [nzValue]="data.Code"
+                                        [nzLabel]="data.Description"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div *ngIf="identityProofformFeilds.length>0">
+                        <div nz-col nzMd="4" *ngFor="let item of identityProofformFeilds;let i = index">
+                            <nz-form-item>
+                                <nz-form-label class="required">{{item.label}}</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="charrestrict($event)"
+                                        [ngModelOptions]="{standalone: true}"
+                                        *ngIf="item.type=='Text'&& (item.label!='Aadhar No'&& item.label!='Pan No')"
+                                        [maxlength]="item.label=='Passport No'?10:30" required />
+                                    <input nz-input [(ngModel)]="item['proof'+i]"
+                                        (keypress)="numberOnly(item.label,$event,'A5')"
+                                        [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="maskAdharNum5(item.label,$event)"
+                                        *ngIf="item.type=='Text' && item.label=='Aadhar No'" minlength="12"
+                                        maxlength="12" required />
+                                    <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="ValidatePan($event)"
+                                        [ngModelOptions]="{standalone: true}"
+                                        *ngIf="item.type=='Text' && item.label=='Pan No'" minlength="10" maxlength="10"
+                                        required readonly />
+                                    <!-- <input type="date"  class=date [(ngModel)]="item['proof'+i]"   [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'"  (ngModelChange)="validateDate5(item.label,$event)" required > -->
+                                    <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [(ngModel)]="item['proof'+i]"
+                                        [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'"
+                                        (ngModelChange)="validateDate5(item.label,$event)"
+                                        [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                        required></nz-date-picker>
+
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+                </div>
+            </nz-card>
+            <br>
+        </div>
+    </div>
+    <div nz-row *ngIf="NRI">
+        <div nz-col nzLg="24" [ngSwitch]="form.value.address4.proofOfAddress">
+            <nz-card [nzTitle]="extraTemplate">
+                <ng-template #extraTemplate>
+                    <i nz-icon type="home" nzTheme="outline" class="icon text-warning"></i> &nbsp;&nbsp;&nbsp;&nbsp;
+                    <label nz-checkbox formControlName="taxOutsideIndia"
+                        style="color:black;font-size: 14px;font-weight:500">Residence for tax purpose in
+                        jurisdictions outside India</label>
+                </ng-template>
+                <div *ngIf="isJudisdiction">
+                    <div formGroupName="address4">
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Country of residence as per Tax &nbsp;
+                                    </nz-form-label>
+                                    <nz-form-control>
+                                        <input type="text" nz-input formControlName="taxCountry"
+                                            [nzAutocomplete]="auto1" (keypress)="charrestrict1($event)" />
+                                        <nz-autocomplete #auto1>
+                                            <nz-auto-option *ngFor="let option of countryresultArray"
+                                                [nzValue]="option.Country" [nzLabel]="option.Country"
+                                                class="aleternateColor">
+                                                <span [innerHTML]="option.Country"></span>
+                                            </nz-auto-option>
+                                        </nz-autocomplete>
+                                        <!-- <nz-select formControlName="taxCountry" nzAllowClear nzPlaceHolder="Country of Tax">
+                                        <nz-option nzValue="**" nzLabel="**"></nz-option>
+
+                                    </nz-select> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label>Tax identification No/equivalent</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="taxIdentification"
+                                            (keypress)="charrestrict($event)" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Place/City of Birth</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="placeOfBirth" nzAllowClear
+                                            nzPlaceHolder="Place Of Birth" (keypress)="charrestrict1($event)">
+
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Country of Birth</nz-form-label>
+                                    <nz-form-control>
+                                        <input type="text" nz-input autocomplete="off" formControlName="countryOfBirth"
+                                            [nzAutocomplete]="auto" (keypress)="charrestrict1($event)" />
+                                        <nz-autocomplete #auto>
+                                            <nz-auto-option *ngFor="let option of resultArray1" [nzValue]="option.Country"
+                                                [nzLabel]="option.Country" class="aleternateColor">
+                                                <span [innerHTML]="option.Country"></span>
+                                            </nz-auto-option>
+                                        </nz-autocomplete>
+                                        <!-- <nz-select formControlName="countryOfBirth" nzAllowClear
+                                        nzPlaceHolder="Country Of Birth">
+                                        <nz-option nzValue="**" nzLabel="**"></nz-option>
+                                    </nz-select> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Fatca</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-select formControlName="fatca" nzAllowClear nzPlaceHolder="Fatca">
+                                            <nz-option nzValue="USPerson" nzLabel="US Person"></nz-option>
+                                            <nz-option nzValue="nonUSPerson" nzLabel="Non-USPerson"></nz-option>
+                                            <nz-option nzValue="NA" nzLabel="NA"></nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4" *ngIf="enableFacta">
+                                <nz-form-item>
+                                    <nz-form-label class="required">US declaration Form</nz-form-label>
+                                    <nz-form-control>
+                                        <button nz-button nzType="primary" (click)="showModal()" *ngIf="fileList.length"
+                                            style="float: right;" title="Preview"><i nz-icon type="eye"></i></button>
+                                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="1">
+                                            <button nz-button><i nz-icon type="upload"></i><span>Select
+                                                    File</span></button>
+                                        </nz-upload>
+                                        <p *ngIf="fileList.length && fileList[0].DocName" class="filelistName">
+                                            {{fileList[0].DocName}}</p>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                        <nz-divider></nz-divider>
+                        <div><b style="font-size: 14px;color:rgb(92, 98, 103)">Jurisdiction Address</b>
+                            &nbsp;
+                            <nz-radio-group formControlName="sameAddAs" (ngModelChange)="checkSameAddressAs($event)">
+                                <label nz-radio nzValue="Correspondence">Same as Correspondence</label>
+                                <label nz-radio nzValue="Permanent">Same as Permanent</label>
+                                <label nz-radio nzValue="others">Others</label>
+                                <!-- <label nz-radio nzValue='none'>None</label> -->
+                            </nz-radio-group>
+                        </div>
+                        <br>
+                        <div nz-row nzGutter="5">
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Address 1</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="houseName"  maxlength="36" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+
+                            </div>
+                            <!-- <div nz-col nzMd="4">
+                                    <nz-form-item>
+                                         <nz-form-label class="required">House Number</nz-form-label>
+                                        <nz-form-control>
+                                            <input nz-input formControlName="houseNumber" />
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div> -->
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Address 2</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="street" maxlength="36" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+
+                            </div>
+                            <div nz-col nzMd="24">
+                                <nz-form-item>
+                                    <nz-form-label class=""><i nz-icon nzType="home" nzTheme="outline"
+                                            class="text-info"></i>Address 3<span class="pAddress">(Details entered in Address 3 line will be updated only in BO and will NOT be updated in Exchange / DPM)</span></nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input (keypress)="charrestrict($event)" formControlName="landmark"
+                                            [readonly]="disableKrarelatedFields" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Pin Code</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="pinCode"
+                                            [textMask]="{mask: inputMasks.numeric}"
+                                            (keyup)="getPinData($event,'address4')" maxlength="6"
+                                            (keypress)="charrestrict($event)"
+                                            [class.disabled]="IsOther=='false'">
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">City</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="city" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">District</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="district" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">State</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="state" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                        <!-- <nz-select formControlName="state">
+                                            </nz-select> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                            <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Country</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="country" (keypress)="charrestrict($event)" [class.disabled]="IsOther=='false'"/>
+                                        <!-- <nz-select formControlName="country">
+                                    </nz-select> -->
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+
+                            <div nz-col nzMd="4" [hidden]="IsOther=='true'">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Proof Of Address</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-select formControlName="proofOfAddress" nzPlaceHolder="Choose" nzAllowClear [class.disabled]="IsOther=='false'">
+                                            <nz-option *ngFor="let data of JurisdictionAddressProofDetails"
+                                                [nzValue]="data.Code" [nzLabel]="data.Description"></nz-option>
+                                        </nz-select>
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-row nzGutter="5" *ngIf="Address4formFeilds.length>0" class="proofAddress" [hidden]="IsOther=='true'">
+                        <div nz-col nzMd="4" *ngFor="let item of Address4formFeilds;let i = index">
+                            <nz-form-item>
+                                <nz-form-label class="required">{{item.label}}</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="charrestrict($event)"
+                                        [ngModelOptions]="{standalone: true}"
+                                        *ngIf="item.type=='Text'&& (item.label!='Aadhar No'&& item.label!='Pan No')"
+                                        required readonly />
+                                    <input nz-input [(ngModel)]="item['proof'+i]"
+                                        (keypress)="numberOnly(item.label,$event,'A4')"
+                                        [ngModelOptions]="{standalone: true}"
+                                        (ngModelChange)="maskAdharNum4(item.label,$event)"
+                                        *ngIf="item.type=='Text' && item.label=='Aadhar No'" minlength="12"
+                                        maxlength="12" required readonly />
+                                    <input nz-input [(ngModel)]="item['proof'+i]" (keypress)="ValidatePan($event)"
+                                        [ngModelOptions]="{standalone: true}"
+                                        *ngIf="item.type=='Text' && item.label=='Pan No'" minlength="10" maxlength="10"
+                                        required readonly />
+                                    <!-- <input type="date"  class=date [(ngModel)]="item['proof'+i]"   [ngModelOptions]="{standalone: true}"  *ngIf="item.type=='Date'" [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"  (ngModelChange)="validateDate4(item.label,$event)" required > -->
+                                    <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [(ngModel)]="item['proof'+i]"
+                                        [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'"
+                                        [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                        nzDisabled (ngModelChange)="validateDate4(item.label,$event)" required>
+                                    </nz-date-picker>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+
+                </div>
+            </nz-card>
+        </div>
+
+    </div>
+
+</form>
+<app-loader *ngIf="isloader"></app-loader>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+    [fileName]="filePreiewFilename"></app-file-preview>
+<!-- <button (click)="isAddressValid()">click</button> -->

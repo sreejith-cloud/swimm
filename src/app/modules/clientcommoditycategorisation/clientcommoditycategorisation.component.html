@@ -1,0 +1,47 @@
+
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h1>Client Commodities Categorisation Form</h1>
+      </div>
+      
+    
+    </div>
+    <app-loader [hidden]="!isSpinVisible"></app-loader>
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="6" nzLg="5">
+        <nz-form-item>
+          <nz-form-label>Trade Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="ClientFindopt" (ngModelChange)="reset()"  [(ngModel)]="model.Clientid" name="Clientid">
+            </master-find-ctrl>
+          </nz-form-control>
+     
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="2" nzLg="1">
+        <nz-form-item>
+          <nz-form-label>&nbsp;</nz-form-label>
+          <nz-form-control>
+            <button  nz-button nzType="primary"  (click)="getdata(model.Clientid)">View</button>
+          </nz-form-control>
+   
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="2" nzLg="2">
+        <nz-form-item>
+          <nz-form-label>&nbsp;</nz-form-label>
+          <nz-form-control>
+            <button class="ml"  nz-button nzType="primary" (click)="reset()" >Reset</button>
+          </nz-form-control>
+
+        </nz-form-item>
+      </div>
+    </div>
+ 
+    <iframe  class="iframe" *ngIf="frameshow" width="100%" height="700px;" name="my-iframe" [src]="url | safeHtml"></iframe>
+
+  </form>
+
+</div>

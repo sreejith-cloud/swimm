@@ -1,0 +1,72 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <!-- header section -->
+    <nz-card nzTitle="Pan Details" style="margin-bottom: 15px;">
+      <!-- filter section -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzMd="4" nzLg="4">
+          <nz-form-item>
+            <nz-form-label>PAN</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="panFindOption" [(ngModel)]="panNumber" name="PAN"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col class="header__icons_set" nzMd="17" nzLg="17">
+          <form-handler class="header__icons" (onPreview)="preview()" (onReset)="resetForm()"
+            (onExportExcel)="exportData()">
+          </form-handler>
+        </div>
+
+      </div>
+      <!-- result table -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzMd="24" style="margin-top: 10px;">
+          <nz-table class="tranTbl table-responsive table-themed" #basicInnerTable [nzData]="tableData"
+            *ngIf="tableData.length > 0" [nzSize]="'small'" [nzPageSize]="20"
+            [nzShowPagination]="tableData.length > 20">
+            <thead>
+              <tr>
+                <th *ngFor="let header of ReportResponseHeader;let i = index"
+                  style="padding: 5px 5px; color: black;background-color: rgba(137, 219, 238, 0.678);">
+                  <b>{{header}}</b>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicInnerTable.data; let i = index">
+                <td nzWidth="7%" nzAlign='left'>{{data.Pan}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.TradeCode}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.AccountType}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Name}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Status}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.DPID}}</td> 
+                <td nzWidth="7%" nzAlign='left'>{{data.ClientId}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Account_Type}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.FirstHolderName}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.SecondHolderName}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.ThirdHolderName}}</td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Status_}}</td>
+                <td nzWidth="7%" nzAlign='center'>
+                  <span *ngIf="data.INSstatus==true">Y</span> 
+                  <ng-template *ngIf="data.INSstatus==false">N</ng-template>
+                </td>
+                <td nzWidth="7%" nzAlign='center'>
+                  <span *ngIf="data.PMSstatus==true">Y</span> 
+                  <ng-template *ngIf="data.PMSstatus==false">N</ng-template>
+                </td>
+                <td nzWidth="7%" nzAlign='center'>
+                  <span *ngIf="data.AadharSeeded==true">Y</span> 
+                  <ng-template *ngIf="data.AadharSeeded==false">N</ng-template>
+                </td>
+                <td nzWidth="7%" nzAlign='left'>{{data.Description}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </nz-card>
+
+  </form>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

@@ -1,0 +1,287 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+        <div nz-col nzMd="20" nzLg="10">
+            <h3 class="content-title"> Trading Account Transaction Charges</h3>
+        </div>
+        
+        <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+            <form-handler (onReset)="Reset()" (onSave)="saveconfirm()">
+            </form-handler>
+        </div>
+        <div nz-row nzGutter="3">
+
+            <div nz-col nzMd="6">
+                <nz-form-item>
+                    <nz-form-label> <b>Type</b></nz-form-label>
+                    <nz-form-control>
+
+                        <nz-select style="width:100%;" [(ngModel)]="model.margintype" name="reportType" (ngModelChange)="onChangeType($event)" nzDropdownMatchSelectWidth="true">
+                            <nz-option *ngFor="let item of ReportTypeList" [nzLabel]="item.description" [nzValue]="item.value">
+                            </nz-option>
+                        </nz-select>
+
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label><b>Location</b></nz-form-label>
+                    <nz-form-control>
+                        <!-- <master-find-ctrl *ngIf="locationview==false" [options]="locationFindopt" (ngModelChange)="onChangeLocation($event)"
+                    [(ngModel)]="model.location" name="location">
+                </master-find-ctrl> -->
+                        <lib-master-nonautofind *ngIf="locationview==false" [options]="locationFindopt" (ngModelChange)="onChangeLocation($event)" [(ngModel)]="model.location" name="location" #location id="findlocation">
+                        </lib-master-nonautofind>
+                        <input nz-input [disabled]="true" *ngIf="locationview==true" type="text" maxlength="10" [(ngModel)]="model.location.Location" name="locationname">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label><b>Date</b></nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker [(ngModel)]="model.date" name="date" nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledFutureDate">
+                        </nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            
+
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label> <b>Kit No</b></nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [disabled]="kitnoDisable" maxlength="255" [(ngModel)]="model.kitno" name="type" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="6">
+                <nz-form-item>
+                    <nz-form-label *ngIf="shownameonly==true"><b>Name</b></nz-form-label>
+                    <nz-form-label *ngIf="shownameonly==false"><b>Client</b></nz-form-label>
+                    <nz-form-control>
+                        <input nz-input *ngIf="shownameonly==true" (keypress)="Validatename($event)" maxlength="255" [(ngModel)]="model.name" name="nme" />
+                        <!-- <master-find-ctrl *ngIf="shownameonly==false" [options]="TradeFindopt" [(ngModel)]="model.Tradecode" (ngModelChange)="onChangeClient($event)" name="Tradecode">
+            </master-find-ctrl> -->
+                        <lib-master-nonautofind *ngIf="shownameonly==false" [options]="TradeFindopt" [(ngModel)]="model.Tradecode" (ngModelChange)="onChangeClient($event)" name="Tradecode">
+                        </lib-master-nonautofind>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="3" *ngIf="shownameonly==false">
+                <nz-form-item>
+                    <nz-form-label>&nbsp;</nz-form-label>
+                    <nz-form-control>
+                        <label nz-checkbox [(ngModel)]="model.otherBranch"  name="otherbranch" (ngModelChange)="otherBranchChange($event)">Other Branch</label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+
+            <div nz-col nzMd="3" *ngIf="showcheckbox==true">
+                <nz-form-item>
+                    <nz-form-label>&nbsp;</nz-form-label>
+                    <nz-form-control>
+                        <label nz-checkbox [(ngModel)]="model.Agreementcharges" readonly name="NSDL">Agreement Charges</label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="2" *ngIf="showcheckbox==true">
+                <nz-form-item>
+                    <nz-form-label>&nbsp;</nz-form-label>
+                    <nz-form-control>
+                        <label nz-checkbox [(ngModel)]="model.dpcharges" readonly name="NSDL">DP Charges</label>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="4" *ngIf="showstamp">
+                <nz-form-item>
+                    <nz-form-label> <b>Stamp</b></nz-form-label>
+                    <nz-form-control>
+                        <nz-select [(ngModel)]="model.stamp" name="stamp" nzDropdownMatchSelectWidth="true" style="width: 100%;">
+                            <nz-option *ngFor="let item of stampdata" [nzLabel]="item" [nzValue]="item">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+
+
+        </div>
+
+        <div nz-row nzGutter="3">
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label><b>PAN</b></nz-form-label>
+                    <nz-form-control>
+                        <input nz-input (keypress)="ValidatePan($event)" style="text-transform: uppercase;" [(ngModel)]="model.pan" name="pannum" maxlength="10" minlength="10" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="10" style="margin-left: 1%;">
+                <nz-form-item>
+                    <nz-form-label><b>Payment Option</b></nz-form-label>
+                    <nz-form-control style="margin-top: 2%;">
+                        <nz-radio-group [(ngModel)]="model.PaymentOption" name="PaymentOption" (ngModelChange)="onchangepaymentOption($event)">
+                            <label class="boldinglabel" *ngIf="showD" nz-radio nzValue="D">Debit From Client</label>&nbsp;
+                            <label class="boldinglabel" *ngIf="showC" nz-radio nzValue="Q">QR CODE</label>&nbsp;
+                            <!-- <label class="boldinglabel" *ngIf="showU" nz-radio nzValue="U">UPI</label>&nbsp; -->
+                            <label class="boldinglabel" *ngIf="showB" nz-radio nzValue="B">BANK</label>&nbsp;
+                            <label class="boldinglabel" *ngIf="showBarjeel" nz-radio nzValue="J">Barjeel Debit</label>&nbsp;
+                            
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+
+        <div *ngIf="showBankDetails">
+            <div nz-row nzGutter="3">
+
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label><b>BANK/CASH</b></nz-form-label>
+                        <nz-form-control>
+                            <master-find-ctrl [options]="BankFindopt" [(ngModel)]="model.bankorcash" name="bank/cash">
+                            </master-find-ctrl>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="3">
+                    <nz-form-item>
+                        <nz-form-label><b>Cheque No</b></nz-form-label>
+                        <nz-form-control>
+                            <input nz-input (keypress)="Validatecheque($event)" style="text-transform: uppercase;" [(ngModel)]="model.chequeno" name="chequeno" maxlength="6" minlength="6" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </div>
+
+        <div nz-row nzGutter="3" *ngIf="viewAfterSave">
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label><b>CHARGE</b></nz-form-label>
+                    <nz-form-control>
+                        <input nz-input disabled="true"  [(ngModel)]="model.charge" name="charge" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="3">
+                <nz-form-item>
+                    <nz-form-label><b>Voucher ID</b></nz-form-label>
+                    <nz-form-control>
+                        <input nz-input disabled="true"  [(ngModel)]="model.voucherid" name="voucherid" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        </div>
+
+    </form>
+</div>
+
+<!-- footer atl -->
+<div class="footer" style=" bottom: 150px ;display: inline-block;margin-top: 5%;">
+    <div class="card">
+        <div class="container" style="border: 1px solid #61b1b1; margin-left:20px; padding: 15px;">
+            <p>Additional T and C - Rs100/- </p>
+
+        </div>
+    </div>
+</div>
+
+
+  <!--  mod by jishnu start-->
+  <nz-modal [(nzVisible)]="isVisibleMod" nzMask=true nzOkText="Save" (nzOnCancel)="handleCancelUPI()"
+  (nzOnOk)="save()">
+  <!-- <p><b>Total Amount is <h3 style="display: inline-block;font-weight: 500;">{{totalAmount}}</h3></b></p>
+  <p><b>Please Enter The UPI Ref No</b></p>
+  <div nz-row nzGutter="8" style="margin-left: 12px">
+    <div nz-col nzMd="12">
+      <nz-form-item>
+        <nz-form-control>
+          <input nz-input maxlength="12" minlength="12" 
+            [(ngModel)]="model.upirefno" name="upirefno" />
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+    
+    <div style="text-align: center;"><b><h3>Total Amount is </h3></b></div>
+      <div style="text-align: center;"><h1>{{totalAmount}}</h1></div>
+      <div style="text-align: center;"><h3>Do You Want To Continue?</h3></div>
+  </nz-modal>
+
+  <nz-modal [(nzVisible)]="isVisibleMod1" nzMask=true nzOkText="Save" (nzOnCancel)="handleCancelUPI1()"
+  (nzOnOk)="ValidateupiRefNo()">
+  
+  <!-- <img style="max-width: 100%;min-width: 100%;" [src]="qrcodeurl">
+  <p><b>Please Enter The UPI Ref No<b style="color: red;">*</b></b></p>
+  <div nz-row nzGutter="8" style="margin-left: 12px">
+    <div nz-col nzMd="12">
+      <nz-form-item>
+        <nz-form-control>
+          <input nz-input maxlength="12" 
+            [(ngModel)]="upirefno" name="upirefno" [maxlength]="12" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    
+  </div> -->
+
+  <div>
+    <img class="Logogeojit" src="https://www.geojit.com/img/New-Logo.jpg" alt="Bootstrap" width="30" height="24">
+  </div>
+  <div style="display: inline-block;">
+    <div style="display: inline-block;"><h3>Name: {{name}}</h3></div> &emsp; <div style="display: inline-block;" *ngIf="tcode"><h3>&emsp;{{tcode}}</h3></div>
+    <div><h3>Dp Account Number: {{dpclntid}}</h3></div>
+  </div>
+  
+  
+  <table>
+    <thead>
+      <tr>
+        <th width="70%"></th>
+        <th width="30%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td width="70%"><img style="max-width: 50%" [src]="qrcodeurl"></td>
+        <td width="30%">
+          <div><h3>{{pa}}</h3></div>
+          <div><h3>{{amount}}</h3></div>
+          <div><h3>{{uid}}</h3></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p><b>Please Enter The UPI Ref No<b style="color: red;">*</b></b></p>
+  <div nz-row nzGutter="8" style="margin-left: 12px">
+    <div nz-col nzMd="8">
+      <nz-form-item>
+        <nz-form-control>
+          <input nz-input [minlength]="12" 
+            [(ngModel)]="upirefno" name="upirefno" [maxlength]="12" />
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    
+  </div>
+
+  </nz-modal>
+  
+  <!--  mod by jishnu end-->
+  
+<app-loader *ngIf=" isSpinVisible "></app-loader>

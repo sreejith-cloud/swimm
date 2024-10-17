@@ -1,0 +1,65 @@
+<div class="container" style="padding-top: 18px;">
+  <div nz-row>
+    <div nz-col nzMd="6">
+      <h3>Enable Activation Request</h3>
+    </div>
+    <div nz-col nzMd="28" nzLg="14" style="margin-left: 187px;">
+      <form-handler (onPreview)="viewData()" (onReset)="reset()">
+      </form-handler>
+    </div>
+  </div>
+  <div nz-row nzGutter="10" style="padding-top: 18px;">
+    <div nz-col nzMd="4" nzLg="4">
+      <span class="field-headds" class="required"><b>Pan</b></span>
+      <lib-master-nonautofind [options]="panFindOption" [(ngModel)]="model.PanNo" name="PanNumber"
+      #client id="findclient">
+      </lib-master-nonautofind>
+    </div>
+  </div>
+  <hr>
+  <div nz-row>
+    <div nz-col *ngIf="listOfData.length>0" nzSpan="24">
+      <nz-table #DetailsTable [nzData]="listOfData" [nzShowPagination]="listOfData.length>10"
+        class="tranTbl table-responsive table-themed" [nzPageSize]="10">
+        <thead>
+          <tr>
+            <th class="headerstyle">Account Type</th>
+            <th class="headerstyle">Account Code</th>
+            <th class="headerstyle">Name</th>
+            <th class="headerstyle">Location</th>
+            <th class="headerstyle">Enrol Date</th>
+            <th class="headerstyle">DOB</th>
+            <th class="headerstyle">Account Status</th>
+            <th class="headerstyle">Account Type</th>
+            <th class="headerstyle">Account SubType</th>
+            <th class="headerstyle">Enable Request</th>
+            <th class="headerstyle">Remarks</th>
+            <th class="headerstyle">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DetailsTable.data; let i = index">
+            <td>{{data.AccountType}}</td>
+            <td>{{data.AccountCode}}</td>
+            <td>{{data.AccountName}}</td>
+            <td>{{data.AccountLocation}}</td>
+            <td>{{data.AccountEnrolDate| slice:0:10 }}</td>
+            <td>{{data.AccountDOB | slice:0:10}}</td>
+            <td>{{data.AccountStatus}}</td>
+            <td>{{data.AccountClientType}}</td>
+            <td>{{data.AccountClientSubType}}</td>
+            <td><label nz-checkbox [(ngModel)]="data.selected" (ngModelChange)="eventCheckBox(i,data)"
+              [ngModelOptions]="{standalone: true}"></label></td>
+            <td>
+              <input nz-input name="remarks{{i}}" [(ngModel)]="data.remarks">
+            </td>
+            <td>
+              <button type="submit" nz-button nzType="primary" [disabled]="data.isSave" (click)="saveData(data)" >Save</button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

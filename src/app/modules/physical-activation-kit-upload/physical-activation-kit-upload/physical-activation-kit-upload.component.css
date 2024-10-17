@@ -1,0 +1,28 @@
+#txt:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#txt{
+  color:#038cfc;
+  cursor: pointer;
+  text-decoration: underline
+
+
+}
+.entryselect{
+  padding-left: 2.4rem;
+  width: 340px;
+}
+
+
+.textAllign{
+  margin-right: 12px;
+  width:40%;
+  font-weight: bold;
+}
+
+.displayStyle{
+  display: flex; 
+  align-items: center;
+}

@@ -1,0 +1,96 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">POA Stamped Report</h3>
+      </div>
+
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="preview()" (onReset)="resetForm()"></form-handler>
+      </div>
+    </div>
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="pan" [(ngModel)]="Pan" [options]="panFindOption"
+            >
+            </master-find-ctrl>
+
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>CIN</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="cin" [(ngModel)]="Cin" 
+              [options]="cinFindOption">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="4" >
+        <nz-form-item>
+          <nz-form-label >Geojit Unique Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl  name="uniqueCode" [(ngModel)]="uniqueCode" 
+              [options]="geojitUniqueCodeFindOption" [options]="cinFindOption">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      
+      <!-- <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Kit Number</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="kitno" [(ngModel)]="kitno" (ngModelChange)="onChangeRegion($event)"
+              [options]="kitnoFindOption"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+
+      <div nz-col nzMd="3" >From Date
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="fdate" name="fd" [nzDisabledDate]="disabledFutureDate">
+        </nz-date-picker>
+
+      </div>
+
+      <div nz-col nzMd="3" >To Date
+        <nz-date-picker  nzFormat="dd-MM-yyyy" [(ngModel)]="tdate" name="td" [nzDisabledDate]="disabledFutureDate">
+        </nz-date-picker>
+      </div>
+
+    </div>
+    <div nz-row #basicDPDetailsTable *ngIf="DetailData.length" #htmlView>
+      <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzPageSize]=15 [nzShowPagination]="true" nzSize="small"
+        [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+           
+            <th *ngFor="let header of detailDataHeads;let i = index"
+              [ngClass]="[header=='selectedtopool' ? 'display':'',header=='rowId' ? 'display':'']">
+              <span *ngIf="header!='ID' && header!='ClientID' && header!='UCC'">{{header}}</span>
+
+            </th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+            <td *ngFor="let header of detailDataHeads">
+
+              <span *ngIf="header!='ID' && header!='ClientID' &&  header!='UCC'"> {{data[header]}}</span>
+
+
+            </td>
+           
+            <td id="txt"  (click)="getimage()">Download</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>

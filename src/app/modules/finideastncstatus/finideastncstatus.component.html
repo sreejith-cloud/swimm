@@ -1,0 +1,93 @@
+<div class="container" style="padding-top: 18px;">
+  <div nz-row>
+    <div nz-col nzMd="6">
+      <h3>Finideas T&C Status</h3>
+    </div>
+    <!-- <div nz-col nzMd="12" nzLg="12" style="margin-left: 150px;">
+      <form-handler (onPreview)="ViewData()" (onReset)="reset()">
+      </form-handler>
+    </div> -->
+  </div>
+  <div nz-row nzGutter="10" style="padding-top: 18px;">
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds" class="required"><b>From Date</b></span>
+      <nz-date-picker [(ngModel)]="model.fromDate" name="fromDate" nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </div>
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds" class="required"><b>To Date</b></span>
+      <nz-date-picker [(ngModel)]="model.toDate" name="toDate" nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </div>
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds">Location</span>
+      <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" name="location" (ngModelChange)="setlocation($event)">
+      </master-find-ctrl>
+    </div>
+    <div nz-col nzMd="7">
+      <span class="field-headds">Client</span>
+      <master-find-ctrl [options]="clientFindOpt" [(ngModel)]="model.tradeCode" name="Client" #client id="findclient"
+        (ngModelChange)="setClientCode($event)">
+      </master-find-ctrl>
+    </div>
+    <div nz-col nzMd="6" style="margin-left: 75px;">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" type="button" style="background-color:#37804e;"
+          (click)="ViewData()">View</button>
+          <button type="button" [disabled]="!updateActive" nz-button nzType="primary" (click)="Confirmation()" style="margin-left: 16px;">
+            Update</button>
+            <button type="button" nz-button nzType="primary"
+            style="color: white;background-color:rgb(247, 157, 84);margin-left:16px" (click)="reset()">
+            Reset</button>
+            </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <hr>
+  <div nz-row>
+    <div nz-col *ngIf="subscriptionData.length>0" nzSpan="21" style="margin-left: 65px;">
+      <nz-table #DetailsTable [nzData]="subscriptionData" [nzShowPagination]="subscriptionData.length>10"
+        class="tranTbl table-responsive table-themed" [nzPageSize]="10">
+        <thead>
+          <!-- <tr>
+            <th *ngFor="let header of GridHead;let i = index"
+              style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">
+              {{header}}
+            </th>
+          </tr> -->
+          <tr>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">Select</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">Location</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">Tradecode</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">Name</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">TnC</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">LastUpdatedDate</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">IpAddress</th>
+            <th style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">Active/Inactive</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DetailsTable.data;let i = index" class="resulttable">
+            <td >
+              <nz-form-item>
+                <nz-form-control>
+                  <label nz-checkbox [(ngModel)]="data.Cheque" name="Cheque{{i}}" (ngModelChange)="changeSubscription(data)"></label>
+                </nz-form-control>
+              </nz-form-item>
+            </td>
+            <td>{{data.Location}}</td>
+            <td>{{data.TradeCode}}</td>
+            <td>{{data.Name}}</td>
+            <td>{{data.TnC}}</td>
+            <td>{{data.LastUpdatedDate}}</td>
+            <td>{{data.IpAddress}}</td>
+            <td>{{data.ActiveOrInactive}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

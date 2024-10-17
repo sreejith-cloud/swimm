@@ -1,0 +1,78 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+
+  
+  <!-- <app-loader *ngIf="isSpinVisible"></app-loader> -->
+  <div nz-row nzGutter="10">
+      <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+          <ng-template #findHead>Store Verification
+          </ng-template>
+          <div nz-col nzMd="24">
+        
+
+        <div nz-row nzGutter="10">
+            <div nz-col nzMd="3" style="padding-top: 19px;">
+            <nz-radio-group [(ngModel)]="model.crforpostacc" (ngModelChange)="reset()"
+            name="crforpostacc">
+            <label title="Post Account Opening" style="font-size: 14px;" nz-radio
+            nzValue="POSTACCOPEN">POST AOF</label>
+            <label nz-radio nzValue="CRF">CRF</label>
+          </nz-radio-group>
+
+        </div>
+        <div nz-col nzMd="4"  >
+            <nz-form-item>
+              <nz-form-label class="boldinglabel"> Box Number</nz-form-label>
+              <nz-form-control>
+                  <input nz-input #batch3 [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="boxnumber" type="text"  name="boxnumber">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="4" [hidden]="barcodeenable" >
+              <nz-form-item>
+                <nz-form-label class="boldinglabel">Scan Barcode</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="barcodeid"  (ngModelChange)="AcceptData()" type="text"  name="barcodeid">
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        
+            <div nz-col nzMd="5" style="padding-top: 18px; float: right;">
+                <button type="button" nz-button nzType="primary" (click)="reset()" style="float: right;">Reset</button>
+                        <button type="submit" nz-button nzType="primary" (click)="view()" style="float: right;">View</button>
+                    </div>   
+        </div>
+            
+          </div>
+        </nz-card>
+        <div nz-row nzGutter="10">
+                    </div>
+      
+  </div>
+    <div nz-row  #htmlView *ngIf="DetailData.length">
+      <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzShowPagination]="false" [nzFrontPagination]="false"  class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <th></th>
+            <th>SLNO</th>
+            <th *ngFor="let header of detailDataHeads;let i = index" [ngClass]="[header === 'selectedtopool' ? 'display1' :'']">
+              {{header}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+              <td nzShowCheckbox nzAlign="left" [(nzChecked)]="data.selectedtopool"
+          style="pointer-events: none;" > </td>
+              <td>{{i+1}}</td>
+            <td *ngFor="let header of detailDataHeads"  [ngClass]="[header === 'selectedtopool' ? 'display1' :'']"
+              >{{data[header]}}
+            </td>
+          </tr>
+        </tbody>
+      </nz-table >
+</div>
+</form>
+  </div>
+  
+  

@@ -1,0 +1,166 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div style="margin-left: 20px ;">
+    <div nz-row nzGutter="24" style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+      <p style="font-size: 20px;"><b>Physical Activation Kit Upload</b></p>
+      <button nz-button nztype="primary" style="background-color: #FFA500; margin-left: auto; margin-right: 10%;" (click)="uploadDocument()">
+        <span style="color: white;">Upload</span>
+      </button>
+    </div>
+
+    <div nz-row nzGutter="24" style="margin: 12px 0;">
+      <nz-radio-group [(ngModel)]="selectedValue" name="selectedValue" (ngModelChange)="onSelectedValueChanged()">
+        <label nz-radio [nzValue]="'Trade'">Trade</label>
+        <label nz-radio [nzValue]="'DP'" [nzDisabled]="true">DP</label>
+      </nz-radio-group>
+    </div>
+  </div>
+<div style="margin-left: 30px ;">
+    <!-- Location -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>Location</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="locationFindopt" [(ngModel)]="selectedLocation" name="Location"
+                  (ngModelChange)="onChangeLocation($event)" [disabled]="selectedValue == 'Trade' ? 'false':'true'">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- Trade Code -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>Trade Code</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="TradecodeFindopt" [(ngModel)]="selectedTradeCode" name="PanNO"
+                  (ngModelChange)="onChangetradeCode($event)" [disabled]="selectedValue == 'Trade' ? 'false':'true'" id="findclient">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- DP ID -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>DP ID</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="dpid" name="Dpid" nzDropdownMatchSelectWidth="true" [disabled]="selectedValue == 'DP' ? 'false':'true'" (ngModelChange)="onChangedpId($event)">
+              <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- DP AC No -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>DP Ac. No.</nz-form-label>
+          <nz-form-control>
+            <div nz-row>
+              <div nz-col nzMd="24">
+                <lib-master-nonautofind [options]="dpClientIdFindopt" [(ngModel)]="selectedDPClientID" name="PanNO"
+                  (ngModelChange)="onChangedpClientId($event)" id="findclient" [disabled]="selectedValue == 'DP' ? 'false':'true'">
+                </lib-master-nonautofind>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <!-- Physical Activation Kit -->
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>Physical Activation Kit</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="selectedDocument" nzPlaceHolder="Type" (ngModelChange)="hideapprovebtn()" name="Type" nzDropdownMatchSelectWidth="true">
+              <nz-option *ngFor="let item of documentOptions" [nzLabel]="item[2]" [nzValue]="item">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+     
+
+    <!-- kIT NUMBER -->
+
+
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label>Kit No</nz-form-label>
+          <nz-form-control>
+            <!-- Replace nz-select with nz-input -->
+            <input nz-input [(ngModel)]="kitNo" type="text"  name="KitNo" (keydown)="onKeyPress($event)">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    
+    <!-- Upload File -->
+    <div nz-col nzMd="12" style="margin-top: 15px; display: flex; align-items: center;">
+      <nz-form-item style="flex: 1;">
+        <nz-form-label>Document</nz-form-label>
+            <div class ="displayStyle">
+            <nz-form-control style="flex: 1;">
+              <div nzMd="12" class ="displayStyle">
+                <span style="width:30%">
+                <nz-upload
+                  nzAction="https://jsonplaceholder.typicode.com/posts/"
+                  [nzBeforeUpload]="beforeUpload"
+                  [nzFileList]="fileList"
+                  style="flex: 1;"
+                >
+                  <button nz-button nztype="primary" style="background-color: #395D99; color: white; width:100%; min-width: 120px;">
+                    <i nz-icon type="upload"></i><span>Choose File</span>
+
+                  </button>
+                </nz-upload>
+                <div style="color: red;">Supported File Type: JPG </div>
+                <div style="color: green;">Max File Size: 2mb </div>
+              </span>
+                <span *ngIf="Imglist; else noFileChosen" style="font-weight: bolder; margin-left: 8px; width: 30%; margin-right: 8px;">{{Imglist.Docfile}}</span>
+                <ng-template #noFileChosen>
+                  <span style="font-weight: bolder; margin-left: 8px; width: 30%; margin-right: 8px;">No File Chosen</span>
+                </ng-template>
+                <span style="font-weight: bolder; color: cornflowerblue; cursor: pointer; text-decoration: underline;width: 30%;"
+                (click)="viewapproveorreject()">
+                  <i>View Uploaded Documents</i>
+              </span>
+                <!-- <span style="margin-left: 12px; display: flex; align-items: center;">
+                  <span style="font-weight: bolder; color: cornflowerblue; cursor: pointer; text-decoration: underline;"
+                        (click)="viewapproveorreject()">
+                    <i>View Uploaded Documents</i>
+                  </span>
+                </span> -->
+              </div>
+            </nz-form-control>
+          </div>
+        </nz-form-item>
+    </div>
+    
+    
+   </div>
+
+  </form>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

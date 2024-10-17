@@ -1,0 +1,179 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Commodity Categoristaion Clientwise Report</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="view()" (onReset)="
+        Reset()" (onExportExcel)="generateexcl()">
+        </form-handler>
+      </div>
+    </div>
+    <!--<h3 class="content-title">Commodity Categoristaion Clientwise Report</h3>
+    <div nz-col nzMd="24" nzLg="24" style="padding: 0;margin: 0" >
+        <form-handler (onPreview)="view()" (onReset)="
+        Reset()" (onExportExcel)="generateexcl()" >
+        </form-handler>
+      </div>-->
+    <app-loader *ngIf="isSpinVisible"></app-loader>
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="6" nzLg="4">
+        <nz-form-item>
+          <nz-form-label>State</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="stateFindopt" (ngModelChange)="onChangestate($event);"
+              [(ngModel)]="model.state" name="State"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzLg="2">
+        <nz-form-item>
+          <nz-form-label>Region</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="RegionFindopt" (ngModelChange)="onChangeRegion($event);"
+              [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzLg="2">
+        <nz-form-item>
+          <nz-form-label>Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzLg="5">
+        <nz-form-item>
+          <nz-form-label>Location+Tradecode </nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="TradecodeFindopt" [(ngModel)]="model.Tradecode" name="Tradecode">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <div nz-col nzMd="6" nzLg="2">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.FD" name="FD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6" nzLg="2">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.TD" name="TD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="4" nzLg="3" *ngIf="visible">
+        <nz-form-item>
+          <nz-form-label>Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.Type" nzPlaceHolder="Type" (ngModelChange)="hideapprovebtn()"  name="Type" nzDropdownMatchSelectWidth="true">
+              <nz-option *ngFor="let item of Types"   [nzLabel]="item.Type" [nzValue]="item.code">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <div nz-col nzMd="2" nzLg="1" *ngIf="show">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button type="primary" nz-button nzType="primary" (click)="save(DetailData)">
+          Approve
+        </button>
+      </div>
+
+    </div>
+    <!-- <nz-table #expandTable [nzPageSize]=10 [hidden]="!DetailData.length"
+          class="tranTbl table-responsive table-themed" [nzShowPagination]=true nzSize="small" [nzData]="DetailData"
+          *ngIf="DetailData" > -->
+    <nz-table #expandTable *ngIf="DetailData.length" [nzData]="DetailData" [nzPageSize]=10 #basicTable [nzShowPagination]=true
+      nzSize="small" class="tranTbl" nzBodered="true">
+      <thead>
+        <tr style="color: #710505d9;background-color:#e0ecf3 ! important ">
+          <th nzWidth="10%" nzAlign='left'>State</th>
+          <th nzWidth="10%" nzAlign='left'>Region</th>
+          <th nzWidth="10%" nzAlign='left'>Location</th>
+          <th nzWidth="5%" nzAlign='left'>TradeCode</th>
+          <th nzWidth="10%" nzAlign='left'>UpdatedSource</th>
+          <th nzWidth="15%" nzAlign='left'>COMMCX</th>
+          <th nzWidth="15%" nzAlign='left'>COMNCDEX</th>
+          <th nzWidth="15%" nzAlign='left'>COMICEX</th>
+          <th nzWidth="1%" nzAlign='left'>Doc1</th>
+          <th nzWidth="1%" nzAlign='left'>Doc2</th>
+          <th nzWidth="1%" nzAlign='left'></th>
+          <th nzWidth="5%" nzAlign='left' *ngIf="show">Approve</th>
+          <th nzWidth="5%" nzAlign='left' *ngIf="show">Remarks</th>
+        </tr>
+
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of expandTable.data">
+          <td nzWidth="10%" nzAlign='left'>{{data.ReportingState}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.Region}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.Curlocation}} </td>
+          <td nzWidth="5%" nzAlign='left' class="treeName" (click)="getdata(data)">{{data.TradeCode}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.UpdatedSource}} </td>
+          <td nzWidth="15%" nzAlign='left' [style.color]="data.MCXColor">{{data.COMMCX}} </td>
+          <td nzWidth="15%" nzAlign='left' [style.color]="data.NCDEXColor">{{data.COMNCDEX}} </td>
+          <td nzWidth="15%" nzAlign='left' [style.color]="data.ICEXColor">{{data.COMICEX}} </td>
+          <td nzWidth="1%" nzAlign='left'> <button nz-button nzType="primary" (click)="showModal(data.TradeCode)"><i
+                nz-icon type="download"></i></button> </td>
+          <td nzWidth="1%" nzAlign='left'> <button nz-button nzType="primary" (click)="showModal1(data.TradeCode)"><i
+                nz-icon type="download"></i></button> </td>
+          <td nzWidth="1%" nzAlign='left'></td>
+          <td nzWidth="5%" nzAlign='left' *ngIf="show">
+            <nz-select [(ngModel)]="data.chk" name="R{{i}}" (ngModelChange)="hideremarks(data)"
+              nzDropdownMatchSelectWidth="true">
+              <nz-option *ngFor="let item of Statustypes" [nzLabel]="item.Description"  [nzValue]="item.code">
+              </nz-option>
+            </nz-select>
+          </td>
+          <td nzWidth="5%" nzAlign='left' *ngIf="show">
+            <input nzPlaceHolder=" Select Status" [(ngModel)]="data.chk1" name="R1{{i}}"/>
+   
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <!-- <nz-modal [(nzVisible)]="isVisible"  (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+        <iframe  class="iframe" *ngIf="frameshow" width="100%" height="700px;" name="my-iframe" [src]="url | safeHtml"></iframe>
+      </nz-modal> -->
+    <nz-drawer [nzClosable]="false" [nzVisible]="isVisible" [nzPlacement]="placement" [nzWidth]="'1200px'"
+      (nzOnClose)="close()">
+      <iframe class="iframe" *ngIf="this.url" width="100%" height="700px;" name="my-iframe"
+        [src]="this.url | safeHtml"></iframe>
+    </nz-drawer>
+
+
+  </form>
+  <!-- <nz-modal [(nzVisible)]="isVisible1" [(nzTitle)]="title"
+  [nzStyle]="{ 'max-width': '85%','overflow':'auto'}"  [nzFooter]="null" [nzWidth]="'auto'"
+  (nzOnCancel)="handleCancel()">
+
+
+    <object width="400" height="400" [data]="this.imgdata" style="vertical-align:middle"></object>
+
+</nz-modal> -->
+</div>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+  [fileName]="filePreiewFilename">
+
+</app-file-preview>
+<app-file-preview [(isVisible)]="filePreiewVisible1" [content]="filePreiewContent1"
+  [contentType]="filePreiewContentType1" [fileName]="filePreiewFilename1">
+
+</app-file-preview>

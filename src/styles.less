@@ -1,0 +1,263 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap-less-port/less/_functions";
+@import "~bootstrap-less-port/less/_variables";
+@import "~bootstrap-less-port/less/_mixins";
+@import "~bootstrap-less-port/less/_utilities";
+@import "~bootstrap-less-port/less/_list-group";
+@import "~ng-zorro-antd/ng-zorro-antd.less";
+@import "assets/less/bootstrap-custom.less";
+@import "~ng-zorro-antd/src/style/themes/default.less";
+@import "../src/assets/less/themify.less";
+
+.content-head {
+    font-size: 1.5em;
+}
+
+.ant-form-item {
+    margin-bottom: 0;
+}
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.ws-tabs>.ant-tabs-bar {
+    margin-bottom: 0;
+}
+
+nz-date-picker,
+nz-date-picker .ant-calendar-picker {
+    width: 100%;
+}
+
+nz-table.table-responsive {
+    .ant-table-thead>tr>th,
+    .ant-table-tbody>tr>td {
+        white-space: nowrap;
+    }
+}
+nz-table.table-themed {
+    tbody > tr:nth-child(even) {background-color: #e0ecf399;}
+    thead {background-color:#e0ecf3} ;
+    color:black
+
+}
+
+.ant-layout {
+    .themify(background-color, layout-header-background);
+}
+
+.ant-layout-sider-trigger {
+    display: none;
+}
+.highlighted{
+    background:#b6f6fb;
+}
+
+.highlightedbackground
+{
+    background-color: #12aa8d;
+    color: white;
+}
+.ant-tabs.ant-tabs-card {
+    >.ant-tabs-bar .ant-tabs-tab {
+        .ant-tabs-close-x {
+            color: inherit;
+            &:hover {
+                color: inherit;
+                opacity: 0.7;
+            }
+        }
+        &:not(.ant-tabs-tab-active) {
+            background-color: transparent;
+            border-color: transparent;
+        }
+    }
+}
+
+.ant-tabs-tab-prev.ant-tabs-tab-arrow-show,
+.ant-tabs-tab-next.ant-tabs-tab-arrow-show {
+    .themify(color, text-color-secondary-dark);
+}
+
+.content-layout>.ant-layout-content {
+    margin-top: 5px;
+}
+
+nz-footer.ant-layout-footer {
+    padding: 5px;
+    padding-right: 40px; // including width of right sidebar
+}
+
+.context-sidebar {
+    margin-left: 10px;
+    margin-right: -1em;
+    padding: 10px;
+    margin-top: -1em;
+    margin-bottom: -1em;
+    height: calc(100vh - 136px);
+    background-color: #f5f7fa;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.ant-modal {
+    .ant-modal-header {
+        .themify(background-color, layout-header-background);
+        .themify(color, text-color-secondary-dark);
+        .ant-modal-title {
+            .themify(color, text-color-secondary-dark);
+        }
+    }
+    .ant-modal-close {
+        .themify(color, text-color-secondary-dark);
+    }
+}
+.ant-btn > .anticon {
+    line-height: 1.4;
+}
+
+.symbol-normal {
+    color: #0b43d0;
+    font-weight: 500;
+    cursor:pointer;
+}
+
+.port-note {
+    color: #287b14;
+    font-weight: 300;
+    cursor:pointer;
+}
+nz-modal.lookupmodal .ant-modal-body{
+    padding: 0px;
+}
+nz-modal.lookupmodal .theme-dark .ant-modal .ant-modal-header {
+    background-color: #177cda;
+}
+nz-modal.datamodal .ant-modal-body{
+    padding: 5px;
+}
+
+// Input
+// ---
+@input-height-base           : 25px;
+@font-size-base         : 12px;
+@btn-height-base        : 25px;
+@form-vertical-label-padding : 0 0 1px;
+ @input-padding-vertical-base : 11px ;
+ @input-border-color          : #61b1b1 ;
+ @input-placeholder-color     : white ;
+ @border-color-base: #61b1b1 ;
+ 
+ @btn-default-border : #61b1b1 ;
+
+ //button and animation effect
+
+//  .shine {
+// 	background: #222 -webkit-gradient(linear, left top, right top, from(#222), to(#222), color-stop(0,white )) 0 0 no-repeat;
+// 	background-size: 150px;
+// 	color: rgba(14, 17, 20, 0.6);
+// 	background-clip: text;
+// 	animation-name: shine;
+// 	animation-duration: 3s;
+// 	animation-iteration-count: infinite;
+	
+// }
+
+// @keyframes shine {
+// 	0%, 10% {
+// 		background-position: -1000px;
+// 	}
+// 	20% {
+// 		background-position: top left;
+// 	}
+// 	90% {
+// 		background-position: top right;
+// 	}
+// 	100% {
+// 		background-position: 1000px;
+// 	}
+// }
+.myButton {
+   
+    text-align: center;
+    position: relative;
+}
+.myButton:after {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 0%;
+    height: 100%;
+    background-color: rgba(255,255,255,0.4);
+    transition: none;
+    
+}
+.myButton:hover:after {
+    width: 120%;
+    background-color: rgba(255,255,255,0);
+    transition: all 0.3s ease-out;
+}
+.A{
+    float: right;
+    font-size: 15px;
+}
+.B{
+    float: left;
+    font-size: 15px;
+}
+
+.C {
+      
+    border-right: 1px solid #e0dbdb;
+ 
+    
+  }
+  .D{
+    padding-right: 10px;
+  }
+ .E{
+     width: 18.11%;
+ }
+ .F{
+     text-align: right;
+ }
+ .G{
+     border: 1px solid  #e0dbdb;
+     border-radius: 7px;
+ }
+ .H{
+    width: 16%;
+ }
+ .I{
+     width:1%;
+ }
+ .ant-table-small > .ant-table-content > .ant-table-body {
+    margin: 0px;
+}
+.treeName {
+  color: #59aae4;
+  text-decoration: underline;
+  cursor: pointer;
+  
+}
+
+.fltrcolor{
+    background-color: #ecf7f5;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 3px 1px 27px 4px #dadada
+  }
+
+
+.boldinglabel{
+    font-weight: bold;
+}  
+.disable-select { user-select: none; 
+    -webkit-user-select: none; 
+   -khtml-user-select: none;  
+    -moz-user-select: none; 
+   -ms-user-select: none;  }

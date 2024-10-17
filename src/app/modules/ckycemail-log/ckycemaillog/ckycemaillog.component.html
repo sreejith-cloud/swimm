@@ -1,0 +1,143 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <app-loader *ngIf="isSpining"></app-loader>
+    <div style="margin-left: 20px ;">
+      <div nz-row nzGutter="24" style="margin: 12px 0; display: flex; justify-content: space-between; align-items: center;">
+        <p nz-col nzMd="12" style="text-align: left;font-size: 20px;"><b>CKYC Client Log (Email)</b></p>
+  
+        <div nz-col nzMd="12" style="text-align: right;">
+          <form-handler (onPreview)="search()" (onReset)="reset()" (onExportExcel)="export()"></form-handler>
+        </div>
+      </div>
+      </div>
+    <div nz-row nzGutter="8">
+    
+     
+      <div nz-col nzMd="5">
+        <nz-form-item>
+          <nz-form-label>Report Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="reportType" name="type">
+              <nz-option *ngFor="let data of reportTypeList" [nzValue]="data.reportCode" [nzLabel]="data.reportName">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label >
+          <nz-form-control>
+            <master-find-ctrl name="pan" [(ngModel)]="Pan" [options]="panFindOption" [disabled]="isFileSelected"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>DP ID</nz-form-label>
+          <nz-form-control>
+                  <nz-select  [(ngModel)]="DpId" nzPlaceHolder="Dpid" name="Dpid" nzDropdownMatchSelectWidth="true" (ngModelChange)="getDpdetails($event)" [disabled]="isFileSelected">
+                    <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                    </nz-option>
+                  </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="6">
+        <nz-form-item>
+          <nz-form-label>DP Acount No</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="DpAcNOFindopt" [(ngModel)]="DpClientId" name="DpClientId" [disabled]="isFileSelected" (ngModelChange)="setDpid()" ></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" style="margin-left: 5px;">
+        <nz-form-item>
+          <nz-form-label>Trade Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="uniqueCode" [(ngModel)]="uniqueCode" [options]="geojitUniqueCodeFindOption" [disabled]="isFileSelected" ></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      
+      <div nz-col nzMd="2" style="margin-top: 20px;left: 5px;">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-upload [(nzFileList)]="file" [nzBeforeUpload]="fileChangeEvent()" nzLimit="1" (nzChange)="fileClosedEvent($event)">
+              <button nz-button >
+                <i nz-icon type="upload"></i><span>Upload</span>
+              </button>
+            </nz-upload>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <!-- <span nz-col nzMd="2" class = "button1">
+        <button nz-button nzType="primary" style="width: 70px;margin-left: 24px;" (click)="search()"> Search</button>
+      </span>
+      
+      <span nz-col nzMd="2" class = "button1">
+        <button type="primary" nz-button nzType="primary" class="mr-2" (click)="resetMiscellenious()" style="float: right; background-color: #FFA500;">
+          <span><i nz-icon type="rollback" theme="outline"></i>Excel</span>
+        </button>
+      </span>
+
+      <span nz-col nzMd="2" class = "button1">
+        <button type="primary" nz-button nzType="primary" class="mr-2" (click)="resetMiscellenious()" style="float: right; background-color: #FFA500;">
+          <span><i nz-icon type="rollback" theme="outline"></i>Reset</span>
+        </button>
+      </span> -->
+
+      
+
+      <div  *ngIf="DocumentsArray.length>0">
+        <nz-table #DocumentTable [nzData]="DocumentsArray" class="tranTbl table-responsive table-theme" nzPageSize="10">
+          <thead>
+            <tr>
+              <th *ngFor="let head of DocumentsArrayHeads" class="tableHeader" >{{head}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of DocumentTable.data;let i = index"  style="text-align: center;">
+              <td  *ngFor="let heads of DocumentsArrayHeads">
+                <!-- <span *ngIf="heads !=='Received' && heads !=='Approved' "> -->
+                  <nz-form-item>
+                    <span style="margin-right: 5px;">{{data[heads]}}</span>
+                  </nz-form-item>
+                <!-- </span> -->
+                <!-- <span *ngIf="heads ==='Received'">
+                  <nz-form-item *ngIf="!data[heads]">
+                    <span style="margin-right: 5px;">N</span><label nz-checkbox [(ngModel)]="data[heads]" name="docReceived{{i}}" (ngModelChange)="onCheckboxChange(data,i)"></label>
+                  </nz-form-item>
+                  <nz-form-item *ngIf="data[heads]">
+                    <span>Y</span>
+                  </nz-form-item>
+                </span> -->
+                <!-- <span *ngIf="heads ==='Approved'">
+                  <nz-form-item *ngIf="data[heads] === false">
+                    <span>N</span>
+                  </nz-form-item>
+                  <nz-form-item *ngIf="data[heads] === true">
+                    <span>Y</span>
+                  </nz-form-item>
+                  <nz-form-item *ngIf="data[heads] !== true && data[heads] !== false">
+                    <span> {{data[heads]}} </span>
+                  </nz-form-item>
+                </span> -->
+              </td>
+              <td class="text-center">
+  
+            </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </form>
+</div>
+

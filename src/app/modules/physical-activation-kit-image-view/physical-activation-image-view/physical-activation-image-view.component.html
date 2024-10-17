@@ -1,0 +1,54 @@
+<nz-card *ngIf="isData" style="margin: 10px; border-radius: 10px; border-color: grey">
+  <div nz-row nzGutter="5">
+    <div nz-col nzMd="8" style="border-right: solid;">
+      <div nz-row nzGutter="5">
+        <div nz-col nzMd="24" style="border-bottom: 1px solid">
+          <div nz-row nzGutter="10">
+            <div *ngFor="let image of uploadedDocumentsList; let i = index">
+              <div nz-checkbox [(ngModel)]="image.selected" name="image[5]" (ngModelChange)="onCheckboxChange(image, i)">
+                {{ image[6] }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div nz-col nzMd="16">
+      <div *ngIf="!checkboxSelected">
+        <div *ngFor="let document of uploadedDocumentsList" style="margin-bottom: 10px;">
+          <b>{{ document[6] }}</b>
+          <ng-container *ngIf="document[8] === 'pdf' || document[8] === 'PDF'; else imageContent">
+            <iframe [src]="'data:application/pdf;base64,' + document[5]" style="width: 100%; max-width: 100%;" height="600px"></iframe>
+          </ng-container>
+          <ng-template #imageContent>
+            <img src="data:image/{{ document[8] }};base64,{{ document[5] }}" style="width: 100%; max-width: 100%;" alt="{{ document[6] }}">
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="checkboxSelected">
+        <div *ngFor="let document of selectedDocuments" style="margin-bottom: 10px;">
+          <b>{{ document[6] }}</b>
+          <ng-container *ngIf="document[8] === 'pdf' || document[8] === 'PDF'; else imageContent">
+            <iframe [src]="'data:application/pdf;base64,' + document[5]" style="width: 100%; max-width: 100%;" height="600px"></iframe>
+          </ng-container>
+          <ng-template #imageContent>
+            <img src="data:image/{{ document[8] }};base64,{{ document[5] }}" style="width: 100%; max-width: 100%;" alt="{{ document[6] }}">
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-card>
+<nz-card *ngIf = "!isData">
+  <div nz-row nzGutter="5">
+    <div nz-col nzMd="8" style="border-right: solid;">
+      <div nz-row nzGutter="5">
+        <div nz-col nzMd="24" style="border-bottom: 1px solid">
+          {{ textMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+</nz-card>
+<app-loader *ngIf="isSpining"></app-loader>

@@ -1,0 +1,95 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+    <div nz-row nzGutter="10">
+        <div nz-col nzMd="24" nzLg="12">
+            <nz-card nzTitle="Additional Details">
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="12" nzMd="7">
+                        <nz-form-item>
+                            <nz-form-label class="required">Electronic contract note</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="electronicContractNote" nzAllowClear>
+                                        <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                        <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="12" nzMd="7" *ngIf="form.value.electronicContractNote=='YES'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Email ID for ECN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input  formControlName="emailIdforECN" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="12" nzMd="7">
+                        <nz-form-item >
+                            <nz-form-label class="required">Wish to avail Internet Trading</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="wishtoAvailInternetTrading" nzAllowClear>
+                                        <nz-option nzValue="YES"  nzLabel="YES"></nz-option>
+                                        <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="12" nzMd="10">
+                        <nz-form-item>
+                            <nz-form-label class="required">Alerts to Investors by stock Exchanges</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="AlertstoInvestorsbystockExchanges" nzAllowClear>
+                                        <nz-option nzValue="SMS" nzLabel="SMS" [nzDisabled]="!(generalDetails.MobilePhone)"></nz-option>
+                                        <nz-option nzValue="Email" nzLabel="Email" [nzDisabled]="!(generalDetails.Email)"></nz-option>
+                                        <nz-option nzValue="Both" nzLabel="Both" [nzDisabled]="!(generalDetails.Email && generalDetails.MobilePhone)"></nz-option>
+                                        <nz-option nzValue="notrequied" nzLabel="Not requied"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <div nz-col nzMd="24" nzLg="12">
+            <nz-card nzTitle="Investment/Trading Experience">
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="12" nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">Prior Experience</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="PriorExperience" nzAllowClear>
+                                        <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                        <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="12" nzMd="8" *ngIf="form.value.PriorExperience=='YES'">
+                        <nz-form-item >
+                            <nz-form-label>Years in capital marksheet</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="Yearsincapitalmarksheet" maxlength="3"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+        
+                    <div nz-col nzLg="12" nzMd="8" *ngIf="form.value.PriorExperience=='YES'">
+                        <nz-form-item>
+                            <nz-form-label>Years in commodities</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}"  formControlName="Yearsincommodities" maxlength="3"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="12" nzMd="8" *ngIf="comoditySelected">
+                        <nz-form-item>
+                            <nz-form-label>&nbsp; </nz-form-label>
+                            <nz-form-control>
+                                    <a (click)="comodityprofile()" >&nbsp;&nbsp;&nbsp;&nbsp;Client profile (for commodity)</a>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,50 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <nz-card [nzTitle]="title2">
+      <ng-template #title2>
+        <i nz-icon nzType="user" nzTheme="outline" class="icon"></i>
+        &nbsp;&nbsp; {{Heading}}</ng-template>
+      <div nz-row nzGutter="5" formGroupName="crfIPV">
+        <div nz-col nzMd="8">
+            <nz-form-item>
+                <nz-form-label >Emp Code</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="empCode" maxlength="10"  (blur)="getEmpDetails($event.target.value)" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="16">
+            <nz-form-item>
+                <nz-form-label >Emp Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="empName" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8">
+            <nz-form-item>
+                <nz-form-label >Emp Branch</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="empBranch" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="16">
+            <nz-form-item>
+                <nz-form-label >Emp Designation</nz-form-label>
+                <nz-form-control>
+                    <input nz-input  formControlName="empDesingation" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8">
+        <nz-form-item>
+            <nz-form-label >Date</nz-form-label>
+            <nz-form-control>
+                <nz-date-picker [nzDisabledDate]="disabledFutureDate" nzPlaceHolder="YYYY-MM-DD"
+                formControlName="date"></nz-date-picker>
+            </nz-form-control>
+        </nz-form-item>
+        </div>
+    </div>
+    </nz-card>
+  </form>

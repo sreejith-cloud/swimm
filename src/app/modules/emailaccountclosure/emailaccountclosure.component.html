@@ -1,0 +1,131 @@
+<div class="main-content">
+  <form nz-form #accClouser="ngForm" nzLayout="vertical">
+    <nz-card [nzTitle]=findHead style="margin-bottom: 10px;">
+      <ng-template #findHead>Account Closure
+      </ng-template>
+      <!-- client search starts -->
+      <div nz-row nzGutter="13" style="margin-top: 12px;">
+        <div nz-col nzMd="3" >
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">DP ID</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="DpId" name="Dpid" nzDropdownMatchSelectWidth="true"
+                (ngModelChange)="getDPdetails($event)">
+                <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="4" >
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Client ID</nz-form-label>
+            <nz-form-control>
+                <input type="text" nz-input [(ngModel)]="model.DpAcNO" name="clientID" (ngModelChange)="getFilterdData(model.DpAcNO)"
+                  [nzAutocomplete]="auto" [disabled]="!DpId" />
+                <nz-autocomplete #auto>
+                  <nz-auto-option *ngFor="let item of dpFilteredData" [nzValue]="item.DPACNO" [nzLabel]="item.DPACNO" class="aleternateColor" >{{item.DPACNO}}
+                  </nz-auto-option>
+                </nz-autocomplete>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="3">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">&nbsp;</nz-form-label>
+            <nz-form-control>
+              <button nz-button nzType="primary" style="width: 70px;margin-left: 24px;" (click)="getDatabyTradecode()" [disabled]="!model.DpAcNO"> View </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="16" style="margin-top: 12px;">
+        <!-- client details table  -->
+        <div nz-col nzMd="18" *ngIf="gridArray.length>0">
+          <nz-table #basicDPDetailsTable [nzData]="gridArray" [nzShowPagination]="false" [nzFrontPagination]="false"
+            class="tranTbl table-responsive table-themed" nzSize="medium">
+            <thead>
+              <tr>
+                <th>DP ID</th>
+                <th>DP Account No</th>
+                <th>Name</th>
+                <th>Pan</th>
+                <th>Mail id</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicDPDetailsTable.data">
+                <td>{{data.dpid}}</td>
+                <td>{{data.dpAcno}}</td>
+                <td>{{data.Name}}</td>
+                <td>{{data.PAN_GIR}}</td>
+                <td>{{data.emailId}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="16" style="margin-top: 12px;" *ngIf="gridArray.length>0">
+        <!-- mail document upload -->
+        <div nz-col nzMd="4">
+          <nz-form-item>
+            <nz-form-label class="required"><b>Upload</b>(.eml)</nz-form-label>
+            <nz-form-control>
+              <nz-upload nzMultiple [nzBeforeUpload]="beforeDocumentUpload" [(nzFileList)]="fileListPhoto"
+                [nzShowUploadList]="true" [nzLimit]="1">
+                <button nz-button><i nz-icon type="upload"></i>
+                  <span *ngIf="!model.document || model.fileType!='message/rfc822'">Select File</span>
+                  <span *ngIf="model.document && model.fileType=='message/rfc822'">uploaded</span>
+                </button>
+                <br>
+                {{ model.fileName || '' }}
+              </nz-upload>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label class="required"><b>Email Address</b></nz-form-label>
+            <nz-form-control>
+              <input nz-input name="Invoice" [(ngModel)]="model.emailAddress" #emailInput="ngModel" 
+              required pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-zA-Z]{2,4}" disabled >
+              <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+                <div *ngIf="emailInput.errors.required">
+                  Email is required.
+                </div>
+                <div *ngIf="emailInput.errors.pattern">
+                  Please enter a valid email address.
+                </div>
+              </div>
+            </nz-form-control>
+
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="7">
+          <nz-form-item>
+            <nz-form-label><b>Remarks</b></nz-form-label>
+            <nz-form-control>
+              <textarea rows="3" maxlength="300" nz-input [(ngModel)]="model.remark" name="remark"></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="16">
+        <div nz-col nzMd="24" nzLg="24" style="padding: 0;margin: 0">
+          <div nz-col nzMd="24" nzLg="24" style="padding: 0;margin: 0">
+            <form-handler (onSave)="save()" (onReset)="reset()"   [ngClass]="{ 'disabledFormControl': !accClouser.valid || !model.DpAcNO }" >
+            </form-handler>
+          </div>
+        </div>
+        <div nz-col nzMd="14">
+          <div>
+            <iframe *ngIf="pdfSrc" id="monitor" name="monitor" frameborder="0" width="100%" height="412" [src]="pdfSrc">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </nz-card>
+  </form>
+  <app-loader *ngIf="isSpinning"></app-loader>
+</div>

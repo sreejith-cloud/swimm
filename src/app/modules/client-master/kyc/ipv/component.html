@@ -1,0 +1,52 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <div nz-row nzGutter="5">
+
+        <div nz-col nzMd="6">
+                <nz-form-item>
+                        <nz-form-label class="required">Emp Code</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="empCode" maxlength="7" (blur)="getEmpDetails($event)" (keypress)="charrestrict($event)"/>
+                        </nz-form-control>
+               </nz-form-item>
+               
+            <nz-form-item>
+                <nz-form-label class="required">Date</nz-form-label>
+                <nz-form-control>
+                    <!-- <input type="date"  formControlName="date" class=date name="bfgfday"> -->
+                    <nz-date-picker [nzDisabledDate]="disabledFutureDate"  nzPlaceHolder="YYYY-MM-DD"  formControlName="date" ></nz-date-picker>
+
+                </nz-form-control>
+            </nz-form-item>
+      
+        </div>
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label class="required">Emp Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="empName" readonly/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+                <nz-form-item>
+                        <nz-form-label class="required">Emp Designation</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="empDesingation" readonly/>
+                        </nz-form-control>
+                    </nz-form-item>
+        </div>
+        <div nz-col nzMd="6">
+                <nz-form-item>
+                    <nz-form-label class="required">Emp Branch</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="empBranch" readonly/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+       
+        
+
+    </div>
+
+</form>

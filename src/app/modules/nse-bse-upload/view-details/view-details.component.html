@@ -1,0 +1,69 @@
+<div class="main-content">
+  <div nz-row nzGutter="24">
+    <div nz-col nzMd="4" nzLg="2" class="paddingtop-10">
+    <label class="boldinglabel">Tradecode :</label>
+  </div>
+<div nz-col nzMd="8" nzLg="4" class="paddingtop-10">
+
+  <nz-form-item>
+    <nz-form-control>
+      <master-find-ctrl  #config [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode">
+      </master-find-ctrl>
+      <!-- <lib-master-nonautofind [options]="TradeFindopt" [(ngModel)]="Tradecode" name="tradeCode">
+      </lib-master-nonautofind> -->
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="12" nzLg="6" class="paddingtop-20" style="display:flex;">
+  <form-handler (onPreview)="pageIndexVal=1;flag='T';tableData()" (onReset)="reset()">
+  </form-handler>
+  <button nz-button nzType="primary" style="margin-left: 1px;background-color:rgb(228, 130, 19);margin-top: 10px;"
+        (click)="pageIndexVal=1;flag='C';tableData()">Change Log</button>
+  <!-- <button nz-button nzType="primary" style="margin-left: 1px;background-color:#008000;margin-top: 10px;"
+        (click)="ExportExcelOFFile()">Bulk Download</button> -->
+</div>
+<div nz-col nzMd="12" nzLg="6" class="paddingtop-20">
+  <button nz-button nzType="primary" style="margin-left: 1px;background-color:#008000;margin-top: 10px;"
+        (click)="ExportExcelOFFile()">Bulk Download</button>
+  </div>
+</div>
+</div>
+<div class="main-content" *ngIf="DetailData.length">
+  <div nz-row nzGutter="24" >
+
+      <nz-table #basicDPDetailsTable [nzData]="DetailData"  [nzShowPagination]="false" nzSize="small"
+      class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <!-- <th><b>Date</b> </th> -->
+            <th *ngFor="let header of detailDataHeads;"><b>{{header}}</b> </th>
+
+            <!-- <th><b>Status</b> </th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;" class="resulttable">
+            <td *ngFor="let header of detailDataHeads">
+              <span *ngIf="header !=='Updated Date' && data[header] ===true"> {{'Y'}}</span>
+              <span *ngIf="header !=='Updated Date' && data[header] ===false"> {{'N'}}</span>
+              <span *ngIf="header ==='Updated Date'"> {{data[header]  | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+              <span *ngIf="header !=='Updated Date' && data[header] !==true && data[header] !==false">{{data[header]}}</span>
+            </td>
+
+          </tr>
+        </tbody>
+      </nz-table>
+  </div>
+  <div class="float-right mt-1">
+    <nz-pagination [(nzPageIndex)]="pageIndexVal" [(nzPageSize)]="row"
+    (nzPageIndexChange)="pageChage()"
+    [nzTotal]="totalPages" [nzSize]="'small'"
+
+    ></nz-pagination>
+    <!-- nzShowSizeChanger nzShowQuickJumper -->
+    <!-- <nz-pagination [(nzPageIndex)]="pageIndexVal" [(nzPageSize)]="row" [nzTotal]="totalPages"
+      (nzPageIndexChange)="pageChage($event)"></nz-pagination> -->
+  </div>
+</div>
+
+<app-loader *ngIf="isSpinning"></app-loader>

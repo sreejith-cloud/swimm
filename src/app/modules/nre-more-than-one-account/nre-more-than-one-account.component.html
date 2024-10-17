@@ -1,0 +1,56 @@
+<div class="main-content">
+  <div nz-row>
+  <div nz-col nzMd="20" nzLg="12" class="padding1">
+  <h3 class="content-title">NRE Accounts with more than one Bank Account</h3>
+  </div>
+  <div nz-col nzMd="20" nzLg="12">
+      <form-handler (onPreview)="view()" (onReset)="reset()">
+      </form-handler>
+  </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <!-- <label class="required">Date</label> -->
+        <label class="boldinglabel">From Date</label>
+        <nz-form-control class="pading-top">
+          <nz-date-picker  nzFormat="dd-MM-yyyy" nzPlaceHolder="From Date" [(ngModel)]="fromDate" name="date" [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="6" nzLg="3" class="padding1">
+      <nz-form-item>
+        <!-- <label class="required">Date</label> -->
+        <label class="boldinglabel">To Date</label>
+        <nz-form-control class="pading-top">
+          <nz-date-picker  nzFormat="dd-MM-yyyy" nzPlaceHolder="To Date" [(ngModel)]="toDate" name="tdate" [nzDisabledDate]="disabledFutureDate">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-row *ngIf="detailData.length>0">
+    <div nz-col class="padding1">
+      <nz-table #basicDPDetailsTable [nzData]="detailData" [nzPageSize]=10 [nzShowPagination]="true" nzSize="small"
+      [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+      <thead>
+        <tr>
+
+          <th *ngFor="let header of detailDataHeads;let i= index">
+          {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+          <td *ngFor="let header of detailDataHeads">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

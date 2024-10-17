@@ -1,0 +1,141 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Scheme Details</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+<form-handler (onPreview)="view()" (onReset)="resetForm()"></form-handler>
+</div>
+</div>
+
+<div nz-row nzGutter="10" >
+  <div nz-col nzMd="6" nzLg="3">
+    <!-- <div style="margin-left: 20%;" nz-col nzMd="6" nzLg="3"> -->
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Scheme Type</nz-form-label>
+      <nz-form-control>
+        <nz-select nzPlaceHolder="Select Active" [(ngModel)]="model.Shcemetype" (ngModelChange)="Schemetypechange($event)"  name="Shcemetype" nzDropdownMatchSelectWidth="true">
+          <!--<nz-option nzValue="" nzLabel=""></nz-option>-->
+          <nz-option nzValue="Paid" nzLabel="Paid"></nz-option>
+          <nz-option nzValue="Free" nzLabel="Free"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="1" nzLg="2" *ngIf="model.Shcemetype=='Paid'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Trade or DP</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.tradedp" nzPlaceHolder="tradedp" name="tradedp" nzDropdownMatchSelectWidth="true">
+          <nz-option nzValue="" nzLabel=""></nz-option>
+          <nz-option nzValue="Trading" nzLabel="Trading"></nz-option>
+          <nz-option nzValue="DP" nzLabel="DP"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="7" nzLg="7"  *ngIf="model.Shcemetype=='Paid'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Applicable Type</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="model.applicablefor" name="applicablefor">
+          <label class="boldinglabel" nz-radio nzValue="New">New</label>&nbsp;
+          <label class="boldinglabel" nz-radio nzValue="Existing">Existing</label>&nbsp;
+          <label class="boldinglabel" nz-radio nzValue="Inactive">Inactive</label>&nbsp;
+          <label class="boldinglabel" nz-radio nzValue="ALL">All</label>&nbsp;
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</div>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="24" *ngIf="VoucherList.length && model.Shcemetype=='Paid' || model.Shcemetype==''">
+    <!-- 
+    <nz-table     [nzData]="VoucherList" [nzPageSize]=15 #basicTable
+    [nzShowPagination]=true nzSize="small"  class="tranTbl" nzBodered="true"> -->
+    <nz-table [nzShowPagination]=true class="tranTbl table-responsive table-themed" nzPageSize="15" nzSize="middle" #zoneTable1
+      [hidden]="VoucherList.length==0" [nzData]="VoucherList">
+      <thead>
+        <tr>
+          <th>Scheme Reference No</th>
+          <th>Scheme Name</th>
+          <th class="text-center">Active Till</th>
+          <th>Scheme Type</th>
+          <th>Applicable Type</th>
+          <th nzAlign='right'>Trading Fee</th>
+          <th nzAlign='right'>Brokerage Free</th>
+          <th>Trading Applicable For</th>
+          <th nzAlign='right'>DPFee</th>
+          <th nzAlign='right'>Amc Free</th>
+          <th>AMC Applicable For</th>
+          <th>Margin </th>
+          <th nzAlign='right'> Cheque</th>
+          <!--<th nzAlign='center'>Bank</th>-->
+          <th nzAlign='right'>Holding</th>
+          <th>AccountType</th>
+          <!--<th nzAlign='right'>Amount </th>-->
+          <th> Applicable To All Location</th>
+          <th>Inactivity Period</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of zoneTable1.data;let i=index">
+          <td>{{data.SchemeReferenceNo}}</td>
+          <td>{{data.SchemeName}}</td>
+          <td>{{data.ActiveTill}}</td>
+          <td class="text-center">{{data.SchemeType}}</td>
+          <td>{{data.ApplicableType}}</td>
+          <td class="text-right">{{data.TradingFee | number :'1.2-2'}}</td>
+          <td class="text-right">{{data.BrokerageFree | number :'1.2-2'}}</td>
+          <td class="text-center">{{data.Trading_ApplicableFor}}</td>
+          <td class="text-right">{{data.DPFee | number :'1.2-2'}}</td>
+          <td class="text-right">{{data.AmcFree | number :'1.2-2'}}</td>
+          <td class="text-center">{{data.AMC_ApplicableFor}}</td>
+          <td>{{data.Margin}}</td>
+          <td class="text-right">{{data.Cheque}}</td>
+          <td class="text-right">{{data.Holding | number :'1.2-2'}}</td>
+          <td>{{data.AccountType}}</td>
+          <td class="text-center">{{data.ApplicableToAllLocation==true ? 'Y' : 'N'}}</td>
+          <td class="text-center">{{data.InactivityPeriod}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="24" *ngIf="VoucherList.length && model.Shcemetype=='Free' || model.Shcemetype==''">
+    <nz-table [nzShowPagination]=true class="tranTbl table-responsive table-themed" nzPageSize="15" nzSize="middle" #zoneTable1
+      [hidden]="VoucherList.length==0" [nzData]="VoucherList">
+      <thead>
+        <tr>
+          <th>Scheme Reference No</th>
+          <th>Scheme Name</th>
+          <th class="text-center">Active Till</th>
+          <th>Scheme Type</th>
+          <th>Margin Amount </th>
+          <th nzAlign='right'> Holding Amount</th>
+          <th nzAlign='right'> Charge Amount</th>
+          <th> Applicable To All Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of zoneTable1.data;let i=index">
+          <td>{{data.SchemeReferenceNo}}</td>
+          <td>{{data.SchemeName}}</td>
+          <td>{{data.ActiveTill}}</td>
+          <td class="text-center">Free</td>
+          <td>{{data.MarginAmount | number :'1.2-2'}}</td>
+          <td class="text-right">{{data.HoldingAmount | number :'1.2-2'}}</td>
+          <td class="text-right">{{data.ChargeAmount }}</td>
+          <td class="text-center">{{data.AllLocationFlag==true ? 'Y' : 'N'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+</form>
+</div>

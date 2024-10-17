@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+  }
+  
+  .checkbox-side,
+  .image-side {
+    flex: 1;
+    height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+  }
+  
+  .image-container {
+    margin: 10px;
+  }

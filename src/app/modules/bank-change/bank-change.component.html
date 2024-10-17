@@ -1,0 +1,93 @@
+<div class="main-content">
+  <div nz-row class="mb-20">
+    <div nz-col nzMd="12">
+      <div>
+        <h3>Client Bank Change Confirmation</h3>
+      </div>
+    </div>
+    <div nz-col nzMd="12" style="text-align: right;">
+    </div>
+  </div>
+  <div nz-row nzGutter="10" class="mb-20">
+    <div nz-col nzMd="4">
+      Email Id
+      <input nz-input placeholder="EmailId" [(ngModel)]="emailId" type="text" name="Email">
+    </div>
+    <div nz-col nzMd="2">
+      <button nz-button nzType="primary" (click)="PoolClient()" style="margin-top: 18px;">Pool</button>
+    </div>
+    <div nz-col nzMd="4">
+      <nz-radio-group [(ngModel)]="bankName" style="margin-top: 20px;">
+        <label nz-radio nzValue="YES">YesBank</label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <div class="mb-20">
+    <nz-table #Clientbankdetils [nzData]="ClientDetails" [nzSize]="'small'" [nzShowPagination]="false" [nzFrontPagination]="false"
+        *ngIf="ClientDetailsShow">
+      <thead>
+        <tr style="background: rgba(137, 238, 204, 0.678);">
+          <th nzWidth="15%">Trade Code</th>
+          <th nzWidth="15%">Mobile</th>
+          <th nzWidth="10%">Send OTP</th>
+          <th nzWidth="15%">Validate OTP</th>
+          <th nzWidth="35%">Remarks</th>
+          <th nzWidth="10"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of Clientbankdetils.data;let i = index">
+        <td>{{items.Tradecode}} - {{items.NAME}}</td>
+        <td>{{items.MobilePhone}}</td>
+        <td><button nz-button nzType="link" (click)="SendOTP(i)"
+            style="margin-top: 0px;border-style: none;">Send</button></td>
+        <td><input nz-input placeholder="Enter OTP" [(ngModel)]="items.Otp" [disabled]="items.Disable" type="text" name="OTP" [textMask]="{mask: inputMasks.numeric}" (ngModelChange)="ValidateOTP($event,i)" maxlength="4"></td>
+        <td><input nz-input placeholder="Remarks" [disabled]="items.Disable" [(ngModel)]="items.Remarks" type="text" name="Remarks"></td>
+        <td><button nz-button nzType="primary" [disabled]="items.OtpSuccessFlag||items.Disable" (click)="SaveData(i)"
+            style="margin-top: 0px;border-style: none;float: right;">Save</button></td>
+          </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <div>
+    <!-- <div nz-row nzGutter="5" *ngIf="ClientDetailsShow">
+    <div nz-col nzMd="4">{{ClientDetails.Tradecode}}</div>
+    <div nz-col nzMd="4">{{ClientDetails.MobilePhone}}</div>
+    <div nz-col nzMd="4"><button nz-button nzType="link" (click)="PoolClient()" style="border-style: none;" >Send</button></div>
+    <div nz-col nzMd="4"><input nz-input placeholder="Enter OTP" [(ngModel)]="otp" type="text" name="OTP"></div>
+    <div nz-col nzMd="8"><input nz-input placeholder="Reparks" [(ngModel)]="remarks" type="text" name="Remarks"></div>
+  </div> -->
+  <div class="mb-20" >
+    <nz-table #bankChangetable [nzSize]="'small'" [nzData]="ClientHistory" [nzShowPagination]="false" [nzFrontPagination]="false"
+      [nzScroll]="{ x: '750px'}" [nzNoResult]="Noresult" *ngIf="ClientDetailsShow">
+      <thead>
+        <tr style="background: rgba(137, 238, 204, 0.678);">
+          <th>Date</th>
+          <th>Trade Code</th>
+          <th>Client Name</th>
+          <th>Bank Code</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Type</th>
+          <th>Remark</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of bankChangetable.data">
+          <td>{{item.LastUpdatedOn|date}}</td>
+          <td>{{item.Tradecode}}</td>
+          <td>{{item.Clientname}}</td>
+          <td>{{item.BankCode}}</td>
+          <td>{{item.Mobilephone}}</td>
+          <td>{{item.Email}}</td>
+          <td>{{item.Type}}</td>
+          <td>{{item.Remark}}</td>
+        </tr>
+
+
+      </tbody>
+    </nz-table>
+    </div>
+    <ng-template #Noresult></ng-template>
+  </div>
+  <app-loader *ngIf="isSpining"></app-loader>

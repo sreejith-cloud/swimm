@@ -1,0 +1,90 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <!-- header section -->
+    <nz-card nzTitle="Pan Verification" style="margin-bottom: 15px;">
+      <!-- filter section -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzLg="4">
+          <nz-form-item>
+            <nz-form-label>PAN</nz-form-label>
+            <nz-form-control>
+              <input nz-input name="panNo"  (keypress)="validatePan($event)" [(ngModel)]="panNo" style="text-transform: uppercase;" autocomplete="off">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzLg="6">
+          <nz-form-item>
+            <nz-form-label>Name (As per PAN Card)</nz-form-label>
+            <nz-form-control>
+              <input nz-input name="name" [maxlength]="maxname" style="text-transform: uppercase;" [(ngModel)]="name" autocomplete="off">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzLg="6">
+          <nz-form-item>
+            <nz-form-label>DOB</nz-form-label>
+            <nz-form-control>
+              <input nz-input name="dobText" [maxlength]="10" class="dobtext" (input)="formatInputDate($event)" placeholder="DD/MM/YYYY" [ngModelOptions]="{standalone: true}" [(ngModel)]="dobText" autocomplete="off">
+              <!-- <button class="datepick" id="datepick" type="primary" style="padding-top: 3px;"  nz-button nzType="primary" class="mr-2" (click)="openDatePicker()">
+                <span><i nz-icon type="calendar" theme="outline"></i></span>
+                </button> -->
+                <nz-date-picker style="width: 13%;cursor: pointer !important;color: blue;" #datePicker id="datep" (ngModelChange)="changeDate($event)" nzPlaceHolder="       " nzFormat="dd/MM/yyyy" [(ngModel)]="dob"
+                                  [ngModelOptions]="{standalone: true}" 
+                                  [nzDisabledDate]="disabledFutureDate"
+                                  [nzAllowClear]="false"
+                                  >
+              </nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <!-- <div nz-col nzLg="4" >
+          <nz-form-item>
+            <nz-form-label>DOB 1</nz-form-label>
+            <nz-form-control>
+              
+            </nz-form-control>
+          </nz-form-item>
+        </div> -->
+        <div nz-col nzLg="5" class="verifybtn">
+          <button type="primary"  nz-button nzType="primary" class="mr-2" (click)="verify()">
+          <span><i nz-icon type="save" theme="outline"></i>&nbsp;&nbsp;Verify</span>
+          </button>
+        </div>
+        <div nz-col nzLg="2" class="resetbtn">
+          <form-handler (onReset)="resetForm()">
+          </form-handler>
+        </div>
+
+      </div>
+      <!-- result table -->
+      <div nz-row nzGutter="8" style="position: relative; bottom: 10px;">
+        <div nz-col nzMd="24" style="margin-top: 10px;">
+          <nz-table class="tranTbl table-responsive table-themed" #basicInnerTable [nzData]="tableData"
+            *ngIf="tableData.length > 0" [nzSize]="'small'" [nzPageSize]="20"
+            [nzShowPagination]="tableData.length > 20">
+            <thead>
+              <tr>
+                <th class="headc">PAN Number</th>
+                <th class="headc">PAN Status</th>
+                <th class="headc">Name matched with ITD</th>
+                <th class="headc">DOB matched with ITD</th>
+                <th class="headc">Aadhaar Seed Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let data of basicInnerTable.data; let i = index">
+                <td>{{data.pan}}</td>
+                <td>{{data.pan_status}}</td>
+                <td>{{data.name}}</td>
+                <td>{{data.dob}}</td>
+                <td>{{data.seeding_status}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+      </div>
+    </nz-card>
+
+  </form>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

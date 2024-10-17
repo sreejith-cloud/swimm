@@ -1,0 +1,14 @@
+
+#txt{
+  color:#038cfc;
+  cursor: pointer !important;
+  text-decoration: underline
+}
+#txt:hover {
+  font-weight: bold;
+  cursor: pointer !important;
+}
+
+nz-table  ::ng-deep  .ant-table-small {
+  border: 0px !important;
+}

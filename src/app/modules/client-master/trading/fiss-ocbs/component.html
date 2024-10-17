@@ -1,0 +1,95 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <nz-card nzTitle="In case of FIIS/OCBS/Others">
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Foreign address
+                </nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input rows="3" style="max-height:100px" formControlName="Foreignaddress"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Country
+                </nz-form-label>
+                <nz-form-control>
+                        <input nz-input formControlName="Country" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                        <nz-form-label>State</nz-form-label>
+        
+                        <nz-form-control>
+                            <input nz-input formControlName="State" />
+                        </nz-form-control>
+        
+                    </nz-form-item>
+        </div>
+   
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>City</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="city" />
+                </nz-form-control>
+
+            </nz-form-item>
+            <nz-form-item>
+                    <nz-form-label>Pin</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="Pin" />
+                    </nz-form-control>
+    
+                </nz-form-item>
+        </div>
+
+            <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>SEBI Registration No (for FIIs)
+                        </nz-form-label>
+                        <nz-form-control>
+                                <input nz-input formControlName="SEBIRegistrationNo" />
+                            </nz-form-control>
+                        </nz-form-item>
+                </div>
+        
+        
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>RBI Reference number
+                </nz-form-label>
+                <nz-form-control>
+                        <input nz-input formControlName="RBIReferencenumber" />
+                    </nz-form-control>
+                </nz-form-item>
+        </div>
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>RBI approval date
+                </nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker formControlName="RBIapprovaldate"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+    
+       
+        <div nz-col nzMd="4">
+                <nz-form-item>
+                    <nz-form-label>Foreign address Proof Upload
+                    </nz-form-label>
+                    <nz-form-control>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                        </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+    </div>
+</nz-card>
+</form>

@@ -1,0 +1,51 @@
+<nz-modal [(nzVisible)]="Visbility" nzTitle="Alert" (nzOnCancel)="handleCancel()" (nzOnOk)="handleCancel()"
+  nzWidth="60%">
+  <p style="font-size: 18px;font-weight: bold;">CRF-FAQ’s.</p>
+
+  <p style="font-size: 16px; font-weight: bold;">Please read the following points before proceeding with the CRF Entry.
+  </p>
+
+  <p style="font-size: 16px; font-weight: bold;">1. All CRF changes except Nomination & Bank are PAN based.</p>
+
+  <p style="font-size: 16px; font-weight: bold;">2. The process is based on the KRA/ CKYC status of the client.</p>
+
+  <ul style="list-style-type:none;">
+    <li>
+      <h3> A. <b><u>Active client with valid KRA/ CKYC-</u></b> Choose the appropriate option in the module and proceed
+        to pass
+        the entry.</h3>
+      <img src="assets/Images/CRFActionTypes.PNG" width="100%">
+    </li>
+    <li>
+      <h3>B. <b><u>Active / Inactive clients without KRA/ CKYC-</u></b> You will not be able to pass the entry till the
+        KYC is
+        updated. In order to update the client's KRA/ KYC, click “Next” on the module window to proceed.</h3>
+    </li>
+    <li>
+      <h3>C.<b><u> Inactive client with valid KRA/ CKYC-</u></b> Entry can be passed directly through the module.
+        Financial’s
+        updation can also be done through the module.</h3>
+    </li>
+  </ul>
+
+  <p style="font-size: 16px; font-weight: bold;">3. How to print Barcoded CRF forms ?</p>
+  <ul style="list-style-type:none;">
+    <li>
+      <h3>Option 1 – Print barcoded CRF forms with data </h3>
+      <ul>
+        <li> Fill in the required data in the CRF module. Then take the print out and obtain client’s signature.
+        </li>
+      </ul>
+    </li>
+    <li>
+      <h3>Option 2 – Print barcoded CRF forms without data </h3>
+      <ul>
+        <li>
+          All forms which need clients’ signature can be printed from this module. Select the required option from the
+          main menu. You will be able to print the concerned form with basic client credentials.
+        </li>
+        <img src="assets/Images/CRFButtons.png" width="auto">
+      </ul>
+    </li>
+  </ul>
+</nz-modal>

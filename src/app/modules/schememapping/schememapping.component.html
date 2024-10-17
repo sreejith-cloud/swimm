@@ -1,0 +1,488 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Scheme Mapping</h3>
+      </div>
+    </div>
+    <!--<div nz-row nzGutter="8">
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="7" nzLg="7">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <nz-form-control>
+              <nz-radio-group [(ngModel)]="model.mappingrefund" name="maprefund">
+                <label class="boldinglabel" nz-radio nzValue="M" (click)="mappingFn($event)">Mapping</label>&nbsp;
+                <label class="boldinglabel" nz-radio nzValue="R" (click)="refundFn($event)">Refund</label>&nbsp;
+              </nz-radio-group>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>-->
+    <div nz-row nzGutter="8">
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>Tradecode</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="TradeFindopt" (ngModelChange)="showResult($event)" [(ngModel)]="model.Tradecode" name="Tradecode"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>DpId</nz-form-label>
+            <nz-form-control>
+              <nz-select [(ngModel)]="model.dpid" nzPlaceHolder="Dpid" name="Dpid" nzDropdownMatchSelectWidth="true">
+                <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>DP Client Id</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="dpClientIdFindopt" autocomplete="off" (ngModelChange)="filldata($event)" [(ngModel)]="model.dpClientid"
+                name="dpClientid"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>&nbsp;</nz-form-label>
+            <button type="primary" nz-button style="background-color:red;color: white" class="mr-6" (click)="resetFormhead()">
+<i nz-icon nzType="rollback" nzTheme="outline"></i> Reset</button>
+</nz-form-item>
+</div>
+<!-- <div nz-col nzMd="2" nzLg="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                  <button type="primary" nz-button nzType="primary" class="mr-2" (click)="getscheme1()">
+                      <i nz-icon type="save" theme="outline"></i> View</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div> -->
+
+<app-loader *ngIf="isSpinning"></app-loader>
+</div>
+<div *ngIf="showdetails">
+  <div nz-col nzMd="5">
+    <nz-card style="height: 50px">
+<nz-form-item>
+  <nz-form-label class="boldinglabel">PAN</nz-form-label>
+  <nz-form-control>
+    <p>
+      <!-- {{model.pan?model.pan:''}} -->
+      XXXXXX{{model.pan?(model.pan.slice(7)):XXXXXX }}
+    </p>
+  </nz-form-control>
+</nz-form-item>
+</nz-card>
+</div>
+<!-- <div nz-col nzMd="1">
+        </div> -->
+<div nz-col nzMd="5">
+  <nz-card style="height: 50px">
+<nz-form-item>
+  <nz-form-label class="boldinglabel">Client Name</nz-form-label>
+  <nz-form-control>
+    <p>{{model.clientname}}</p>
+  </nz-form-control>
+</nz-form-item>
+</nz-card>
+</div>
+<!-- <div nz-col nzMd="1">
+        </div> -->
+<div nz-col nzMd="5" *ngIf="showdetails && lastdate">
+  <nz-card style="height: 50px">
+<nz-form-item>
+  <nz-form-label class="boldinglabel">Last Traded Date</nz-form-label>
+  <nz-form-control>
+    <p>{{model.lasttradeddate?(model.lasttradeddate | date: 'dd/MM/yyyy'):''}}</p>
+  </nz-form-control>
+</nz-form-item>
+</nz-card>
+</div>
+</div>
+</div>
+<div nz-row nzGutter="8" *ngIf="mappingrad">
+  <div nz-col nzMd="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Scheme</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.scheme" nzPlaceHolder="scheme" (ngModelChange)="getschemedetails($event)" name="scheme" nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of schemes" [nzLabel]="item.Description" [nzValue]="item.SchemeReferenceNo">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div nz-row nzGutter="10" *ngIf="showschemedata">
+  <div nz-col nzMd="4" nzLg="4"></div>
+  <fieldset class="fieldset-shadow-condensed" style="width:58%">
+<legend class="fieldset-shadow-condensed">
+  <span class="boldinglabel">Details</span>
+</legend>
+<div nz-col nzMd="6" nzLg="6">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Scheme ReferenceNo </nz-form-label>
+    <nz-form-control>
+      <input class="b" nz-input placeholder="Scheme ReferenceNo" [disabled]=true [(ngModel)]="model.schmereferenceno" type="text"
+        name="SchemeReferenceNo">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="4" nzLg="4">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Applicable Type</nz-form-label>
+    <nz-form-control>
+      <input disabled="true" nz-input placeholder="Applicable Type" [(ngModel)]="model.ApplicableType" type="text" name="Applicable Type">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="4" nzLg="4">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Active Till</nz-form-label>
+    <nz-form-control>
+      <input class="b" nz-input placeholder="Active Till" [disabled]=true [ngModel]="model.ActiveTill | date: 'dd-MM-yyyy'" type="text"
+        name="Active Till">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="5" nzLg="5" *ngIf="model.ApplicableType=='InActive'">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Inactivity Period</nz-form-label>
+    <nz-form-control>
+      <input disabled="true" nz-input placeholder="Inactivity Period" [(ngModel)]="model.InactivityPeriod" type="text" name="Inactivity Period">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+</fieldset>
+<div nz-col nzMd="6" nzLg="6"></div>
+</div>
+<div nz-row nzGutter="8" *ngIf="showschemedata">
+  <div nz-col nzMd="4" nzLg="4"></div>
+  <div nz-col nzMd="7" nzLg="7">
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel">Trading</span>
+      </legend>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">Trading A/c Fee</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="Trading" [(ngModel)]="model.Trading" type="text" name="Trading">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">Brokerage Free</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="Brokerage" [(ngModel)]="model.Brokerage" type="text" name="Brokerage">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="ApplicableFor" [(ngModel)]="model.ApplicableFor" type="text" name="ApplicableFor">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div nz-col nzMd="7" nzLg="7">
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel">DP</span>
+      </legend>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">DP A/c Fee</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="dp" [(ngModel)]="model.dp" type="text" name="dp">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">AMC Free</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="amc" [(ngModel)]="model.amc" type="text" name="amc">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input disabled="true" nz-input placeholder="ApplicableFor1" [(ngModel)]="model.ApplicableFor1" type="text" name="ApplicableFor1">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div *ngIf="isVisiblecashorbank">
+  <!-- <div nz-row nzGutter="10">
+        <div nz-col nzMd="4" nzLg="4"></div>
+        <div nz-col nzMd="20" nzLg="20">
+          <h3>Applicable Amount</h3>
+        </div>
+      </div> -->
+  <div nz-row nzGutter="10">
+    <div nz-col nzMd="4" nzLg="4"></div>
+    <fieldset class="fieldset-shadow-condensed" style="width:58%">
+<legend class="fieldset-shadow-condensed">
+  <span class="boldinglabel">Applicable Amount</span>
+</legend>
+<div class="text-right" nz-col nzMd="2" nzLg="2">
+  <h4>Total </h4>
+</div>
+<div nz-col nzMd="2" nzLg="2">
+  <span> <b> {{this.Total?this.Total:0}}</b></span>
+</div>
+
+<div class="text-right" nz-col nzMd="2" nzLg="2">
+  <h4>GST </h4>
+</div>
+<div nz-col nzMd="3" nzLg="3">
+  <span><b>{{this.GST?this.GST:0}}</b></span>
+</div>
+<div class="text-right" nz-col nzMd="3" nzLg="3">
+  <h4>Additional Cess </h4>
+</div>
+<div nz-col nzMd="3" nzLg="3">
+  <span><b>{{this.KFC?this.KFC:0}}</b></span>
+</div>
+<div class="text-right" nz-col nzMd="3" nzLg="3">
+  <h4>NET Amount </h4>
+</div>
+<div nz-col nzMd="3" nzLg="3">
+  <span><b>{{this.Net?this.Net:0}}</b></span>
+</div>
+
+</fieldset>
+<div nz-col nzMd="6" nzLg="6"></div>
+</div>
+
+</div>
+
+<nz-card *ngIf="isVisiblecashorbank">
+  <div *ngIf="isVisiblecashorbank">
+
+    <nz-radio-group [(ngModel)]="model.cashorbank" (ngModelChange)="cashbankchange($event)" name="cashorbank">
+      <label nz-radio nzValue="Cash">Cash</label>
+      <label nz-radio nzValue="Bank">Bank</label>
+    </nz-radio-group>
+    <div nz-row nzGutter="20" *ngIf="isVisibleBank">
+      <div nz-col nzMd="24" nzLg="12">
+        <nz-form-item>
+          <nz-form-label class="required">Bank</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="BankFindopt" [(ngModel)]="model.bank" name="bank"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="14" nzLg="7">
+        <nz-form-item>
+          <nz-form-label class="required">Cheque No</nz-form-label>
+          <nz-form-control>
+            <input [ngClass]="{'promocode': chequeboo }" nz-input placeholder="Cheque No" [textMask]="{mask: inputMasks.decimal}" maxlength="6"
+              [(ngModel)]="model.chequeno" name="chequeno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="10" nzLg="5">
+        <nz-form-item>
+          <nz-form-label class="required">Cheque Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [class.active]="chequedateboo" nzShowToday="true" [nzDisabledDate]="disabledPastDate" nzFormat="dd-MM-yyyy"
+              [(ngModel)]="model.chequedt" name="chequedt" (ngModelChange)="checkdate()">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isVisiblecashorbank" nz-row nzGutter="20">
+    <div nz-row nzGutter="20">
+
+      <div style="margin-left:1%;" nz-col nzMd="16" nzLg="16">
+<nz-form-item>
+  <nz-form-label class="required">Remark</nz-form-label>
+  <nz-form-control>
+    <textarea [class.promocode]="remarkboo" nz-input placeholder="Remark" name="remark" [(ngModel)]="model.remark" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+  </nz-form-control>
+</nz-form-item>
+</div>
+<!--<div nz-col nzMd="1" nzLg="1" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:green;color: white" class="mr-2" (click)="save()">
+<i nz-icon type="save" theme="outline"></i> Save</button>
+</div>-->
+
+<div nz-col nzMd="1" nzLg="1" align="right">
+    <nz-form-label>&nbsp;</nz-form-label>
+      <!--<button (click)="AmcChargeYESorNo()" type="primary" nz-button style="background-color:green;color: white" class="mr-2"-->
+
+
+
+        <button nz-button nzType="primary" style="background-color:green;color: white" class="mr-2" (click)="AmcChargeYESorNo()">
+          <i nz-icon type="save" theme="outline"></i>Save</button>
+
+</div>
+
+
+<div nz-col nzMd="2" nzLg="2" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:orange;color: white" class="ml-4" (click)="getpdf()">
+<i nz-icon type="save" theme="outline"></i> Print</button>
+</div>
+<!--<div nz-col nzMd="1" nzLg="1" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:red;color: white" class="mr-6" (click)="resetForm()">
+<i nz-icon type="save" theme="outline"></i> Cancel</button>
+</div>-->
+</div>
+</div>
+</nz-card>
+<!--<div nz-row nzGutter="8" *ngIf="refundrad">
+  <div nz-col nzMd="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Scheme</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.scheme" nzPlaceHolder="scheme" (ngModelChange)="getschemedetailsforrefund($event)" name="scheme"
+          nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of schemes" [nzLabel]="item.Scheme" [nzValue]="item.SchemeRefernceNo">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>-->
+
+<!--<div nz-row nzGutter="10" *ngIf="showschemedatarefund">
+  <div nz-col nzMd="4" nzLg="4"></div>
+  <fieldset class="fieldset-shadow-condensed" style="width:58%">
+<legend class="fieldset-shadow-condensed">
+  <span class="boldinglabel">Details</span>
+</legend>
+<div nz-col nzMd="4" nzLg="4">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Scheme Name</nz-form-label>
+    <nz-form-control>
+      <input disabled="true" nz-input placeholder="Scheme Name" [(ngModel)]="model.refundschemename" type="text" name="refundSchemeName">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="6" nzLg="6">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Scheme ReferenceNo </nz-form-label>
+    <nz-form-control>
+      <input class="b" nz-input placeholder="Scheme ReferenceNo" [disabled]=true [(ngModel)]="model.refundschmereferenceno" type="text"
+        name="refundSchemeReferenceNo">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+</fieldset>
+<div nz-col nzMd="6" nzLg="6"></div>
+</div>-->
+<!--<div nz-row nzGutter="8" *ngIf="showschemedatarefund">
+  <div nz-col nzMd="4" nzLg="4"></div>
+  <div nz-col nzMd="7" nzLg="7">
+    <fieldset class="fieldset-shadow-condensed" style="width:200%">
+<legend class="fieldset-shadow-condensed">
+  <span class="boldinglabel"></span>
+</legend>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="8" nzLg="8">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Amount paid</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="amountpaid" [(ngModel)]="model.amountpaid" type="text" name="amountpaid">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="8" nzLg="8">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">GST</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="GST" [(ngModel)]="model.refundgst" type="text" name="refundgst">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="8" nzLg="8">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Additional Cess</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Additional Cess" [(ngModel)]="model.refundadditionalcess" type="text" name="refundadditionalcess">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="8" nzLg="8">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Amount Utilised</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="amountutilised" [(ngModel)]="model.amountutilised" type="text" name="amountutilised">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="8" nzLg="8">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Refundable Amount</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Refundable Amount" [(ngModel)]="model.refundableamount" type="text" name="refundableamount">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+</fieldset>
+</div>
+</div>-->
+<nz-card *ngIf="isVisiblebutton">
+  <div *ngIf="isVisiblebutton" nz-row nzGutter="20">
+    <div nz-row nzGutter="20">
+      <div nz-col nzMd="19" nzLg="80"></div>
+      <!--<div nz-col nzMd="1" nzLg="80" align="right">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button type="primary" nz-button style="background-color:green;color: white" class="mr-2" (click)="saverefund()">
+<i nz-icon type="save" theme="outline"></i> Save</button>
+</div>-->
+<!--<div nz-col nzMd="2" nzLg="2" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:orange;color: white" class="ml-4" (click)="getpdfrefund()">
+<i nz-icon type="save" theme="outline"></i> Print</button>
+</div>-->
+<!--<div nz-col nzMd="1" nzLg="1" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:red;color: white" class="mr-6" (click)="resetForm()">
+<i nz-icon type="save" theme="outline"></i> Cancel</button>
+</div>-->
+</div>
+</div>
+</nz-card>
+</form>
+<app-loader *ngIf="isSpinning"></app-loader>
+</div>

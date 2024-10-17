@@ -1,0 +1,313 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <nz-card nzTitle="Account Closure Approval">
+        <div nz-col nzMd="24" nzLg="24" style="padding: 0; margin: 0">
+          <form-handler (onPreview)="viewData('')" (onExportExcel)="Export()" (onReset)="Reset()"></form-handler>
+        </div>
+        <div nzGutter="24">
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>Region</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [options]="RegionFindopt" [(ngModel)]="model.region" name="region">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8">
+            <nz-form-item>
+              <nz-form-label *ngIf="model.location">Tradecode</nz-form-label>
+              <nz-form-label *ngIf="!model.location">Tradecode</nz-form-label>
+              <nz-form-control>
+                <master-find-ctrl [options]="TradecodeFindopt" [(ngModel)]="model.tradeCode"
+                  name="NAME"></master-find-ctrl>
+                <!--  (ngModelChange)="tradeCodeChange($event)"  -->
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+            <div nz-col nzMd="4" nzLg="4">
+              <nz-form-item>
+                <nz-form-label>Location</nz-form-label>
+                <nz-form-control>
+                  <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" name="Location">
+                  </master-find-ctrl>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>DP ID</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="_DpId" name="Dpid" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="8" nzLg="4">
+            <nz-form-item>
+              <nz-form-label>Client ID</nz-form-label>
+              <nz-form-control>
+                <input type="text" nz-input [(ngModel)]="model.DpAcNO" name="clientID"
+                  (ngModelChange)="getFilterdData(model.DpAcNO)" [nzAutocomplete]="auto" [disabled]="!_DpId" />
+                <nz-autocomplete #auto>
+                  <nz-auto-option *ngFor="let item of dpFilteredData" [nzValue]="item.DPACNO" [nzLabel]="item.DPACNO"
+                    class="aleternateColor">{{item.DPACNO}}
+                  </nz-auto-option>
+                </nz-autocomplete>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>PAN</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [options]="PanFindOption" [(ngModel)]="model.pan" name="pan">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>From Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="fromdate" name="FD" nzFormat="dd-MM-yyyy">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>To Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="todate" name="TD" nzFormat="dd-MM-yyyy">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>SerialNo</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [options]="serialnoFindOption" [(ngModel)]="model.serialno" name="SerialNo">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>Request Type</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="selectedReqType" name="selectedReqType" nzDropdownMatchSelectWidth="true">
+                  <nz-option *ngFor="let item of requestType" [nzLabel]="item.RequestType" [nzValue]="item.RequestType">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>Application Status</nz-form-label>
+              <nz-form-control>
+                <nz-select [(ngModel)]="selectedAppStatus" name="selectedAppStatus" nzAllowClear="true">
+                  <!-- <nz-option nzValue="" nzLabel="All"></nz-option> -->
+                  <nz-option *ngFor="let item of applicationStatus" [nzLabel]="item.ApplicationStatus"
+                    [nzValue]="item.ApplicationStatus">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <br>
+          <br>
+
+          <div nz-col *ngIf="listOfData.length > 0">
+            <nz-table #DetailsTable [nzData]="listOfData" [nzShowPagination]="listOfData.length > 10"
+              class="tranTbl table-responsive table-themed" [nzPageSize]="10">
+              <thead>
+                <tr>
+                  <th class="headerstyle">SerialNo</th>
+                  <th class="headerstyle">Closure Type</th>
+                  <th class="headerstyle">Region</th>
+                  <th class="headerstyle">Location</th>
+                  <th class="headerstyle">DPID</th>
+                  <th class="headerstyle">DP ClientID</th>
+                  <th class="headerstyle">Name</th>
+                  <th class="headerstyle">PAN</th>
+                  <th class="headerstyle">Ledger Balance</th>
+                  <th class="headerstyle">Holding value</th>
+                  <th class="headerstyle">Entry Location</th>
+                  <th class="headerstyle">Entry Date</th>
+                  <th class="headerstyle">Request Date As per Form</th>
+                  <!-- <th class="headerstyle">Reason for closing</th> -->
+                  <th class="headerstyle">Branch Remarks</th>
+                  <th class="headerstyle">Application Status</th>
+                  <!-- <th class="headerstyle">Ho Status</th> -->
+                  <!-- <th class="headerstyle">Ho Remarks</th>
+                  <th></th> -->
+                  <!-- <th class="headerstyle">Update Here</th>  -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of DetailsTable.data; let i = index">
+                  <td style="color: rgb(75, 75, 235); cursor: pointer"
+                    (click)="Signature(data.SerialNo); Docs(data.SerialNo,data);">
+                    {{ data.SerialNo }}
+                  </td>
+
+                  <td>{{ data.ClosureType }}</td>
+                  <td>{{ data.Region }}</td>
+                  <td>{{ data.LOCATION }}</td>
+                  <td>{{ data.DPID }}</td>
+                  <td>{{ data.DPClientid }}</td>
+                  <td>{{ data.Name }}</td>
+                  <td>{{ data.Trade_PAN ? data.Trade_PAN : data.DP_Frst_Hldr_PAN ? data.DP_Frst_Hldr_PAN : '' }} </td>
+                  <td>{{ data.LedgerBalance }}</td>
+                  <td>{{ data.HoldValue }}</td>
+                  <td>{{ data.EntryLocation }}</td>
+                  <td>{{ data.EntryDate }}</td>
+                  <td>{{ data.RequestDate }}</td>
+                  <!-- <td>{{ data.ClientRemarks }}</td> -->
+                  <td>{{ data.Remarks }}</td>
+                  <td>{{ data.ApplicationStatus }}</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </form>
+</div>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="Client Doc's" nzWidth="90%" (nzOnCancel)="handleCancel()"
+  [nzFooter]="modalFooterTemplate">
+  <div style="overflow-x: auto;font-size: 0.9rem;">
+    <table>
+      <tr>
+        <th>Client DP Details</th>
+        <th *ngIf="modalData && modalData.MailProof && modalData.MailProof != undefined"></th>
+        <th></th>
+      </tr>
+
+      <tr>
+        <td style="width: 80%;">
+          <table style="width: 100%;">
+            <tr>
+              <td>Name </td>
+              <td style="font-weight: bolder;">
+                {{ modalData.Name }}
+              </td>
+            </tr>
+            <tr>
+              <td>DPID </td>
+              <td style="font-weight: bolder;">
+                {{ modalData.DPID }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>DPACNO </td>
+              <td style="font-weight: bolder;">
+                {{ modalData.DPACNO }}
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <div nz-row>
+            <div *ngIf="modalData && modalData.MailProof && modalData.MailProof != undefined">
+              <div class="eml-content" *ngIf="emlContent">
+                <!-- <pre>{{emlContent}}</pre> -->
+              </div>
+            </div>
+          </div>
+        </td>
+        <td *ngIf="modalData && modalData.MailProof && modalData.MailProof != undefined">
+
+          <button nz-button nz-tooltip nzTitle="Click To Download Mail" nzType="primary" (click)="showMailProof()"
+            nzSize="large"><span nz-icon nzType="download"></span>Mail Proof </button>
+        </td>
+      </tr>
+      <br>
+      <tr>
+        <td *ngIf="modalData && modalData.Signature "><b>Signature</b> <br><br>
+          <img [src]="modalData.Signature" width="200px" style="margin-left: 15px" (error)="handleImageError($event)"  />
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <br><br>
+      <tr>
+        <td>OTP Verified Status <span style="margin-left: 10px;"
+            *ngIf="selectedApplication && selectedApplication.ApplicationStatus != 'Processing' "> <b>Verified</b><img
+              src="assets/img/successTick.png" class="icon" width="20" alt=""> </span>
+          <span style="margin-left: 10px;" *ngIf="selectedApplication && selectedApplication.ApplicationStatus === 'Processing' "> <b>Not
+              Verified</b> <img src="assets/img/fail-icon.png" class="icon" width="20" alt=""> </span>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+      <br>
+      <tr>
+        <td>Application Status : <b> {{ selectedApplication && selectedApplication.ApplicationStatus ? selectedApplication.ApplicationStatus : '' }} </b>
+        </td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <br>
+  <br>
+  <div nzGutter="24" [ngClass]="{ 'disableDiv' : (selectedApplication.ApplicationStatus === 'Rejected') || (selectedApplication.ApplicationStatus === 'Approved') }" style="margin-bottom: 40px;">
+    <div nz-col nzSpan="5">
+      <span>Approval Remarks</span>
+    </div>
+    <div nz-col nzSpan="16">
+
+      <nz-select [(ngModel)]="_approval_remarks" name="_approval_remarks" nzAllowClear nzPlaceHolder="Select"
+        style="width: 60%;">
+        <nz-option *ngFor="let item of approval_RemarksArray" [nzValue]="item.ApprovalRemarks"
+          [nzLabel]="item.ApprovalRemarks">
+        </nz-option>
+      </nz-select>
+    </div>
+    <div nz-col nzSpan="5" style="margin-top: 10px;">
+      <span>Rejection Remarks</span>
+    </div>
+    <div nz-col nzSpan="16" style="margin-top: 10px;">
+      <nz-select [(ngModel)]="RejRemarkData" name="RejRemarkData" nzAllowClear nzPlaceHolder="Select"
+        style="width: 60%;">
+        <nz-option *ngFor="let item of rej_RemarksArray" [nzValue]="item.RejectRemarks" [nzLabel]="item.RejectRemarks">
+        </nz-option>
+      </nz-select>
+      <div style="margin-top: 10px;width: 455px;">
+        <input *ngIf=" RejRemarkData === 'Other Reasons ' || rejOtherReasons " maxlength="300" nz-input placeholder="Basic usage"
+          [(ngModel)]="rejOtherReasons" type="text" />
+      </div>
+    </div>
+
+    <div nz-col nzMd="10">
+    </div>
+  </div>
+  <br><br><br>
+</nz-modal>
+<ng-template #modalFooterTemplate>
+  <div class="modal-footer">
+    <button nz-button nzType="default" (click)="handleCancel()">Cancel</button>
+    <button nz-button nzType="success" class="successbtn" type="button" (click)="update('A')"
+      [disabled]="HOStatus != 'Y' && selectedApplication && selectedApplication.ApplicationStatus != 'Pending' ">Approve</button>
+    <button nz-button nzType="danger" type="button" class="rejectBtn"
+     [disabled]="selectedApplication && (selectedApplication.ApplicationStatus === 'Rejected' ) || (selectedApplication.ApplicationStatus === 'Approved' ) "(click)="update('R')">Reject</button>
+  </div>
+</ng-template>
+
+<app-loader *ngIf="isLoading"></app-loader>

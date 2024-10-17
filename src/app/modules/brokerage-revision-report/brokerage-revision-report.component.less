@@ -1,0 +1,85 @@
+
+.padding1{
+  padding: 0.3rem
+}
+.w-100{
+  width: 98% !important;
+}
+.padding-top5{
+  padding-top: 10px !important;
+}
+.pading-top{
+  padding-top: 3px !important;
+}
+#txt{
+  color:#038cfc;
+  cursor: pointer !important;
+}
+.modelheight{
+  height: 29vh;
+}
+
+
+:host {
+  ::ng-deep {
+    .ant-table-small {
+      border: none !important;
+    }
+
+    .highlighted {
+      background: #d3edfa !important;
+  }
+
+    .ant-input::placeholder {
+      color: rgb(122, 124, 123) !important;
+      font-size: 12px;
+  }
+
+  .ant-select-search__field__placeholder,
+  .ant-select-selection__placeholder {
+      color: rgb(122, 124, 123) !important;
+  }
+
+  .ant-select::placeholder {
+      color: rgb(122, 124, 123) !important;
+      font-size: 12px;
+  }
+    }
+  }
+  .popup {white-space: nowrap;
+    width: calc(100%);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    line-height: 40px;
+    pointer-events:none;text-align: center;
+    display: inline-block;/* display: block; */
+  }
+  .popup:after {
+    content:"";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 48px;
+    z-index: 1;
+    pointer-events:initial;
+  }
+  .popup:hover:after{
+    cursor: pointer;
+  }
+  .tooltip {
+    width: calc(60%);
+    visibility: hidden;
+    background-color: #fff;
+    padding: 20px;
+    -webkit-box-shadow: 0 0 50px 0 rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .popup:hover + .tooltip {
+    visibility: visible;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+  }

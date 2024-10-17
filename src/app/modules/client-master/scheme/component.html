@@ -1,0 +1,315 @@
+<!-- 
+<nz-card nzTitle="Choose Scheme" *ngIf="schemeData.length">
+
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="12">
+            <nz-form-item>
+                <nz-form-label>Select Scheme</nz-form-label>
+                <nz-form-control>
+                    <input type="text" nz-input [(ngModel)]="scheme" name='schemecode'
+                        (ngModelChange)="getFilterdData($event)" [nzAutocomplete]="auto" />
+                    <nz-autocomplete #auto>
+                        <nz-auto-option *ngFor="let item of filteredData" [nzValue]="item"
+                            [nzLabel]="item.SchemeName" class="aleternateColor" (click)="fetchData(item)">
+                            <span [innerHTML]="item.SchemeName|highlight" ></span>
+                        </nz-auto-option>
+                    </nz-autocomplete>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-card>
+<nz-card nzTitle="Scheme Details" class="mt-2" *ngIf="filteredData.length">
+    <div *ngIf="scheme.SchemeType=='Free'">
+        <div>Margin:{{selectedSchemeDetails.MarginAmount}}</div>
+        <div>Holding:{{selectedSchemeDetails.HoldingAmount}}</div>
+    </div>
+        <div *ngIf="scheme.SchemeType=='Paid'">
+            <div>Trading A/C Fee:</div>
+            <div>DP A/C Fee:</div>
+            <div>Brokerage A/C Fee:</div>
+            <div>AMC A/C Fee:</div>
+            <div>Applicable Period:</div>
+            
+        </div>
+</nz-card>  -->
+
+<form nz-form nzLayout="vertical" [formGroup]="form">
+
+    <nz-card nzTitle="Choose Scheme">
+        <div nz-row nzGutter="5" formGroupName="scheme">
+            <div nz-col nzMd="4" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Scheme Type</nz-form-label>
+                    <nz-form-control>
+                        <nz-radio-group formControlName="schemeType">
+                            <label nz-radio nzValue="Free">Free</label>
+                            <label nz-radio nzValue="Paid">Paid</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        <div nz-col nzMd="12" nzLg="12" *ngIf="form.value.scheme.schemeType!=null">
+            <nz-form-item>
+                <nz-form-label class="required">Select Scheme</nz-form-label>
+                <nz-form-control>
+                    <!-- <nz-select formControlName="SchemeName" (ngModelChange)="selectScheme($event)" nzAllowClear nzShowSearch  (nzOnSearch)="getFilterdData($event)" >
+                        <nz-option  *ngFor="let item of filteredData" [nzValue]="item.SchemeName"
+                        [nzLabel]="item.SchemeName"></nz-option>
+                                          </nz-select> -->
+
+                                          <input type="text" nz-input formControlName="SchemeName" style="text-transform: uppercase;" [nzAutocomplete]="auto" />
+                                          <nz-autocomplete #auto>
+                                              <nz-auto-option *ngFor="let item of filteredData" [nzValue]="item.SchemeName"
+                                              [nzLabel]="item.SchemeName">
+                                                  <span [innerHTML]="item.SchemeName"></span>
+                                              </nz-auto-option>
+                                          </nz-autocomplete>
+                </nz-form-control>
+            </nz-form-item>
+        </div> 
+        <div nz-col nzMd="4" nzLg="4" *ngIf="form.value.scheme.schemeType!=null">
+            <nz-form-item>
+                <nz-form-label >Scheme Code</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="SchemeCode" readonly />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+ 
+            <div nz-col nzMd="12" *ngIf="form.value.scheme.schemeType=='Free'">
+                <nz-form-item>
+                    <nz-form-label class="required">Scheme Sub Type</nz-form-label>
+                    <nz-form-control>
+                        <nz-radio-group formControlName="schemeSubType" (ngModelChange)="subtypeChange($event)">
+                            <label nz-radio nzValue="C">Cheque</label>
+                            <label nz-radio nzValue="H">Holding</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="12" *ngIf="form.value.scheme.schemeType=='Paid'">
+                <nz-form-item>
+                    <nz-form-label>Scheme Sub Type</nz-form-label>
+                    <nz-form-control>
+                        <nz-radio-group formControlName="schemeSubType" (ngModelChange)="subtypeChange($event)">
+                            <label nz-radio nzValue="Cash">Cash</label>
+                            <label nz-radio nzValue="B">Bank</label>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div formGroupName="details">
+        <div nz-row nzGutter="5" *ngIf="form.value.scheme.schemeSubType=='C'">
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Cheque No</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="ChequeNo"  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label>Cheque Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD" formControlName="ChequeDate"  [nzDisabledDate]="disabledFutureDate"  ></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Amount</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="Amount" [textMask]="{mask: inputMasks.decimal}"   />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" nzLg="8">
+                <nz-form-item>
+                    <nz-form-label class="required">Bank Name</nz-form-label>
+                    <nz-form-control>
+                        <master-find-ctrl [options]="BankFindopt"  [(ngModel)]="bankDetails" name="bbnn"  [ngModelOptions]="{standalone: true}" (ngModelChange)="getBankDetailsinChequeType($event)"></master-find-ctrl>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Bank Account Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="BankAccountNumber" readonly  />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+   
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Upload Cheque </nz-form-label>
+                    <nz-form-control>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="3">
+                            <button nz-button type="button"><i nz-icon type="upload"></i><span>Select
+                                    File</span></button>
+                        </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+ 
+                    <div  class="pd" nz-col nzMd="4" *ngFor="let item of chequeDocument;index as i" class="imageBox">
+                        <span>{{item.chequeDocname}}
+                        </span>
+                        <button nz-button nzType="primary" (click)="showModal(item)" title="Preview"><i nz-icon
+                                type="eye"></i></button>
+                        <button nz-button style="background-color: red;color: white;"  title="Delete" (click)="DeleteProofrow(i)"><i
+                                nz-icon type="delete"></i></button>
+                    </div>
+              
+        </div>
+
+        <div nz-row nzGutter="5" *ngIf="form.value.scheme.schemeSubType=='H'">
+            <div nz-col nzMd="6" nzLg="3">
+                <nz-form-item>
+                  <nz-form-label>DpId</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input formControlName="DpId" readonly >
+                    <!-- <nz-select nzPlaceHolder="Dpid" formControlName="DpId">
+                      <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                      </nz-option> -->
+                    <!-- </nz-select> -->
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                  <nz-form-label>DP Client Id</nz-form-label>
+                  <nz-form-control>
+                    <master-find-ctrl [options]="dpClientIdFindopt" autocomplete="off"  [(ngModel)]="dpClientDetails" name="dpc"  [ngModelOptions]="{standalone: true}"   (ngModelChange)="bindDpClientid($event)"
+                     ></master-find-ctrl>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+
+            </div>
+     
+        <div nz-row nzGutter="5" *ngIf="form.value.scheme.schemeSubType=='Cash'">
+            <div nz-col nzMd="4" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Amount</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="Amount" [textMask]="{mask: inputMasks.decimal}" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="24" nzLg="24">
+                <nz-form-item>
+                  <nz-form-label>Remark</nz-form-label>
+                  <nz-form-control>
+                    <textarea nz-input placeholder="Remark"  [nzAutosize]="{ minRows: 2, maxRows: 6 }" formControlName="Remark"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+       
+   
+        </div>
+        <div nz-row nzGutter="5" *ngIf="form.value.scheme.schemeSubType=='B'">
+            <div nz-col nzMd="8" nzLg="8">
+                <nz-form-item>
+                    <nz-form-label class="required">Bank Name</nz-form-label>
+                    <nz-form-control>
+                        <master-find-ctrl [options]="BankFindopt" [(ngModel)]="bankDetails1" name="bank"  [ngModelOptions]="{standalone: true}" (ngModelChange)="getBankDetails($event)"></master-find-ctrl>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+ 
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Bank Account Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="BankAccountNumber" readonly/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Cheque Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="ChequeNo"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label>Cheque Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD"  formControlName="ChequeDate" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Amount</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="Amount" [textMask]="{mask: inputMasks.decimal}"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" nzLg="8">
+                <nz-form-item>
+                    <nz-form-label class="required">Client Bank Name</nz-form-label>
+                    <nz-form-control>
+                        <master-find-ctrl [options]="ClientBankFindopt" [(ngModel)]="clientbankDetails" name="bank"  [ngModelOptions]="{standalone: true}" (ngModelChange)="getClientBankDetails($event)"></master-find-ctrl>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+ 
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Client Bank Account Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input  formControlName="ClientBankAccountNumber" [textMask]="{mask: inputMasks.decimal}" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Upload Cheque</nz-form-label>
+                    <nz-form-control>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzLimit]="3">
+                            <button nz-button type="button"><i nz-icon type="upload"></i><span>Select
+                                    File</span></button>
+                        </nz-upload>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" nzLg="4">
+                <div nz-row>
+                    <div nz-col nzMd="24" *ngFor="let item of chequeDocument;index as i" class="imageBox">
+                        <span>{{item.chequeDocname}}
+                        </span>
+                        <button nz-button nzType="primary" (click)="showModal(item)"  title="Preview"><i nz-icon
+                                type="eye"></i></button>
+                        <button nz-button style="background-color: red;color: white;"  title="Delete" (click)="DeleteProofrow(i)"><i
+                                nz-icon type="delete"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div nz-col nzMd="24" nzLg="24">
+                <nz-form-item>
+                  <nz-form-label>Remark</nz-form-label>
+                  <nz-form-control>
+                    <textarea nz-input placeholder="Remark"  formControlName="Remark" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+        </div>
+</div>
+    </nz-card>
+    <p class="text-right p-2">
+        <button nz-button nzType="primary" (click)="next()">Next</button>
+    </p>
+</form>
+<app-loader *ngIf="spin"></app-loader>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent"
+[contentType]="filePreiewContentType" [fileName]="filePreiewFilename"></app-file-preview>

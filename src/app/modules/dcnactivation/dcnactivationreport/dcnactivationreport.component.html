@@ -1,0 +1,128 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Profile Change Report Generation</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="preview()" (onReset)="resetForm()" (onExportExcel)="exportData()"></form-handler>
+
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="pan" [(ngModel)]="Pan" [options]="panFindOption">
+            </master-find-ctrl>
+
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Geojit Unique Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl name="uniqueCode" [(ngModel)]="uniqueCode" [options]="geojitUniqueCodeFindOption"
+              [options]="cinFindOption">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>ClientID</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+
+      <!-- <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>DP ID</nz-form-label>
+          <nz-form-control>
+
+            <master-find-ctrl [options]="DpIDFindopt" [(ngModel)]="DpID" name="DpId">
+
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+      <div nz-col nzMd="2">
+        <nz-form-item>
+            <nz-form-label>DP ID</nz-form-label>
+            <nz-form-control>
+                <nz-select  [(ngModel)]="DpId" nzPlaceHolder="Dpid" name="Dpid" nzDropdownMatchSelectWidth="true" (ngModelChange)="getDPdetails($event)" nzAllowClear>
+                        <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                        </nz-option>
+                      </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>DP Acount No</nz-form-label>
+          <nz-form-control>
+
+            <master-find-ctrl [options]="DpAcNOFindopt" [(ngModel)]="DpClientId" name="DpClientId">
+
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">From Date
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="fdate" name="fromdate" [nzDisabledDate]="disabledFutureDate">
+        </nz-date-picker>
+
+
+      </div>
+
+      <div nz-col nzMd="3">To Date
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="tdate" name="todate" [nzDisabledDate]="disabledFutureDate">
+        </nz-date-picker>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label> Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="dcn" name="dcnval" (ngModelChange)="DCNvaluechange($event)" nzAllowClear>
+              <nz-option *ngFor="let data of  dcnvalueArray" [nzValue]="data.flag" [nzLabel]="data.flag">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="8">
+      <div nz-row #basicDPDetailsTable *ngIf="DetailData" #htmlView>
+        <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzPageSize]=15 [nzShowPagination]="true" nzSize="small"
+          [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+          <thead>
+            <tr>
+
+              <th *ngFor="let header of detailDataHeads;let i= index"
+                [ngClass]="[header=='selectedtopool' ? 'display':'',header=='rowId' ? 'display':'']">
+                <span>{{header}}</span>
+
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+              <td *ngFor="let header of detailDataHeads">
+
+                <span> {{data[header]}}</span>
+              </td>
+
+
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </form>
+</div>

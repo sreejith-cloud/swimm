@@ -1,0 +1,34 @@
+.count {
+  width: 100%;
+  justify-content: flex-end;
+  display: flex;
+}
+
+.animitext {
+  text-align: center;
+  margin-top: 50px;
+  color:white;
+   /* rgb(88, 83, 83); */
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.dataCountClass {
+  text-align: center;
+}
+
+.buttonBackground {
+  background-color: rgb(3, 97, 3)!important;
+}
+.buttonBackground:disabled {
+  background: #dddddd!important;
+}
+.alignflex{
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,715 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <!--<div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Define Scheme</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+
+<form-handler (onModify)="modify()" (onSave)="save()" (onFind)="Search()" (onReset)="Reset()"></form-handler>
+</div>
+</div>-->
+    <nz-card [nzTitle]="titleTemplate1">
+      <ng-template #titleTemplate1>
+        <div>Define Scheme</div>
+      </ng-template>
+
+      <div nz-row nzGutter="10" *ngIf="modifyboo">
+        <div style="border-right: 1px solid grey;" nz-col nzMd="5" nzLg="5"></div>
+<div nz-row nzGutter="8">
+  <div nz-col nzMd="7" nzLg="7">
+    <nz-form-item>
+      <nz-form-label>&nbsp;</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="model.freeorpaidmodify" name="modifytype">
+          <label class="boldinglabel" nz-radio nzValue="M" (click)="paidmodify($event)">Paid</label>&nbsp;
+          <label class="boldinglabel" nz-radio nzValue="N" (click)="freemodify($event)">Free</label>&nbsp;
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+</div>
+
+
+<div nz-row nzGutter="10" *ngIf=" modifyboo && model.freeorpaidmodify=='M'">
+  <div style="border-right: 1px solid grey;" nz-col nzMd="5" nzLg="5"></div>
+<div nz-col nzMd="7" nzLg="10">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Scheme Name</nz-form-label>
+    <nz-form-control>
+      <master-find-ctrl [options]="schememodifyfindopt" (ngModelChange)="onchangescheme($event)" [(ngModel)]="model.schememodifyname"
+        name="schememodify">
+      </master-find-ctrl>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+</div>
+<div nz-row nzGutter="10" *ngIf=" model.freeorpaidmodify=='N'">
+  <div style="border-right: 1px solid grey;" nz-col nzMd="5" nzLg="5"></div>
+<div nz-col nzMd="7" nzLg="10">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Scheme Name</nz-form-label>
+    <nz-form-control>
+      <master-find-ctrl [options]="schememodifyfreefindopt" (ngModelChange)="onchangeschemefree($event)" [(ngModel)]="model.schememodifyname"
+        name="schememodify">
+      </master-find-ctrl>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+</div>
+<div nz-row nzGutter="10" *ngIf=" modifyboo">
+  <div style="border-right: 1px solid grey;" nz-col nzMd="5" nzLg="5" ></div>
+<div nz-col nzMd="6" nzLg="4" *ngIf=" model.freeorpaidmodify=='M'">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Active Till</nz-form-label>
+    <nz-form-control>
+      <nz-date-picker [nzDisabledDate]="disabledPastDate" nzShowToday="false" [(ngModel)]="model.Activetillmodify" name="Activetill"
+        nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+
+<div nz-col nzMd="6" nzLg="4" *ngIf="model.freeorpaidmodify=='N'">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Active Till</nz-form-label>
+    <nz-form-control>
+      <nz-date-picker [nzDisabledDate]="disabledPastDate" nzShowToday="false" [(ngModel)]="model.Activetillmodify" name="Activefreetill"
+        nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<div nz-col nzMd="2" nzLg="2">
+  <nz-form-item>
+    <nz-form-label>&nbsp;</nz-form-label>
+    <button type="primary" nz-button style="background-color:#047cbc;color: white" class="mr-6" (click)="update()">
+<i nz-icon nzType="edit" nzTheme="outline"></i>Update</button>
+</nz-form-item>
+</div>
+<div nz-col nzMd="2" nzLg="2">
+  <nz-form-item>
+    <nz-form-label>&nbsp;</nz-form-label>
+    <button type="primary" nz-button style="background-color:red;color: white" class="mr-6" (click)="Reset()">
+<i nz-icon nzType="rollback" nzTheme="outline"></i>Reset</button>
+</nz-form-item>
+</div>
+</div>
+<div [hidden]="isTBL">
+  <div nz-row nzGutter="10">
+    <div style="border-right: 1px solid grey;" nz-col nzMd="5" nzLg="5"></div>
+
+<div nz-col nzMd="7" nzLg="12" *ngIf="model.Shcemetype=='Free'">
+  <!-- <div style="margin-left: 20%;" nz-col nzMd="7" nzLg="7"> -->
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Scheme Name </nz-form-label>
+    <nz-form-control>
+      <input [ngClass]="{'promocode': schemeboo  }" nz-input placeholder="Scheme" [(ngModel)]="model.Scheme" type="text" name="Scheme">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+
+<div nz-col nzMd="7" nzLg="10" *ngIf="model.Shcemetype=='Paid'">
+  <!-- <div style="margin-left: 20%;" nz-col nzMd="7" nzLg="7"> -->
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Scheme Name</nz-form-label>
+    <nz-form-control>
+      <input [ngClass]="{'promocode': schemeboo  }" nz-input placeholder="Scheme" [(ngModel)]="model.Scheme" type="text" name="Scheme">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+<!--<div nz-col nzMd="7" nzLg="3">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel">Scheme Reference No</nz-form-label>
+    <nz-form-control>
+      <input nz-input placeholder="Referenceno" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.Referenceno" type="text"
+        name="Referenceno">
+    </nz-form-control>
+  </nz-form-item>
+</div>-->
+
+<div nz-col nzMd="7" nzLg="4" *ngIf="model.Shcemetype=='Paid'">
+  <nz-form-item>
+    <nz-form-label class="boldinglabel required">Promo Code</nz-form-label>
+    <nz-form-control>
+      <input [ngClass]="{'promocode': promocodeboo  }" nz-input placeholder="Promo Code" [(ngModel)]="model.promocode" (keypress)="eventHandler($event)"
+        type="text" name="promocode" ng-required="required">
+    </nz-form-control>
+  </nz-form-item>
+</div>
+</div>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="5" nzLg="5">
+  </div>
+  <div nz-col nzMd="6" nzLg="3">
+    <!-- <div style="margin-left: 20%;" nz-col nzMd="6" nzLg="3"> -->
+    <nz-form-item>
+      <nz-form-label class="boldinglabel ">Scheme Type</nz-form-label>
+      <nz-form-control>
+        <nz-select [ngClass]="{'promocode': Shcemetypeboo  }" nzPlaceHolder="Select Active" (ngModelChange)="paidfree($event)" [(ngModel)]="model.Shcemetype"
+          name="Shcemetype" nzDropdownMatchSelectWidth="true">
+          <!--<nz-option *ngFor="let item of Shcemelist" [nzLabel]="item.Description" [nzValue]="item.code" (click)="paidfree($event)">
+          </nz-option>-->
+          <nz-option nzValue="Paid" nzLabel="Paid"></nz-option>
+          <nz-option nzValue="Free" nzLabel="Free"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="6" nzLg="3" *ngIf="model.Shcemetype=='Free'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required">Active</nz-form-label>
+      <nz-form-control>
+        <nz-select [class.active]="Activeboo" nzPlaceHolder="Select Active" [(ngModel)]="model.Active" name="Active" nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of Activelist" [nzLabel]="item.Description" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="6" nzLg="3" *ngIf="model.Shcemetype=='Free'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel ">AMC Free</nz-form-label>
+      <nz-select nzPlaceHolder="Select AMC" [(ngModel)]="model.AMCFree" (ngModelChange)="Amcfreedateclear($event)" name="Shcemetype"
+        nzDropdownMatchSelectWidth="true">
+        <!--<nz-option nzValue="" nzLabel=""></nz-option>-->
+        <nz-option nzValue="1" nzLabel="Yes"></nz-option>
+        <nz-option nzValue="0" nzLabel="No"></nz-option>
+      </nz-select>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="6" nzLg="3" *ngIf="model.Shcemetype=='Free' && model.AMCFree=='1'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required">Amc Valid Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [nzDisabledDate]="disabledPastamcDate" [ngClass]="{'active': amcdateboo}" [(ngModel)]="model.Activetill"
+          name="Activetill" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <!--<div *ngIf="model.Shcemetype=='Free'" nz-col nzMd="3" nzLg="3">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required"> Margin</nz-form-label>
+      <nz-form-control>
+        <input [ngClass]="{'promocode': marginboo}" nz-input placeholder="Margin" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.Margin"
+          type="text" name="Margin">
+      </nz-form-control>
+    </nz-form-item>
+  </div>-->
+
+
+  <div *ngIf="model.Applicable!='InActive' && model.Shcemetype=='Paid'">
+    <div nz-col nzMd="7">
+
+      <nz-form-item>
+        <nz-form-label class="boldinglabel required">Applicable For</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group [(ngModel)]="model.Applicable" name="Applicable" (ngModelChange)="clearinactivityperiod($event)">
+            <label class="boldinglabel" nz-radio nzValue="New" (click)="newapplicable($event)">New</label>
+            <label class="boldinglabel" nz-radio nzValue="Existing" (click)="inactiveapplicable($event)">Existing</label>
+            <label class="boldinglabel" nz-radio nzValue="InActive" (click)="inactiveapplicable($event)">InActive</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div *ngIf="model.Applicable=='InActive'  && model.Shcemetype=='Paid'">
+    <div nz-col nzMd="2">
+
+      <nz-form-item>
+        <nz-form-label class="boldinglabel required">Applicable For</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group [(ngModel)]="model.Applicable" name="Applicable" (ngModelChange)="clearinactivityperiod($event)">
+            <label class="boldinglabel" nz-radio nzValue="New" (click)="newapplicable($event)">New</label>
+            <label class="boldinglabel" nz-radio nzValue="Existing" (click)="inactiveapplicable($event)">Existing</label>
+            <label class="boldinglabel" nz-radio nzValue="InActive" (click)="inactiveapplicable($event)">InActive</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="5" nzLg="5" *ngIf="model.Applicable=='InActive'">
+      <nz-form-item>
+        <nz-form-label class="boldinglabel required">Inactivity Period (In Days)</nz-form-label>
+        <nz-form-control>
+          <input [ngClass]="{'promocode': inactivityperiodboo}" nz-input placeholder="inactivityperiod" [textMask]="{mask: inputMasks.numeric}"
+            [(ngModel)]="model.inactivityperiod" type="text" name="inactivityperiod">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+  <div nz-col nzMd="6" nzLg="4" *ngIf="model.Shcemetype=='Paid'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required">Active Till</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [nzDisabledDate]="disabledPastDate" nzShowToday="false" [ngClass]="{'active': Activetillboo}" [(ngModel)]="model.Activetill"
+          name="Activetill" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <!-- <div nz-col nzMd="6" nzLg="3">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel" >Amount Chargeable</nz-form-label>
+      <nz-form-control>
+        <nz-select nzPlaceHolder="Select Amountchr"  [(ngModel)]="model.Amountchr"
+          name="Amountchr" nzDropdownMatchSelectWidth="true" required="">
+          <nz-option *ngFor="let item of Amountlist" [nzLabel]="item.Description" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item> -->
+  <!-- </div> -->
+</div>
+<div nz-row nzGutter="10" *ngIf="model.Shcemetype=='Paid' && exinactive">
+  <div nz-col nzMd="5" nzLg="5"></div>
+  <div nz-col nzMd="7" nzLg="7">
+    <!-- <div style="margin-left:20%;" nz-col nzMd="7" nzLg="7"> -->
+
+
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel required">Trading</span>
+      </legend>
+      <!-- <nz-card > -->
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Scheme Fee</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': Shcemetypeboo  }" nz-input placeholder="Trading" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.Trading" type="text" name="Trading">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Brokerage Free</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': brokerageboo  }" nz-input placeholder="Brokerage" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.Brokerage" type="text" name="Brokerage">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input maxlength="5" [ngClass]="{'promocode': applicableboo  }" nz-input placeholder="ApplicableFor" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.ApplicableFor" type="text" name="ApplicableFor">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!-- </nz-card> -->
+    </fieldset>
+
+  </div>
+  <div nz-col nzMd="7" nzLg="7">
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel">DP</span>
+      </legend>
+      <!-- <nz-card nzTitle="DP"> -->
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Scheme Fee</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': Shcemetypeboo }" nz-input placeholder="DP" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.DP"
+                type="text" name="DP">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel">AMC Free</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': amcfeeboo  }" nz-input placeholder="AMCFree" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.AMCFree"
+                type="text" name="AMCFree">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input maxlength="5" [ngClass]="{'promocode': amcapplicableboo  }" nz-input placeholder="ApplicableFor1" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.ApplicableFor1" type="text" name="ApplicableFor1">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </fieldset>
+    <!-- </nz-card> -->
+  </div>
+</div>
+
+
+
+<div nz-row nzGutter="10" *ngIf="model.Shcemetype=='Paid' && newinactive">
+  <div nz-col nzMd="5" nzLg="5"></div>
+  <div nz-col nzMd="7" nzLg="7">
+    <!-- <div style="margin-left:20%;" nz-col nzMd="7" nzLg="7"> -->
+
+
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel required">Trading</span>
+      </legend>
+      <!-- <nz-card > -->
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Trading A/c Fee</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': Shcemetypeboo  }" nz-input placeholder="Trading" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.Trading" type="text" name="Trading">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Brokerage Free</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': brokerageboo  }" nz-input placeholder="Brokerage" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.Brokerage" type="text" name="Brokerage">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input maxlength="5" [ngClass]="{'promocode': applicableboo  }" nz-input placeholder="ApplicableFor" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.ApplicableFor" type="text" name="ApplicableFor">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <!-- </nz-card> -->
+    </fieldset>
+
+  </div>
+  <div nz-col nzMd="7" nzLg="7">
+    <fieldset class="fieldset-shadow-condensed">
+      <legend class="fieldset-shadow-condensed">
+        <span class="boldinglabel required">DP</span>
+      </legend>
+      <!-- <nz-card nzTitle="DP"> -->
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">DP A/c Fee</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': Shcemetypeboo }" nz-input placeholder="DP" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.DP"
+                type="text" name="DP">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">AMC Free</nz-form-label>
+            <nz-form-control>
+              <input [ngClass]="{'promocode': amcfeeboo  }" nz-input placeholder="AMCFree" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.AMCFree"
+                type="text" name="AMCFree">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-row nzGutter="10">
+        <div nz-col nzMd="8" nzLg="15">
+          <nz-form-item>
+            <nz-form-label class="boldinglabel required">Applicable Period (In Days)</nz-form-label>
+            <nz-form-control>
+              <input maxlength="5" [ngClass]="{'promocode': amcapplicableboo  }" nz-input placeholder="ApplicableFor1" [textMask]="{mask: inputMasks.numeric}"
+                [(ngModel)]="model.ApplicableFor1" type="text" name="ApplicableFor1">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </fieldset>
+    <!-- </nz-card> -->
+  </div>
+</div>
+
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="5" nzLg="5">
+  </div>
+
+  <div *ngIf="model.Shcemetype=='Free'" nz-col nzMd="3" nzLg="3">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required"> Margin</nz-form-label>
+      <nz-form-control>
+        <input [ngClass]="{'promocode': marginboo}" nz-input placeholder="Margin" [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="model.Margin"
+          type="text" name="Margin">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div *ngIf="model.Shcemetype=='Free'" nz-col nzMd="4" nzLg="3">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel required"> Cheque</nz-form-label>
+      <nz-form-control>
+        <input maxlength="6" [ngClass]="{'promocode': checquboo }" nz-input placeholder="Cheque" [textMask]="{mask: inputMasks.numeric}"
+          [(ngModel)]="model.Cheque" type="text" name="Cheque">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" nzLg="3" *ngIf="model.Shcemetype=='Free'">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Applicable to all location</nz-form-label>
+      <nz-form-control>
+        <nz-select nzPlaceHolder="Select Amountchr" [(ngModel)]="model.alllocation" name="Amountchr" (ngModelChange)="clearfld($event)"
+          nzDropdownMatchSelectWidth="true" required="">
+          <nz-option *ngFor="let item of Amountlist" [nzLabel]="item.Description" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="6" *ngIf="model.alllocation=='N' && model.Shcemetype=='Free'">
+
+    <nz-form-item>
+      <nz-form-label class="required">&nbsp;</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="model.sORd" name="sord">
+          <label class="boldinglabel" nz-radio nzValue="S" (click)="state($event)">State</label>
+          <label class="boldinglabel" nz-radio nzValue="R" (click)="region($event)">Region</label>
+          <label class="boldinglabel" nz-radio nzValue="L" (click)="location($event)">Location</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div nz-row nzGutter="10" *ngIf="model.Shcemetype=='Paid'">
+  <div nz-col nzMd="5" nzLg="5">
+  </div>
+  <div nz-col nzMd="5" nzLg="5">
+    <!-- <div style="margin-left: 20%;" nz-col nzMd="12" nzLg="4"> -->
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Applicable to all location</nz-form-label>
+      <nz-form-control>
+        <nz-select nzPlaceHolder="Select Amountchr" [(ngModel)]="model.alllocation" name="Amountchr" (ngModelChange)="clearfld($event)"
+          nzDropdownMatchSelectWidth="true" required="">
+          <nz-option *ngFor="let item of Amountlist" [nzLabel]="item.Description" [nzValue]="item.code">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="2" nzLg="1"></div>
+  <div nz-col nzMd="8" *ngIf="model.alllocation=='N'">
+    <nz-form-item>
+      <nz-form-label class="required">&nbsp;</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="model.sORd" name="sord">
+          <label class="boldinglabel" nz-radio nzValue="S" (click)="state($event)">State</label>
+          <label class="boldinglabel" nz-radio nzValue="R" (click)="region($event)">Region</label>
+          <label class="boldinglabel" nz-radio nzValue="L" (click)="location($event)">Location</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</div>
+<div nz-row nzGutter="25">
+  <div nz-col nzMd="5" nzLg="5">
+  </div>
+  <div nz-col nzMd="10" nzLg="6">
+    <!-- <div style="margin-left: 20%;" nz-col nzMd="8" nzLg="6"> -->
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="14" nzLg="20">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel">ISIN</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="isinFindopt" [(ngModel)]="model.isin" name="isin">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="1" nzLg="1">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button class="myButton" nz-button nzType="primary" (click)="Addtoisintable()">ADD</button>
+      </div>
+    </div>
+    <nz-table #basicTable4 class="table-responsive table-themed" [nzData]="Addtogrid3" *ngIf="Addtogrid3.length" nzSize="small"
+      nzShowPagination="false" nzBodered="false">
+      <thead>
+        <tr>
+          <th>ISINNO</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable4.data,let i = index">
+          <td>{{data.ISINNO}}</td>
+
+          <td>
+            <a (click)="Deleterow3(i)"><i nz-icon type="delete" theme="outline" title="Delete"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+  <div nz-col nzMd="8" nzLg="6" *ngIf="model.sORd=='S'">
+
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="14" nzLg="20">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel required">State Name</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [ngClass]="{'promocode': stateboo  }" [options]="stateFindopt" [(ngModel)]="model.state" name="state">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="1" nzLg="1">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button class="myButton" nz-button nzType="primary" (click)="Addtostatetable()">ADD</button>
+      </div>
+    </div>
+
+
+    <nz-table #basicTable1 class="table-responsive table-themed" [nzData]="Addtogrid1" *ngIf="Addtogrid1.length" nzSize="small"
+      nzShowPagination="false" nzBodered="false">
+
+      <thead>
+        <tr>
+          <th>State Code</th>
+          <th>State Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable1.data">
+          <td>{{data.StateCode}}</td>
+          <td>{{data.ReportingState}} </td>
+          <td>
+            <a (click)="Deleterow1()"><i nz-icon type="delete" theme="outline" title="Delete"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+  <div nz-col nzMd="8" nzLg="6" *ngIf="model.sORd=='R'">
+
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="14" nzLg="20">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel required">Region Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="RegionFindopt" [(ngModel)]="model.Region" name="Region">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="1" nzLg="1">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button class="myButton" nz-button nzType="primary" (click)="Addtoregiontable()">ADD</button>
+      </div>
+    </div>
+
+
+    <nz-table #basicTable2 class="table-responsive table-themed" [nzData]="Addtogrid2" *ngIf="Addtogrid2.length" nzSize="small"
+      nzShowPagination="false" nzBodered="false">
+
+      <thead>
+        <tr>
+          <th>Region Code</th>
+          <th>Region Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable2.data,let i = index">
+          <td>{{data.REGION}}</td>
+          <td>{{data.DESCRIPTION}} </td>
+          <td>
+            <a (click)="Deleterow2(i)"><i nz-icon type="delete" theme="outline" title="Delete"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+
+
+  <div nz-col nzMd="8" nzLg="6" *ngIf="model.sORd=='L'">
+
+
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="14" nzLg="20">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel required">Location Code</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="1" nzLg="1">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button class="myButton" nz-button nzType="primary" (click)="Addtolocationtable()">ADD</button>
+      </div>
+    </div>
+
+
+    <nz-table #basicTable class="table-responsive table-themed" [nzData]="Addtogrid" *ngIf="Addtogrid.length" nzSize="small"
+      nzShowPagination="false" nzBodered="false">
+
+      <thead>
+        <tr>
+          <th>Location Code</th>
+          <th>Location Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data,let i = index">
+          <td>{{data.Location}}</td>
+          <td>{{data["L.Description"]}} </td>
+          <td>
+            <a (click)="Deleterow(i)"><i nz-icon type="delete" theme="outline" title="Delete"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+</div>
+
+<div nz-col nzMd="28" nzLg="24" style="padding: 0;margin: 0" >
+
+<form-handler (onModify)="modify()" (onSave)="save()" (onFind)="Search()" (onReset)="Reset()"></form-handler>
+
+</div>
+</div>
+
+</nz-card>
+
+</form>
+
+</div>

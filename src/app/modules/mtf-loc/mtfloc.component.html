@@ -1,0 +1,114 @@
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+<div nz-row nzGutter="10">
+    <div nz-col nzMd="6">
+        <nz-form-item>
+            <nz-form-label class="boldinglabel">Tradecode</nz-form-label>
+            <nz-form-control>
+                <!-- {{model.region|json}} -->
+                <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode"
+                    (ngModelChange)="getDatebyTradecode($event)">
+                </master-find-ctrl>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzMd="2">
+        <nz-form-item>
+            <nz-form-label class="boldinglabel">DP ID</nz-form-label>
+            <nz-form-control>
+                <nz-select  [(ngModel)]="DpId" nzPlaceHolder="Dpid" name="Dpid" nzDropdownMatchSelectWidth="true" (ngModelChange)="getDPdetails($event)">
+                        <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+                        </nz-option>
+                      </nz-select>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+  
+ 
+    <div nz-col nzMd="4">
+        <nz-form-item>
+            <nz-form-label class="boldinglabel">DP Acount No</nz-form-label>
+            <nz-form-control>
+                <!-- {{model.region|json}} -->
+                <master-find-ctrl [options]="DpAcNOFindopt" [(ngModel)]="DpClientId" name="DpClientId"
+                    (ngModelChange)="createdpTable(DpClientId)">
+                </master-find-ctrl>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <div nz-col nzMd="4">
+        <nz-form-item>
+            <nz-form-label class="boldinglabel">&nbsp;</nz-form-label>
+            <nz-form-control>
+                <!-- {{model.region|json}} -->
+                <button nz-button nzType="danger" (click)="clear()" >Clear</button>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    <!-- <div nz-col nzMd="4" style="margin-top: 38px">
+
+        <button nz-button nzType="primary">View</button>
+    </div> -->
+</div>
+<hr>
+<app-loader *ngIf="isSpinning"></app-loader>
+<nz-card *ngIf="DpArray.length">
+    <div nz-row >
+        <div nz-col nzMd="18">
+            <nz-table #basicDPDetailsTable [nzData]="DpArray" [nzShowPagination]="false" [nzFrontPagination]="false" class="tranTbl table-responsive table-themed"
+            nzSize="medium" >
+                <thead>
+                    <tr>
+                        <th>DP ID</th>
+                        <th>DP Account No</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of basicDPDetailsTable.data">
+                        <td>{{data.DPID}}</td>
+                        <td>{{data.DPACNO}}</td>
+                        <td nzShowCheckbox [(nzChecked)]="data.checked"></td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <br>
+    <div nz-row nzGutter="5">
+      
+        <div nz-col nzMd="6">
+            <nz-form-item>
+                    <nz-form-label >Remark</nz-form-label>
+
+                <nz-form-control>
+         <textarea rows="3" nz-input [(ngModel)]="remark" name="remark"></textarea>
+
+                </nz-form-control>
+            </nz-form-item>
+
+        </div>
+        <div nz-col nzMd="4" class="ml-4">
+
+                <nz-form-item>
+                    <nz-form-label>upload</nz-form-label>
+                    <nz-form-control>
+                            <nz-upload  nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUploadPhoto"  [(nzFileList)]="fileListPhoto" [nzLimit]="1">
+                                <button nz-button ><i nz-icon
+                                        type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                </nz-form-item>
+
+        
+                <nz-form-control>
+                <button nz-button nzType="primary" (click)="save()">Save</button>
+                        
+                    </nz-form-control>
+        
+        </div>
+    </div>
+</nz-card>
+</form>
+
+</div>

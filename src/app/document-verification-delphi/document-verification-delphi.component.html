@@ -1,0 +1,69 @@
+<div class="container">
+    <nz-tabset nzType="card">
+        <nz-tab *ngFor="let tab of tabs" [nzTitle]="tab" style="position: fixed;">
+            <div style="background: #e3e9e8;padding:30px;">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="8">
+                        <nz-card nzTitle="Documents" [nzExtra]="extraTemplate">
+                            <div>
+                                <div *ngFor="let data of proofArray">
+                                    <div>
+                                        <label nz-checkbox [(ngModel)]="data.checked" name="checkbox"
+                                            (ngModelChange)="checkChecked(data,$event)">{{ data.DocName}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </nz-card>
+                    </div>
+
+                    <div nz-col [nzSpan]="16" *ngIf="proofArray" class="scrollable-div">
+                        <div *ngFor=" let  item of proofArray;let i = index">
+                            <nz-card *ngIf="item && item.visible" [nzTitle]="item.DocName">
+                                <div *ngIf="item.DocType != 'image/pdf' ">
+                                    <img *ngIf="item.img" width="100%" height="100%" [src]="item.img"
+                                        alt="No Image Available" [attr.data-doc-name]="item.DocName"
+                                        (error)="handleError($event)" id="rotatableImage{{i}}">
+                                    <button nz-button nzType="primary" (click)="rotateImage(i,'R')"
+                                        style="margin-top: 5px;">
+                                        <span nz-icon nzType="undo"></span>
+                                        <b>Rotate Right</b>
+                                    </button>
+                                    <button nz-button nzType="primary" (click)="rotateImage(i,'L')"
+                                        style="margin-left: 10px;">
+                                        <span nz-icon nzType="redo"></span>
+                                        <b>Rotate Left</b>
+                                    </button>
+
+                                    <button nz-button nzType="primary" (click)="zoomImage(i,'in')"
+                                        class="zoomBtn">
+                                        <span nz-icon nzType="zoom-in"></span>
+                                        <b>Zoom In</b>
+                                    </button>
+
+                                    <button nz-button nzType="primary" (click)="zoomImage(i,'out')"
+                                        class="zoomBtn">
+                                        <span nz-icon nzType="zoom-out"></span>
+                                        <b>Zoom Out</b>
+                                    </button>
+
+                                    <div>
+                                    </div>
+                                </div>
+                                <div *ngIf="item.DocType == 'image/pdf' ">
+                                    <embed [src]="item.pdfSrc" [attr.data-doc-name]="item.DocName"
+                                     type="application/pdf" width="100%" height="600px" />
+                                </div>
+                            </nz-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+    <app-loader *ngIf="isSpinVisible"></app-loader>
+</div>
+<ng-template #extraTemplate>
+    <button nz-button nzType="primary" style="margin-right: 10px;" (click)="selectAll()">Select All</button>
+    <button nz-button nzType="primary" style="background-color: red;color: #e3e9e8;border: 1px red;"
+        (click)="clear()">Clear All</button>
+</ng-template>

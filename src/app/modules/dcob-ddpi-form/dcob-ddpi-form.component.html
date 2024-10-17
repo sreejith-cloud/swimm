@@ -1,0 +1,135 @@
+<div class="main-content">
+
+  <div nz-row nzGutter="8">
+    <div nz-col nzLg="16">
+      <h3 class="content-title">DCOB- DDPI Report</h3>
+    </div>
+
+    <div nz-col nzLg="8" class="d-flex" style="padding: 0;margin: 0">
+      <button type="primary" nz-button nzType="primary" class="mr-2" style="margin-top: 10px;" (click)="download()">
+      <span><i nz-icon type="download" theme="outline"></i> Download</span>
+      </button>
+      <form-handler (onReset)="reset()" (onExportExcel)="excel()" (onPreview)="view()">
+      </form-handler>
+    </div>
+    <!-- <div nz-row style="float: right; padding-right: 20px;"> -->
+    <!-- <div nz-col style="float: right; padding-right: 20px;">Include Downloaded Files
+      <nz-switch nzSize="small" [(ngModel)]="switchValue" (ngModelChange)="ToggleChange($event)">
+      </nz-switch>
+    </div> -->
+    <!-- </div> -->
+  </div>
+
+  <app-loader *ngIf="isSpining"></app-loader>
+
+
+  <div nz-row nzGutter="12">
+
+      <div nz-col nzMd="9" class="margin_1">
+        <nz-form-item>
+          <nz-form-label>Trade Code</nz-form-label>
+          <nz-form-control>
+            <lib-master-nonautofind [options]="TradecodeFindopt"
+              [(ngModel)]="tradeCode" name="tradeCode">
+            </lib-master-nonautofind>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3" class="margin_2">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="panFindOption"
+              [(ngModel)]="pan" name="pan">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="4" class="margin_2">
+        <nz-form-item>
+          <nz-form-label>DP Client ID</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="dpClientIdFindopt"
+              [(ngModel)]="dpClientId" name="dpClientId">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="5">
+        <b>PAN</b>
+        <master-find-ctrl [options]="panFindOption" [(ngModel)]="model.PAN" name="tradecode">
+        </master-find-ctrl>
+      </div>
+      <div nz-col nzMd="5">
+        <b>DpClientid</b>
+        <master-find-ctrl [options]="dpClientIdFindopt" [(ngModel)]="model.DpClientid" name="DpClientid">
+        </master-find-ctrl>
+      </div> -->
+      <!-- <div nz-col nzMd="3" style="top: -8px;">
+      <nz-form-item>
+        <nz-form-label>From Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="fromDate" name="FD" nzFormat="dd-MM-yyyy"
+          [nzDisabledDate]="tradeCode ? '' : disabledFutureDate" (ngModelChange)="this.toDate = null">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="3" style="top: -8px;">
+      <nz-form-item>
+        <nz-form-label>To Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="toDate" name="TD" nzFormat="dd-MM-yyyy"
+          [nzDisabledDate]="tradeCode ? '': disabledDate">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+
+
+      <div nz-col nzMd="3" class="margin_2">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+
+          <nz-date-picker [(ngModel)]="fromDate" nzFormat="yyyy-MM-dd"
+            [nzDisabledDate]="disabledFutureDate" nzPlaceHolder="Start">
+          </nz-date-picker>
+
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" class="margin_2">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+
+          <nz-date-picker #endDatePicker [nzDisabledDate]="disabledFutureDate"
+            nzFormat="yyyy-MM-dd" [(ngModel)]="toDate" nzPlaceHolder="End" [nzShowToday]="false"></nz-date-picker>
+
+        </nz-form-item>
+      </div>
+
+
+  </div>
+  <div  nz-row *ngIf="detailData.length" >
+    <nz-table #basicDPDetailsTable [nzData]="detailData" [nzPageSize]=15 [nzShowPagination]="true" nzSize="small"
+      [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+      <thead>
+        <tr>
+
+          <th id="header" *ngFor="let header of detailDataHeads;let i= index">
+            <span *ngIf="header !=='id'">{{header}}</span>
+          </th>
+          <!-- <th *ngIf="buttonStatus==='view'">Retrieve</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+          <td *ngFor="let header of detailDataHeads">
+            <span *ngIf="header !=='DDPI Form' && header !=='id'"> {{data[header]===true?'Y':data[header]===false?'N':data[header]}}</span>
+            <span *ngIf="header ==='DDPI Form'"><button type="primary"[disabled]="!data[header]" (click)="download(data['id'])" nz-button nzType="primary"><i nz-icon type="download" theme="outline"></i></button></span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

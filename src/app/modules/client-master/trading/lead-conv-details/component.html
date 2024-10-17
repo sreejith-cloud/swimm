@@ -1,0 +1,78 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+<div nz-row nzGutter="10">
+    <div nz-col nzLg="12" nzMd="24" class="mb-2">
+
+    <nz-card nzTitle="Details of Lead Converter">
+
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="8">
+            <nz-form-item>
+                <nz-form-label>Lead Converter Code</nz-form-label>
+                <nz-form-control>
+                    <!-- <master-find-ctrl [options]="EmployeeFindopt1"  [(ngModel)]="Empcode1" name="empcode1" [ngModelOptions]="{standalone: true}">
+</master-find-ctrl> -->
+<input nz-input formControlName="leadConverterCode"  (blur)="getEmpDetails($event)"/>
+
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8">
+            <nz-form-item>
+                <nz-form-label>Lead Converter ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="leadConverterID"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8">
+            <nz-form-item>
+                <nz-form-label>Lead Converter Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="leadConverterName"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-card>
+</div>
+<div nz-col nzLg="12" nzMd="24">
+    
+        <nz-card nzTitle="Relative of Geojit Employee">
+
+        <div nz-row nzGutter="5">
+            <div nz-col nzMd="8">
+                <nz-form-item>
+                    <nz-form-label class="required">Relative of Geojit Employee</nz-form-label>
+                    <nz-form-control>
+                            <nz-select formControlName="Relativeofgeojit" nzAllowClear>
+                                    <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                    <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                            </nz-select>
+                     
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" *ngIf="form.value.Relativeofgeojit=='YES'">
+                <nz-form-item>
+                    <nz-form-label class="required">Employee Code</nz-form-label>
+                    <nz-form-control>
+                        <!-- <master-find-ctrl [options]="EmployeeFindopt"  [(ngModel)]="Empcode" name="empcode" [ngModelOptions]="{standalone: true}" (ngModelChange)="gemp(Empcode)">
+                            </master-find-ctrl> -->
+                            <input nz-input formControlName="EmployeeCode"  (blur)="getEmpDetails11($event)"/>
+
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzMd="8" *ngIf="form.value.Relativeofgeojit=='YES'">
+                <nz-form-item>
+                    <nz-form-label class="required">Employee Name</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="EmployeeName" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+</div>
+</div>
+</form>

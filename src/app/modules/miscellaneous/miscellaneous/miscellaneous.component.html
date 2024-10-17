@@ -1,0 +1,130 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <app-loader *ngIf="isSpining"></app-loader>
+    <div nz-row nzGutter="8">
+      <h3 class="content-title">Miscellaneous</h3>
+      <!-- <div nz-col nzMd="10" nzLg="5">
+        <h3 class="content-title">Miscellaneous</h3>
+      </div> -->
+      <!-- <div nz-row nzGutter="8"> -->
+      <!-- <div nz-col nzMd="10" nzLg="5">
+      <h3 class="content-title">Miscellaneous</h3> -->
+      <!-- </div> -->
+
+      <!-- <div nz-col nzMd="3">
+        <nz-form-control>
+          <nz-select style="width:100%;bottom: 9px;" [(ngModel)]="requestfrom" name="req"
+            (ngModelChange)="reqvaluechange($event,'R')" nzAllowClear>
+            <nz-option *ngFor="let data of  requestvalueArray" [nzValue]="data.code" [nzLabel]="data.Value">
+            </nz-option>
+          </nz-select>
+        </nz-form-control>
+      </div> -->
+
+      <!-- <div nz-col nzMd="5">
+        <nz-form-item>
+          <nz-form-label>Choose</nz-form-label>
+          <nz-form-control>
+            <nz-select name="requestFrom" nzAllowClear>
+              <nz-option nzValue="UCC" nzLabel="UCC bulk file for opt-out nominee updation"></nz-option>
+              <nz-option nzValue="A" nzLabel="A"></nz-option>
+              <nz-option nzValue="B" nzLabel="B"></nz-option>
+              <nz-option nzValue="C" nzLabel="C"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+      <div nz-col nzMd="8">
+        <nz-form-item>
+          <nz-form-label> Choose</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="type" (ngModelChange)="onChangeType()" name="type" >
+               <nz-option *ngFor="let data of typevalueArray" [nzValue]="data.DROPDOWN" [nzLabel]="data.DROPDOWN">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" *ngIf="ncdexSatus || (bseNominee && !isFileSelected)">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="fromDate" name="FD" nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledFutureDate" nzAllowClear="false" (ngModelChange)="onDateSelected()" [nzPlaceHolder]="fromDate ? 'dd-MM-yyyy' : 'Select a date'">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" *ngIf="ncdexSatus || (bseNominee && !isFileSelected)">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="toDate" name="TD" nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledToDate" nzAllowClear="false" (ngModelChange)="onDateSelected()">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" *ngIf="bseNominee && isFileSelected">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="fromDate" [nzOpen]="!isFileSelected" name="FD" nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledFutureDate" nzAllowClear="false">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" *ngIf=" bseNominee && isFileSelected">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="toDate" [nzOpen]="!isFileSelected" name="TD" nzFormat="dd-MM-yyyy" [nzDisabledDate]="disabledToDate" nzAllowClear="false">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3" style="margin-top: 20px;left: 5px;" *ngIf="!bseNominee">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-upload [(nzFileList)]="file" [nzBeforeUpload]="fileChangeEvent()" nzLimit="1" (nzChange)="fileClosedEvent($event)">
+              <button nz-button [disabled]="!type">
+                <i nz-icon type="upload"></i><span>Select File</span>
+              </button>
+            </nz-upload>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3" style="margin-top: 20px;left: 5px;" *ngIf="bseNominee">
+        <nz-form-item>
+          <nz-form-control>
+            <nz-upload [(nzFileList)]="file" [nzBeforeUpload]="fileChangeEvent()" nzLimit="1" (nzChange)="fileClosedEvent($event)">
+              <button nz-button [disabled]="fromDate || toDate">
+                <i nz-icon type="upload"></i><span>Select File</span>
+              </button>
+            </nz-upload>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+
+      <div nz-col nzMd="3" style="margin-top: 20px;right: 30px;">
+        <button type="primary" nz-button nzType="primary" class="mr-2" (click)="uploadresponse()" [disabled]="!file && !bseNominee">
+          <span><i nz-icon type="download" theme="outline"></i>Download Bulk File</span>
+        </button>
+      </div>
+
+      <div nz-col nzMd="3" style="margin-top: 20px;right: 30px;" *ngIf="bseNominee">
+        <button type="primary" nz-button nzType="primary" class="mr-2" (click)="resetMiscellenious()" style="float: right; background-color: #FFA500;">
+          <span><i nz-icon type="rollback" theme="outline"></i>Reset</span>
+        </button>
+      </div>
+
+
+
+    </div>
+  </form>
+
+</div>

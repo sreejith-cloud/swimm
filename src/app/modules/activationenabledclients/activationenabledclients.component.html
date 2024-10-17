@@ -1,0 +1,58 @@
+<div class="container" style="padding-top: 18px;">
+  <div nz-row>
+    <div nz-col nzMd="6">
+      <h3>Activation Request Enabled Clients </h3>
+    </div>
+    <div nz-col nzMd="28" nzLg="14" style="margin-left: 187px;">
+      <form-handler (onPreview)="viewData()" (onExportExcel)="export()" (onReset)="reset()">
+      </form-handler>
+    </div>
+  </div>
+  <div nz-row nzGutter="10" style="padding-top: 18px;">
+    <div nz-col nzMd="4" nzLg="4">
+      <span class="field-headds"><b>Pan</b></span>
+      <lib-master-nonautofind [options]="panFindOption" [(ngModel)]="model.PanNo" name="PanNumber"
+       (ngModelChange)="setPanCode($event)" #client id="findclient">
+      </lib-master-nonautofind>
+    </div>
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds">Location</span>
+      <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" name="location">
+      </master-find-ctrl>
+    </div>
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds" class="required"><b>From Date</b></span>
+      <nz-date-picker [(ngModel)]="model.fromDate" name="fromDate" nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </div>
+    <div nz-col nzMd="4" nzLg="3">
+      <span class="field-headds" class="required"><b>To Date</b></span>
+      <nz-date-picker [(ngModel)]="model.toDate" name="toDate" nzFormat="dd-MM-yyyy">
+      </nz-date-picker>
+    </div>
+  </div>
+
+  <hr>
+  <div nz-row>
+    <div nz-col *ngIf="listOfData.length>0" nzSpan="24">
+      <nz-table #DetailsTable [nzData]="listOfData" [nzShowPagination]="listOfData.length>10"
+        class="tranTbl table-responsive table-themed" [nzPageSize]="10">
+        <thead>
+          <tr>
+            <th *ngFor="let header of GridHead;let i = index"  style="padding: 5px 5px; background-color: rgb(85, 167, 182); color: white;">
+              {{header }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DetailsTable.data" >
+            <td *ngFor="let header of GridHead">
+                <span>{{data[header]}}</span>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isLoading"></app-loader>

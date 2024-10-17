@@ -1,0 +1,256 @@
+<div class="main-content">
+  <div nz-form nzLayout="vertical">
+    <nz-tabset  [(nzSelectedIndex)]="activeTabIndex" style="margin:0px;">
+      <nz-tab nzTitle="Remisser Commission Slab">
+        <div class="header__main">
+          <!-- <h3 class="content-title">Remiser Commission Slab</h3> -->
+          <form-handler (onSave)="save()" (onReset)="Reset()">
+          </form-handler>
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Remiser</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [options]="RemiserFindopt" (ngModelChange)="OnRemiserChange($event)"
+                  [(ngModel)]="model.Remiser" name="Remiser">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button class="btnView" type="submit" (click)="ViewData(null)"><i nz-icon type="eye"
+                    theme="outline"></i>View</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button class="btnClone" type="button" (click)="clone()" [disabled]="isRemiser"><i nz-icon
+                    type="copy" theme="outline"></i>Clone</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col nzMd="8">
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Slab Description</nz-form-label>
+              <nz-form-control>
+                <input nz-input name="slabdesc" [(ngModel)]="model.slabdesc" maxlength="250">
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="3" style="float:right;">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button class="btnLink" type="link" (click)="history()">Slab change history</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzGutter="10">
+          <div nz-col nzLg="24">
+            <div style="margin-top: 40px;width:60%;">
+              <nz-table #tableData [nzData]="tablerow" [nzSize]="'small'" [nzShowPagination]="false"
+                [nzFrontPagination]="false">
+                <thead>
+                  <tr style="background-color:#929292;color: white;">
+                    <th style="width:10%;">Slno</th>
+                    <th style="width:20%;">Limit From <br>(Greater than)</th>
+                    <th style="width:20%;">Limit To <br>(Less than or equal to)</th>
+                    <th style="width:20%;">Share percentage</th>
+                    <th  style="width:10%;">Add</th>
+                    <th  style="width:10%;">Edit</th>
+                    <th  style="width:10%;">Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of tablerow; let i = index">
+                    <td>{{i+1}}</td>
+
+                    <td style="text-align:right">
+                      <span *ngIf="data.disabled">{{data.FromSlab}}</span>
+                      <span *ngIf="!data.disabled"><input nz-input [(ngModel)]="data.FromSlab"
+                          [textMask]="{mask: inputMasks.numeric}" maxlength="9" name="FromSlab{{i}}" /></span>
+                    </td>
+                    <td>
+                      <span *ngIf="data.disabled">{{data.ToSlab}}</span>
+                      <span *ngIf="!data.disabled"><input nz-input [(ngModel)]="data.ToSlab"
+                          [textMask]="{mask: inputMasks.numeric}" maxlength="9" name="ToSlab{{i}}" /></span>
+                    </td>
+                    <td>
+                      <span *ngIf="data.disabled">{{data.percentage}}</span>
+                      <span *ngIf="!data.disabled"><input nz-input [(ngModel)]="data.percentage"
+                          [textMask]="{mask: inputMasks.decimal}" maxlength="9" name="percentage{{i}}" /></span>
+                    </td>
+                    <!--  -->
+                    <td  > <button type="button" nz-button nzType="secondary" (click)="addRow(i)"
+                        [hidden]="i==tablerow.length-1?false:true"><span style="color: red;"><i nz-icon
+                            nzType="plus-circle" nzTheme="outline"></i></span></button>
+                    </td>
+                    <td  > <button type="button" nz-button nzType="secondary" (click)="editRow(i,data.disabled)"
+                      ><span
+                          style="color: red;"><i nz-icon nzType="edit" nzTheme="outline"></i></span></button>
+                    </td>
+                    <td  > <button type="button" nz-button nzType="secondary" (click)="deleteRow(i,data.disabled)"
+                      ><span
+                          style="color: red;"><i nz-icon nzType="delete" nzTheme="outline"></i></span></button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </nz-table>
+            </div>
+          </div>
+        </div>
+      </nz-tab>
+
+      <nz-tab nzTitle="Remisser Commission Report">
+        <div nz-row nzGutter="10">
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label class="boldinglabel">Remiser</nz-form-label>
+              <nz-form-control>
+                <lib-master-nonautofind [options]="RemiserFindopt" (ngModelChange)="OnRemiserChange($event)"
+                  [(ngModel)]="model.Remiser" name="Remiser">
+                </lib-master-nonautofind>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>From Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="fromdate" name="FD" nzFormat="dd-MM-yyyy">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>To Date</nz-form-label>
+              <nz-form-control>
+                <nz-date-picker [(ngModel)]="todate" name="TD" nzFormat="dd-MM-yyyy">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button nzType="primary" style="padding:left;" (click)="view()">View</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div> -->
+          <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button class="btnView" type="submit" (click)="view()"><i nz-icon type="eye"
+                    theme="outline"></i>View</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <!-- <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button nzType="primary" style="padding:right;" (click)="clear()"> Clear</button>&nbsp;
+                &nbsp;
+              </nz-form-control>
+            </nz-form-item>
+          </div> -->
+          <div nz-col nzMd="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button class="btnClone" type="button" (click)="clear()"><i nz-icon type="rollback"
+                    theme="outline"></i>Clear</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+
+        <div nz-row *ngIf="DetailData.length" #htmlView>
+          <div style="margin-top: 40px;width:60%;">
+            <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzPageSize]=15 borderedTable nzBordered
+              [nzSize]="'small'" [nzShowPagination]="basicDPDetailsTable.data.length>10"
+              class="tranTbl table-responsive table-themed">
+              <thead>
+                <tr>
+                  <th *ngFor="let header of detailDataHeads;let i = index"
+                    [ngClass]="[header=='SlabData' ? 'display':'']">
+                    {{header}}
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+                  <td *ngFor="let header of detailDataHeads"
+                    [ngClass]="[header=='SlabData' ? 'display':'']">
+                    {{data[header]}}
+                  </td>
+                  <td> <button type="button" nz-button nzType="primary" (click)="viewRemiser(i,data)"><span
+                        style="color: white;"><i nz-icon nzType="eye" nzTheme="outline"></i></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+
+      </nz-tab>
+    </nz-tabset>
+  </div>
+</div>
+
+<nz-modal [(nzVisible)]="clonegrid || isHistory" nzTitle="Remiser Data" (nzOnCancel)="handleCancelview()"
+  (nzOnOk)="handleCancelview()" nzWidth="60%">
+  <nz-table #CGrid [nzData]="cloneGrid" [nzShowPagination]=true *ngIf="cloneGrid.length>0" [nzSize]="'small'"
+    [nzPageSize]="10">
+    <thead>
+      <tr>
+        <th style="background-color:#929292;color: black;" *ngFor="let header of cloneGridHeader;let i = index">
+          {{header}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of CGrid.data">
+        <td (dblclick)="assignSlab(data)" *ngFor="let header of cloneGridHeader" class="mouse-pointer">
+          {{data[header]}}
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <div *ngIf="isHistory">
+    <div [innerHtml]="userHtml"></div>
+  </div>
+</nz-modal>
+
+
+<nz-modal [(nzVisible)]="isSlabVisible" [nzTitle]="activeSlab" (nzOnCancel)="handleSlabCancel()"
+  (nzOnOk)="handleSlabCancel()" nzWidth="40%">
+    <span [innerHtml]="activeSlabData"></span>
+</nz-modal>
+
+
+
+<app-loader *ngIf="isSpining"></app-loader>

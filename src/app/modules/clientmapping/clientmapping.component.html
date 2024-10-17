@@ -1,0 +1,134 @@
+
+<div class="main-content">
+    <form nz-form nzLayout="vertical">
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="20" nzLg="10">
+          <h2>Client Mapping</h2>
+        </div>
+      </div>
+
+      <div nz-row nzGutter="8" style="margin-top: 20px">
+          <div nz-col nzMd="5" >
+                <nz-card *ngIf="!rmuser" (click)="showApproval('C')" nzHoverable  class="text-center" style="width:300px;border-radius: 10px;background-color: aliceblue;" [nzBordered]="true">
+               
+                    <nz-form-item>
+                      <nz-form-control>
+                           <nz-radio-group [(ngModel)]="mappingtype" name="mappingtype" >
+                              <label  style="font-weight: bold" nz-radio nzValue="LG">LG Mapping</label>
+                           </nz-radio-group>
+                        </nz-form-control>
+                     </nz-form-item>
+                  
+                </nz-card>
+              </div>
+              <div nz-col nzMd="8" >
+                <nz-card *ngIf="rmuser" (click)="showApproval('A')" nzHoverable  class="text-center" style="width:300px;border-radius: 10px;background-color: aliceblue;" [nzBordered]="true">
+                   
+                        <nz-form-item>
+                          <nz-form-control>
+                               <h3>Pending for Approval &nbsp;&nbsp;&nbsp;&nbsp;<b>{{count}}</b></h3>
+                            </nz-form-control>
+                         </nz-form-item>
+                   
+              </nz-card>
+            </div>
+      
+      </div>
+      <hr>
+      <div *ngIf="!rmuser" nz-row nzGutter="8" style="margin-top: 20px">
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>Tradecode</nz-form-label>
+                <nz-form-control>
+                  <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="tradecode" name="tradecode"  (ngModelChange)="onChangetradecode($event)">
+                  </master-find-ctrl>
+                </nz-form-control>
+              </nz-form-item>
+        </div>   
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label class="required">Name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [disabled]="true" [(ngModel)]="name" name="name" />
+                </nz-form-control>
+              </nz-form-item>
+        </div>     
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label class="required">Curr LG</nz-form-label>
+                <nz-form-control>
+                  <input nz-input [disabled]="true" [(ngModel)]="custlg" name="custlg" />
+                </nz-form-control>
+              </nz-form-item>
+        </div>     
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label>New LG</nz-form-label>
+                <nz-form-control>
+                  <master-find-ctrl [options]="EmpFindopt" [(ngModel)]="newlg" name="newlg">
+                  </master-find-ctrl>
+                </nz-form-control>
+              </nz-form-item>
+        </div>         
+        <div nz-col nzMd="8">
+            <form-handler (onSave)="save()" (onReset)="Reset()"  >
+              </form-handler>
+        </div>       
+      </div>
+
+      <div *ngIf="rmuser" nz-row nzGutter="8" style="margin-top: 20px">
+          <div nz-col nzMd="16">
+              <nz-table *ngIf="ReportResponse.length>0" class="tranTbl table-responsive table-themed" #ReportTable
+                  [nzData]="ReportResponse" [nzPageSize]="13" [nzShowPagination]="ReportResponse.length>13"
+                   nzSize="small"  >
+                  <thead>
+                            <th class="text-left">TradeCode</th>
+                            <th class="text-left">LGCode</th>
+                            <th class="text-left">EmpName</th>
+                            <th class="text-left">ClientID</th> 
+                            <th class="text-left">Remarks</th>     
+                            <th class="text-left">Approve</th>    
+                            <th class="text-left">Reject</th>                          
+                  </thead>
+                  <tbody>
+                    
+                    <tr *ngFor="let data of ReportResponse;let i = index" class="resulttable" >
+         
+                       <td class="text-left">{{data.TradeCode}}</td>
+                       <td class="text-left">{{data.LGCode}}</td>
+                       <td class="text-left">{{data.EmpName}}</td>
+                       <td class="text-left">{{data.ClientID}}</td>
+                       <td  nzWidth="1200px">
+                          <input nz-input  [(ngModel)]="data.remarks" name="remarks" 
+                          (ngModelChange)="Pledgechange($event,data)" >
+                        </td>
+                        <td  nzWidth="1200px">
+                            <button nz-button style="color:green" (click)="ApproveorReject('A',data)">Approve</button>
+                          </td>
+                          <td  nzWidth="1200px">
+                              <button nz-button style="color:red" (click)="ApproveorReject('R',data)">Reject</button>
+                            </td>
+                    </tr>
+                  </tbody>
+            
+                </nz-table>  
+          </div> 
+          <!-- <div nz-col nzMd="8">
+              <button nz-button nzType="primary" (click)="viewdata()">View</button>
+          </div>  -->
+        </div>
+
+      <div nz-row nzGutter="8" style="margin-top: 20px">
+          <div nz-col nzMd="12">
+              <nz-alert  nzType="warning" nzMessage="Branch Level Approval for New LG." nzShowIcon></nz-alert>
+              <nz-alert  style ="margin-top: 10px" nzType="warning" nzMessage="RM Level Approval to change exist LG." nzShowIcon></nz-alert>
+              <!-- <nz-alert nzType="warning" nzMessage="Warning" nzDescription="Branch Level Approval for New LG." nzShowIcon> </nz-alert>
+              <nz-alert nzType="warning" nzMessage="Warning" nzDescription="RM Level Approval for Current LG." nzShowIcon> </nz-alert> -->
+          </div>   
+        
+        </div>
+
+
+     
+    </form>
+</div>

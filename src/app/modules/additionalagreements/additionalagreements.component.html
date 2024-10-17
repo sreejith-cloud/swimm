@@ -1,0 +1,101 @@
+<div class="main-content">
+  <div nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Additional Agreements Signed Report</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="poolData()" (onReset)="resetForm()" (onExportExcel)="ExportExcel()">
+        </form-handler>
+      </div>
+    </div>
+    <!-- filter section -->
+    <div nz-row nzGutter="10">
+      <div nz-col nzMd="4" nzLg="3">
+        <nz-form-item>
+          <nz-form-label class="required"><b>Location</b></nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="7" nzLg="7">
+        <nz-form-item>
+          <nz-form-label><b>Tradecode</b></nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="TradecodeFindopt" name="location" [(ngModel)]="model.tradeCode"
+            (ngModelChange)="TradecodeChange($event)">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    <hr>
+    <!-- list table -->
+    <div nz-row nzGutter="8">
+      <div>
+        <nz-table #Summary [nzData]="resData" [hidden]="resData.length==0"
+          class="table_data tranTbl table-responsivee table-themed" [nzSize]="'small'" [nzPageSize]="10"
+          [nzShowPagination]="true" [nzScroll]="{ x: '750px'}">
+          <thead>
+            <tr>
+              <th style="background-color :#96BCD3" *ngFor="let header of resDataHeader;let i = index">
+                {{header}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of Summary.data;let i = index">
+              <!-- <td *ngFor="let header of resDataHeader">
+                {{data[header]}}
+              </td> -->
+              <td>{{data.Location}}</td>
+              <td>{{data.Tradecode}}</td>
+              <td>{{data.GreenkitVersion}}</td>
+              <td>{{data.Additional_TnC_Version}}</td>
+              <td>
+                <ng-container *ngIf="data.NSEMFSS">Y</ng-container>
+                <ng-container *ngIf="!data.NSEMFSS">N</ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="data.NewPoa">Y</ng-container>
+                <ng-container *ngIf="!data.NewPoa">N</ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="data.AddendumPOA">Y</ng-container>
+                <ng-container *ngIf="!data.AddendumPOA">N</ng-container>
+              </td>
+              <td>
+                {{data.kitno}}
+              </td>
+              <td>
+                <ng-container *ngIf="data.FAOIntradaySigned">Y</ng-container>
+                <ng-container *ngIf="!data.FAOIntradaySigned">N</ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="data.FAOExposureHoldingSigned">Y</ng-container>
+                <ng-container *ngIf="!data.FAOExposureHoldingSigned">N</ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="data.MCXPOA">Y</ng-container>
+                <ng-container *ngIf="!data.MCXPOA">N</ng-container>
+              </td>
+              <td>
+                <ng-container *ngIf="data.FinideasTnC">Y</ng-container>
+                <ng-container *ngIf="!data.FinideasTnC">N</ng-container>
+              </td>
+              <td>
+                {{data.FinideasAcceptedIp}}
+              </td>
+              <td>
+                <ng-container *ngIf="data.FinideasAcceptedDate!='Invalid date'">{{data.FinideasAcceptedDate}}</ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </div>
+  </div>
+</div>
+<app-loader *ngIf="isSpinning"></app-loader>

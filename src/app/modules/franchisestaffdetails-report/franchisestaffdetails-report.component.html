@@ -1,0 +1,111 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Franchise Staff Details Report</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="view()" (onReset)="Reset()" (onExportExcel)="export()"></form-handler>
+      </div>
+    </div>
+    <!-- <app-loader *ngIf="isSpinVisible"></app-loader> -->
+    <div nz-row nzGutter="10">
+
+      <!-- <div nz-col nzMd="4">
+    <nz-form-item>
+      <nz-form-label>Location</nz-form-label>
+      <nz-form-control>
+        <input nz-input [(ngModel)]="Location" type="text"  name="Location">
+      </nz-form-control>
+    </nz-form-item>
+  </div> -->
+      <div nz-col nzMd="4" nzLg="3">
+        <nz-form-item>
+          <nz-form-label><b>Location</b></nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" name="location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!--<div nz-col nzMd="2">
+    <nz-form-item>
+      <nz-form-label>DPID</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="DPIDFindopt" [(ngModel)]="model.Dpid" name="dpid">
+         
+        </master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>-->
+
+    </div>
+    <!-- <div nz-row nzGutter="10">
+  <div nz-col nzMd="24" *ngIf="VoucherList.length">
+  
+    <nz-table [nzShowPagination]=true class="tranTbl table-responsive table-themed" nzPageSize="15" nzSize="small" #zoneTable1
+      [hidden]="VoucherList.length==0" (nzCurrentPageDataChange)="showTotal($event)" [nzData]="VoucherList">
+      <thead>
+        <tr >
+<th class="pl-3" width="5%">Dp Id</th>
+<th class="pl-3" width="5%">Client Id</th>
+<th class="pl-3" width="15%">Name</th>
+<th class="pl-3" width="5%">TradeCode</th>
+<th class="pl-3" width="5%">Status</th>
+<th class="text-right" width="5%">Equity</th>
+<th class="text-right" width="5%">Mutual Fund </th>
+<th class="text-right" width="5%"> Total</th>
+</tr>
+</thead>
+<tbody>
+  <tr *ngFor="let data of zoneTable1.data;let i=index">
+    <td class="pl-3">{{data.DpID}}</td>
+    <td class="pl-3">{{data.BenAccNum}}</td>
+    <td class="pl-3">{{data.frst_hldr_nm}}</td>
+    <td class="pl-3"> {{data.Tradecode}}</td>
+    <td class="pl-3"> {{data.Status}}</td>
+    <td class="text-right" id="holdvalue">{{data.Equity | number :'1.2-2'}}</td>
+    <td class="text-right" id="holdvalue">{{data.MF | number :'1.2-2'}}</td>
+    <td class="text-right" id="holdvalue">{{data.Total | number :'1.2-2'}}</td>
+  </tr>
+  <tr class="total">
+    <td nzWidth="100px"> <b>Total</b></td>
+    <td nzWidth="100px"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td class="text-right"><b>{{ eq | number :'1.2-2'}}</b></td>
+    <td class="text-right"><b>{{ m | number :'1.2-2'}}</b></td>
+    <td class="text-right"><b>{{ ttl | number :'1.2-2'}}</b></td>
+</tbody>
+</nz-table>
+</div>
+</div> -->
+  </form>
+
+  <div class="report-content">
+    <div nz-row *ngIf="DetailedData.length" #htmlView>
+      <nz-table #basicDPDetailsTable [nzData]="DetailedData" [nzShowPagination]="true"
+        [nzShowPagination]="basicDPDetailsTable.data.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+
+            <!-- <th>Slno</th> -->
+            <th *ngFor="let header of detailDataHeads;let i = index" style="padding: 5px 5px;">
+              {{header}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+
+            <!-- <td>{{i+1}}</td> -->
+            <td *ngFor="let header of detailDataHeads">{{data[header]}}
+            </td>
+          </tr>
+        </tbody>
+
+      </nz-table>
+    </div>
+  </div>
+</div>

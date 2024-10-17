@@ -1,0 +1,793 @@
+<div class="main-content">
+
+    <div nz-form nzLayout="vertical">
+
+        <h3 class="content-title">Franchisee Staff Control</h3>
+        <div nz-row nzGutter="10" style="margin-top: 20px;">
+
+            <div nz-col nzMd="2" style="margin-top: 20px;">
+                <button [disabled]="disableplusbtn" (click)="adddetails()" type="button" nz-button><span nz-icon nzType="plus"
+            nzTheme="outline"></span></button>
+                <button [disabled]="enableupdatebtn" style="margin-left: 5px;" (click)="updatebtn()" type="button" nz-button><span nz-icon nzType="form" nzTheme="outline"></span></button>
+            </div>
+
+            <div nz-col nzMd="2" style="margin-top: 22px;">
+                <nz-form-label class="boldinglabel">Employee Code:</nz-form-label>
+            </div>
+
+            <div nz-col nzMd="2" style="margin-top: 20px;">
+                <nz-form-item>
+                    <nz-form-control>
+                        <input readonly nz-input name="employeecode" [(ngModel)]="model.empcode" maxlength="10">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="6" style="margin-top: 22px; ">
+                <nz-form-label *ngIf="this.savemessage||this.approved==false&&this.hoapproved==false&&this.hoverified ==false&&this.terminated==false" class="boldinglabel">ENTRY TO BE APPROVED FROM BRANCH</nz-form-label>
+                <nz-form-label *ngIf="this.approved==true&&this.hoapproved==false&&this.hoverified ==false&&this.terminated==false" class="boldinglabel">ENTRY TO BE VERIFIED AND APPROVED FROM HO</nz-form-label>
+                <nz-form-label *ngIf="this.approved==true&&this.hoapproved==true&&this.hoverified ==true&&this.terminated==true&&this.terminationapproved==false" class="boldinglabel">TERMINATION TO BE VERIFIED AND APPROVED FROM HO</nz-form-label>
+                <nz-form-label *ngIf="this.approved==true&&this.hoapproved==true&&this.hoverified ==true&&this.terminated==true&&this.terminationapproved==true" class="boldinglabel">TERMINATED</nz-form-label>
+
+            </div>
+
+            <div nz-col nzMd="10" style="float: right;">
+                <form-handler (onSave)="save()" (onReset)="reset()" (onFind)="modal()">
+                </form-handler>
+
+                <button [disabled]="disablepdfbtn" type="button" nz-button nz-icon style="float: right; margin-right: 9px;" (click)="pdf()"><span nz-icon nzType="download"> </span> Create Application Form </button>
+                <button [disabled]="disablefinalizebtn" type="button" nz-button nz-icon style="float: right; margin-right: 9px;" (click)="finalize()"><span nz-icon nzType="check"> </span> Finalize</button>
+                <button [disabled]="disableupdatebtn" (click)="update()" type="button" nz-button nz-icon style="float: right; margin-right: 9px;"><span nz-icon nzType="edit"> </span> Update</button>
+            </div>
+
+            <nz-modal [(nzVisible)]="showstatus" nzTitle="" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" nzWidth="60%">
+                <nz-table class="tranTbl table-responsive table-themed" #asasa [nzData]="empcodearray1" [nzPageSize]="12" [nzSize]="'small'" [nzShowPagination]="false" [nzFrontPagination]="true">
+                    <thead>
+                        <tr style="background:rgba(137, 238, 204, 0.678); ">
+                            <th>EmpCode</th>
+                            <th>Name</th>
+                            <th>RollNo</th>
+                        </tr>
+                        <tr>
+
+                            <th>
+                                <input nz-input [(ngModel)]="model.empcode" (ngModelChange)="modalvalues('Empcode',$event)" name="empcode">
+                            </th>
+                            <th>
+                                <input nz-input [(ngModel)]="empname" (ngModelChange)="modalvalues('Name',$event)" name="name">
+                            </th>
+                            <th>
+                                <input nz-input [(ngModel)]="emprollno" (ngModelChange)="modalvalues('RollNo',$event)" name="rollno">
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of asasa.data" class="resulttable">
+                            <td (click)="viewdetails(data)">{{data.Empcode}}</td>
+                            <td (click)="viewdetails(data)">{{data.Name}}</td>
+                            <td (click)="viewdetails(data)">{{data.RollNo}}</td>
+                        </tr>
+                    </tbody>
+
+                </nz-table>
+            </nz-modal>
+
+        </div>
+
+        <nz-tabset [(nzSelectedIndex)]="activeTabIndex" style="margin:0px;">
+            <nz-tab nzTitle="Home">
+
+                <div nz-row nzGutter="24">
+                    <div nz-col nzMd="12">
+                        <div class="card linkdesignS">
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="10" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Location Code<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <lib-master-nonautofind [disabled]="disableinput" name="location" [(ngModel)]="model.loccode" [options]="locationFindOpt" (ngModelChange)="getLocationData($event)" [disabled]="viewLocation">
+                                            </lib-master-nonautofind>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="10" style="margin-left: 40px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Full Name<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input [disabled]="disableinput" nz-input name="fullname" [(ngModel)]="model.name" (keypress)="namevalidation($event)" (ngModelChange)="model.name = $event.toUpperCase()" maxlength="30" oncut="return false" oncopy="return false" onpaste="return false">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Roll No<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="rollno" [(ngModel)]="model.rollno" (keypress)="numberValidate($event)" (ngModelChange)="model.rollno = $event.toUpperCase()" maxlength="10">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">PAN<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="pan" [(ngModel)]="model.pan" (keypress)="ValidatePan($event)" (ngModelChange)="model.pan = $event.toUpperCase()">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left:20px;">
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <span class="field-headds">Designation<span style="color: red;">*</span></span>
+                                            <nz-select [disabled]="disableinput" style="width:100%;" [(ngModel)]="model.designation" name="designation" nzDropdownMatchSelectWidth="true">
+                                                <nz-option nzValue="Dealer" nzLabel="Dealer"></nz-option>
+                                                <nz-option nzValue="Back Office" nzLabel="Back Office"></nz-option>
+                                                <nz-option nzValue="Manager" nzLabel="Manager"></nz-option>
+                                                <nz-option nzValue="Office Assistant" nzLabel="Office Assistant"></nz-option>
+                                                <nz-option nzValue="Others" nzLabel="Others"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left:20px;">
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <span class="field-headds">Roll Code</span>
+                                            <nz-select [disabled]="disableinput" style="width:100%;" [(ngModel)]="model.emprollcode" name="rollcode" nzDropdownMatchSelectWidth="true">
+                                                <nz-option nzValue="Proprietor" nzLabel="Proprietor"></nz-option>
+                                                <nz-option nzValue="Partner" nzLabel="Partner"></nz-option>
+                                                <nz-option nzValue="Employee" nzLabel="Employee"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                            </div>
+
+                            <div nz-row nzGutter="10">
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Date of Join<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <nz-date-picker [disabled]="disableinput" name="doj" nzFormat="dd-MM-yyyy" [(ngModel)]="model.joindate" [nzDisabledDate]="disabledFutureDate">
+                                            </nz-date-picker>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Date of Birth<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <nz-date-picker [disabled]="disableinput" name="dob" nzFormat="dd-MM-yyyy" [(ngModel)]="model.dob" [nzDisabledDate]="disabledFutureDate">
+                                            </nz-date-picker>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left:20px;">
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <span class="field-headds">Geojit KYC Flag</span>
+                                            <nz-select [disabled]="disableinput" style="width:100%;" [(ngModel)]="model.kycflag" name="kycflag" nzDropdownMatchSelectWidth="true">
+                                                <nz-option nzValue="Y" nzLabel="Y"></nz-option>
+                                                <nz-option nzValue="N" nzLabel="N"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left:20px;">
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <span class="field-headds">Gender<span style="color: red;">*</span></span>
+                                            <nz-select [disabled]="disableinput" style="width:100%;" [(ngModel)]="model.gender" name="gender" nzDropdownMatchSelectWidth="true">
+                                                <nz-option nzValue="M" nzLabel="M"></nz-option>
+                                                <nz-option nzValue="F" nzLabel="F"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div nz-col nzMd="12">
+                        <div class="card linkdesignS">
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="10" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Name of Father<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="fathername" [(ngModel)]="model.fathername" (keypress)="namevalidation($event)" (ngModelChange)="model.fathername = $event.toUpperCase()"
+                                                maxlength="30">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="10" style="margin-left: 40px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Geojit KYC Name</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="kycname" [(ngModel)]="model.kycname" (keypress)="namevalidation($event)" (ngModelChange)="model.kycname = $event.toUpperCase()" maxlength="15">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">PF AcNo</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="pfacno" [(ngModel)]="model.pfmembership" (keypress)="ValidatePFaccount($event)" (ngModelChange)="model.pfmembership = $event.toUpperCase()"
+                                                maxlength="22">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">PF Amount<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="pfamount" [(ngModel)]="model.pfamount" (keypress)="amountValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">ESI AcNo</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="esiacno" [(ngModel)]="model.esimembership" maxlength="17" (keypress)="numberValidate($event)">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">ESI Amount<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="esiamount" [(ngModel)]="model.esiamount" (keypress)="amountValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Basic Amount</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="basicamnt" [(ngModel)]="model.basicamount" (keypress)="amountValidate($event)"
+                                                maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">HRA Amount</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="hraaamount" [(ngModel)]="model.hraamount" (keypress)="amountValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Other Allowances</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="otherallowances" [(ngModel)]="model.otherallownc" (keypress)="amountValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="5" style="margin-left: 20px;">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Total Salary Paid<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="totalsalarypaid" [(ngModel)]="model.salary" (keypress)="amountValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <hr>
+                <br>
+
+                <div nz-row nzGutter="10">
+
+                    <div nz-col nzMd="11">
+
+                        <div class="card linkdesignS">
+
+                            <h3 class="content-title"><u>Residencial Address Details</u></h3>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 1<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address1" [(ngModel)]="model.resadd1" (ngModelChange)="model.resadd1 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 2<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address2" [(ngModel)]="model.resadd2" (ngModelChange)="model.resadd2 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 3<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address3" [(ngModel)]="model.resadd3" (ngModelChange)="model.resadd3 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div nz-row nzGutter="10">
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 4<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address4" [(ngModel)]="model.resadd4" (ngModelChange)="model.resadd4 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">City Name<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="city" [(ngModel)]="model.rescity" (ngModelChange)="model.rescity = $event.toUpperCase()" maxlength="15">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">State<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="state" [(ngModel)]="model.resstate" (keypress)="namevalidation($event)" (ngModelChange)="model.resstate = $event.toUpperCase()" maxlength="15">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Pin Code<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="pincode" [(ngModel)]="model.respin" (keypress)="numberValidate($event)" maxlength="6">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Email<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input type="email" name="email" [(ngModel)]="model.resemail" maxlength="30">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Mobile No<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="mobileno" [(ngModel)]="model.resmobile" (keypress)="numberValidate($event)" maxlength="10">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Landline</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="landline" [(ngModel)]="model.reslandline" (keypress)="numberValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div nz-col nzMd="1">
+                        <button type="button" nz-button nz-icon style="margin-top:100px;" (click)="addressbtn()">>></button>
+                    </div>
+
+                    <div nz-col nzMd="11">
+
+                        <div class="card linkdesignS" style="width:720px;">
+
+                            <h3 class="content-title"><u>Correspondence Address Details</u></h3>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 1<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address1" [(ngModel)]="model.curadd1" (ngModelChange)="model.curadd1 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 2<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address2" [(ngModel)]="model.curadd2" (ngModelChange)="model.curadd2 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 3<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address3" [(ngModel)]="model.curadd3" (ngModelChange)="model.curadd3 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                            <div nz-row nzGutter="10">
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Address 4<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="address4" [(ngModel)]="model.curadd4" (ngModelChange)="model.curadd4 = $event.toUpperCase()" maxlength="35">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">City Name<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="city" [(ngModel)]="model.curcity" (ngModelChange)="model.curcity = $event.toUpperCase()" maxlength="15">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">State<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="state" [(ngModel)]="model.curstate" (keypress)="namevalidation($event)" (ngModelChange)="model.curstate = $event.toUpperCase()" maxlength="15">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+
+                            <div nz-row nzGutter="10">
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Pin Code<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="pincode" [(ngModel)]="model.curpin" (keypress)="numberValidate($event)" maxlength="6">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Email<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input type="email" name="email" [(ngModel)]="model.curemail" maxlength="30">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Mobile No<span style="color: red;">*</span></nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="mobileno" [(ngModel)]="model.curmobile" (keypress)="numberValidate($event)" maxlength="10">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+
+                            </div>
+                            <div nz-row nzGutter="10">
+
+                                <div nz-col nzMd="8">
+                                    <nz-form-item>
+                                        <nz-form-label class="label">Landline</nz-form-label>
+                                        <nz-form-control>
+                                            <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="landline" [(ngModel)]="model.curlandline" (keypress)="numberValidate($event)" maxlength="12">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div nz-row nzGutter="10">
+
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="label">Remarks</nz-form-label>
+                            <nz-form-control>
+                                <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input name="remarks" [(ngModel)]="model.remarks" (ngModelChange)="model.remarks = $event.toUpperCase()" maxlength="30">
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+            </nz-tab>
+
+            <nz-tab nzTitle="Qualification">
+
+                <h3 class="content-title"><u>Educational Qualification</u></h3> <br>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="24">
+                        <nz-table #educationalqualificationtable [nzData]="tablerow" nzPageSize="tablerow.length" [nzSize]="' small '" [nzShowPagination]="false" [nzFrontPagination]="false" [nzScroll]="{  y: '180px ' }">
+                            <thead>
+                                <tr style="background: rgba(173, 224, 240, 0.678);">
+                                    <!-- <th nzWidth="5%">Slno</th> -->
+                                    <th nzWidth="15%">Qualification<span style="color: red;">*</span></th>
+                                    <th nzWidth="15%">Institution/University<span style="color: red;">*</span></th>
+                                    <th nzWidth="14%">Percentage(%)<span style="color: red;">*</span></th>
+                                    <th nzWidth="8%">Year of Passing<span style="color: red;">*</span></th>
+                                    <th nzWidth="14%">Remarks</th>
+                                    <!-- <th nzWidth="14%">Qty</th> -->
+                                    <th nzWidth="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of tablerow; let i = index">
+                                    <!-- <td>{{i+1}}</td> -->
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.educationalQualification" (ngModelChange)="data.educationalQualification = $event.toUpperCase()" name="Qualification{{i}}" style="text-transform:uppercase;"
+                                            maxlength="16" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.educationalInstitution" (ngModelChange)="data.educationalInstitution = $event.toUpperCase()" maxlength="20" name="Institution{{i}}"
+                                            style="text-transform:uppercase;" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.educationalPercentage" (keypress)="numberValidate($event)" maxlength="2" name="Percentage{{i}}" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <nz-year-picker [disabled]="disableinput" [(ngModel)]="data.educationalYearofPassing" (ngModelChange)="onChange($event)" [nzDisabledDate]="disabledFutureDate" nzPlaceHolder="Select year" name="YearofPassing{{i}}" [disabled]="isViewT"></nz-year-picker>
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.educationalRemarks" (ngModelChange)="data.educationalRemarks = $event.toUpperCase()" name="Remarks{{i}}" [disabled]="isViewT"
+                                            style="text-transform:uppercase;" maxlength="25" />
+                                    </td>
+
+                                    <td><button type="button" nz-button nzType="secondary" (click)="delete(i)" style="float: right;"><span
+                        style="color: red;">X</span></button>
+                                        <button *ngIf="tablerow.length<5" type="button" nz-button nzType="secondary" (click)="Addrow()" [hidden]="i==tablerow.length-1?false:true" style="float: right;"><span
+                        style="color: red;">+</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+
+                <hr> <br>
+
+                <h3 class="content-title"><u>Industry Qualification</u></h3> <br>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="24">
+                        <nz-table #industryqualificationtable [nzData]="tablerow2" nzPageSize="tablerow2.length" [nzSize]="'small '" [nzShowPagination]="false" [nzFrontPagination]="false" [nzScroll]="{  y: '180px ' }">
+                            <thead>
+                                <tr style="background: rgba(165, 215, 230, 0.678);">
+                                    <!-- <th nzWidth="5%">Slno</th> -->
+                                    <th nzWidth="15%">Qualification</th>
+                                    <th nzWidth="15%">Institution/University</th>
+                                    <th nzWidth="14%">Percentage(%)</th>
+                                    <th nzWidth="8%">Year of Passing</th>
+                                    <th nzWidth="14%">Expiry/Remarks</th>
+                                    <!-- <th nzWidth="14%">Qty</th> -->
+                                    <th nzWidth="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of tablerow2; let i = index">
+                                    <!-- <td>{{i+1}}</td> -->
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.industryQualification" (ngModelChange)="data.industryQualification = $event.toUpperCase()" name="industryQualification{{i}}"
+                                            style="text-transform:uppercase;" maxlength="16" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.industryInstitution" (ngModelChange)="data.industryInstitution = $event.toUpperCase()" maxlength="20" name="industryInstitution{{i}}"
+                                            style="text-transform:uppercase;" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.industryPercentage" (keypress)="numberValidate($event)" maxlength="2" name="industryPercentage{{i}}" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <nz-year-picker [disabled]="disableinput" [(ngModel)]="data.industryYearofPassing" (ngModelChange)="onChange($event)" [nzDisabledDate]="disabledFutureDate" nzPlaceHolder="Select year" name="industryYearofPassing{{i}}" [disabled]="isViewT"></nz-year-picker>
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.industryRemarks" (ngModelChange)="data.industryRemarks = $event.toUpperCase()" name="industryRemarks{{i}}" [disabled]="isViewT"
+                                            style="text-transform:uppercase;" maxlength="25" />
+                                    </td>
+
+                                    <td><button type="button" nz-button nzType="secondary" (click)="delete2(i)" style="float: right;"><span style="color: red;">X</span></button>
+                                        <button *ngIf="tablerow2.length<5" type="button" nz-button nzType="secondary" (click)="Addrow2()" [hidden]="i==tablerow2.length-1?false:true" style="float: right;"><span
+                        style="color: red;">+</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+
+                <hr> <br>
+
+                <h3 class="content-title"><u>Previous Capital Market Experience Details</u></h3> <br>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzLg="24">
+                        <nz-table #experiencedetailstable [nzData]="detailstablerow" nzPageSize="detailstablerow.length" [nzSize]="'small '" [nzShowPagination]="false" [nzFrontPagination]="false" [nzScroll]="{  y: '180px ' }">
+                            <thead>
+                                <tr style="background: rgba(165, 215, 230, 0.678);">
+                                    <!-- <th nzWidth="5%">Slno</th> -->
+                                    <th nzWidth="15%">From Year/To Year</th>
+                                    <th nzWidth="15%">Firm/Institution</th>
+                                    <th nzWidth="14%">Designation</th>
+                                    <th nzWidth="12%">Remarks</th>
+                                    <!-- <th nzWidth="14%">Qty</th> -->
+                                    <th nzWidth="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of detailstablerow; let i = index">
+                                    <!-- <td>{{i+1}}</td> -->
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.fromYeartoYear" name="fromYeartoYear{{i}}" maxlength="16" [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.Firm" (ngModelChange)="data.Firm = $event.toUpperCase()" maxlength="20" name="Firm{{i}}" style="text-transform:uppercase;" (keypress)="namevalidation($event)"
+                                            [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.designation" (ngModelChange)="data.designation = $event.toUpperCase()" maxlength="15" name="designation{{i}}" style="text-transform:uppercase;"
+                                            [disabled]="isViewT" />
+                                    </td>
+
+                                    <td>
+                                        <input oncut="return false" oncopy="return false" onpaste="return false" [disabled]="disableinput" nz-input [(ngModel)]="data.remarks" (ngModelChange)="data.remarks = $event.toUpperCase()" name="remarks{{i}}" style="text-transform:uppercase;" [disabled]="isViewT"
+                                            maxlength="25" />
+                                    </td>
+
+
+                                    <td><button type="button" nz-button nzType="secondary" (click)="delete3(i)" style="float: right;"><span style="color: red;">X</span></button>
+                                        <button *ngIf="detailstablerow.length<5" type="button" nz-button nzType="secondary" (click)="Addrow3()" [hidden]="i==detailstablerow.length-1?false:true" style="float: right;"><span
+                        style="color: red;">+</span></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </div>
+
+
+            </nz-tab>
+
+            <nz-tab nzTitle="Termination">
+
+                <nz-card style="margin-bottom: 100px;">
+
+                    <div nz-row nzGutter="8">
+
+                        <button type="button" [disabled]="disableapprovebtn" nz-button nz-icon style="float: right; margin-right: 9px;" (click)="approvetermination()"> <span nz-icon nzType="check">
+              </span> Approve</button>
+                        <button type="button" [disabled]="disabletersavebtn" nz-button nz-icon style="float: right; margin-right: 9px;" (click)="savetermination()"> <span nz-icon nzType="file-text"
+                nzTheme="outline"> </span> Save</button>
+                    </div>
+                    <div nz-row nzGutter="8">
+                        <div nz-col nzMd="3" style="margin-left: 50px;">
+                            <nz-form-item>
+                                <nz-form-label class="field-headds">Terminated<span style="color: red;">*</span></nz-form-label>
+                                <nz-form-control>
+                                    <nz-select style="width:100%;" [(ngModel)]="model.ter" name="terminated" nzDropdownMatchSelectWidth="true">
+                                        <nz-option nzValue="Y" nzLabel="Y"></nz-option>
+                                        <nz-option nzValue="N" nzLabel="N"></nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+
+                        <div nz-col nzMd="2" nzLg="3">
+                            <nz-form-item>
+                                <nz-form-label class="field-headds">Date of Termination</nz-form-label>
+                                <nz-form-control>
+                                    <nz-date-picker name="dot" nzFormat="dd-MM-yyyy" [(ngModel)]="model.terdate" [nzDisabledDate]="disabledFutureDate">
+                                    </nz-date-picker>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+
+
+                    <div nz-row nzGutter="8">
+                        <div nz-col nzMd="6" style="margin-left:50px;">
+                            <nz-form-item>
+                                <span class="field-headds">Mode of Termination<span style="color: red;">*</span></span>
+                                <nz-select style="width:100%;" [(ngModel)]="model.termode" name="terminatemode" nzDropdownMatchSelectWidth="true">
+                                    <nz-option nzValue="Resignation" nzLabel="Resignation"></nz-option>
+                                    <nz-option nzValue="Termination" nzLabel="Termination"></nz-option>
+                                </nz-select>
+                            </nz-form-item>
+                        </div>
+                    </div>
+
+                    <div nz-row nzGutter="8">
+                        <div nz-col nzMd="6" style="margin-left:50px;">
+                            <nz-form-item>
+                                <span class="field-headds">Reason for Termination<span style="color: red;">*</span></span>
+                                <input nz-input name="terreason" [(ngModel)]="model.terreason" (ngModelChange)="model.terreason = $event.toUpperCase()">
+                            </nz-form-item>
+                        </div>
+                    </div>
+
+                    <div nz-row nzGutter="8">
+                        <div nz-col nzMd="6" style="margin-left: 50px;">
+                            <nz-form-item>
+                                <nz-form-label class="field-headds">Remarks</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input name="terremarks" [(ngModel)]="model.terrem" (ngModelChange)="model.terrem = $event.toUpperCase()">
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                    </div>
+
+                </nz-card>
+            </nz-tab>
+
+        </nz-tabset>
+    </div>
+</div>
+<app-loader *ngIf="isSpinningVisible==true"></app-loader>

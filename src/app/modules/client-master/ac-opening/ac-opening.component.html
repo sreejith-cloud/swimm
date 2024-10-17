@@ -1,0 +1,604 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+<div nz-row nzGutter="10">
+  <div nz-col [nzMd]="24" [nzLg]="clientProfileEdit?16:24" class="mb-2">
+    <!-- <div nz-col  nzMd="16" class="mb-2"> -->
+      <nz-card [nzTitle]="extraContent" formGroupName="masterForm" >
+        <ng-template #extraContent>
+          <i nz-icon type="profile" class="icon text-primary"></i>  Account Details
+        </ng-template>
+          <nz-form-item>
+            <nz-form-label class="required">Account Type</nz-form-label>
+            <nz-form-control >
+              <span *ngFor="let item of accountTypeOptions;let i=index">
+                <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="disableOptions($event,item,i)" [ngModelOptions]="{standalone: true}"  >{{item.label}}</label>
+              </span>
+              <span *ngFor="let item of accountTypeOptions1;let i=index">
+              <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="disableOptions1($event,i)" [ngModelOptions]="{standalone: true}"  >{{item.label}}</label>
+            </span>
+            </nz-form-control>
+          </nz-form-item>
+          <br>
+     
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="6" nzLg="4">
+              <nz-form-item>
+                <nz-form-label class="required">Client Type</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="clientType"  nzAllowClear nzPlaceHolder="Client Type" name="Client Type">
+                    <nz-option nzValue="individual" nzLabel="Individual"></nz-option>
+                    <nz-option nzValue="nonIndividual" nzLabel="Non individual"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="6"  *ngIf="isShwoTrading">
+              <nz-form-item>
+                <nz-form-label class="required">Client Sub Type</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="clientSubType"  nzAllowClear nzPlaceHolder="Client Sub Type" name="Client Sub Type">
+                    <ng-container *ngFor="let clType of subType">
+                        <nz-option [nzValue]="clType.Code" [nzLabel]="clType.Description" >
+                        </nz-option>
+                    </ng-container>        
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="6" *ngIf="!isShwoTrading">
+                <nz-form-item>
+                  <nz-form-label>Client Sub Type</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="clientSubType"  nzAllowClear nzPlaceHolder="Client Sub Type" name="Client Sub Type">
+                      <ng-container *ngFor="let clType of subType">
+                          <nz-option [nzValue]="clType.Code" [nzLabel]="clType.Description" ></nz-option>
+                      </ng-container>         
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzLg="3" nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label class="required">No. Of Holders</nz-form-label>
+                    <nz-form-control>
+                        <nz-input-number formControlName="holCount"  [nzMin]="1" [nzMax]="MaxHolderCount"
+                            [nzStep]="1"></nz-input-number>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+            <!-- <div nz-col nzLg="4" nzMd="6"  *ngIf="!isShwoTrading">
+              <nz-form-item>
+                <nz-form-label  class="required">Trading a/c Holder</nz-form-label>
+                <nz-form-control >
+                    <input nz-input formControlName="tradingAsHolder" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>  -->
+            <div nz-col nzLg="4" nzMd="6" *ngIf="isShwoTrading">
+                <nz-form-item>
+                  <nz-form-label class="required">Trading a/c Holder</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="tradingAcHolder"  nzPlaceHolder="Choose" name="No. Of Holders" *ngIf="noOfTabs==1">
+                    <nz-option nzValue="first holder" nzLabel="First Holder"></nz-option>
+                   
+                  </nz-select>
+                  <nz-select formControlName="tradingAcHolder"  nzPlaceHolder="Choose" name="No. Of Holders" *ngIf="noOfTabs==2">
+                      <nz-option nzValue="first holder" nzLabel="First Holder"></nz-option>
+                      <nz-option nzValue="second holder" nzLabel="Second Holder"></nz-option>
+                      
+                    </nz-select>
+                    <nz-select formControlName="tradingAcHolder"  nzPlaceHolder="Choose" name="No. Of Holders" *ngIf="noOfTabs==3">
+                        <nz-option nzValue="first holder" nzLabel="First Holder"></nz-option>
+                        <nz-option nzValue="second holder" nzLabel="Second Holder"></nz-option>
+                        <nz-option nzValue="third holder" nzLabel="Third Holder"></nz-option>
+                      </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="6" *ngIf="showB2Bbanks">
+                <nz-form-item>
+                  <nz-form-label class="required">Select the Bank Name</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="B2BBankName" nzAllowClear nzPlaceHolder="Select the Bank Name" name="Client Sub Type">
+                      <ng-container *ngFor="let item of BankNamesArray">
+                          <nz-option [nzValue]="item.BankName" [nzLabel]="item.BankName" ></nz-option>
+                      </ng-container>        
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+     
+            </div>
+
+              <div nz-row nzGutter="10"  *ngIf="clientProfileEdit">
+            <div nz-col nzLg="6" nzMd="6" >
+              <nz-form-item>
+                <nz-form-label  class="required">Store Name</nz-form-label>
+                <nz-form-control >
+                    <input nz-input [(ngModel)]="storeDetails.StoreName"  [ngModelOptions]="{standalone: true}" readonly  />
+                </nz-form-control>
+              </nz-form-item>
+            </div> 
+
+            <div nz-col nzLg="4" nzMd="6"  >
+              <nz-form-item>
+                <nz-form-label  class="required">Box Number</nz-form-label>
+                <nz-form-control >
+                    <input nz-input  [(ngModel)]="storeDetails.BoxNo"  [ngModelOptions]="{standalone: true}" readonly />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="6" nzMd="6"  >
+              <nz-form-item>
+                <nz-form-label  class="required">Box Sub Number</nz-form-label>
+                <nz-form-control >
+                    <input nz-input [(ngModel)]="storeDetails.BoxSubNo"  [ngModelOptions]="{standalone: true}" readonly  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            </div>
+         
+          </nz-card>
+          
+  </div>
+  <div nz-col nzLg="8" nzMd="24" *ngIf="clientProfileEdit">
+    <!-- <div nz-col  nzMd="8"> -->
+      <nz-card nzTitle="Get Holder Details" style="height: 200px">
+   
+          <nz-input-group nzSize="small">
+          <!-- <master-find-ctrl [options]="RegionFindopt" [(ngModel)]="HoldersData" name="Region"
+        (ngModelChange)="getHoderDetials($event)"></master-find-ctrl> -->
+        <!-- <lookup-dialog></lookup-dialog> -->
+        <input type="text" nz-input placeholder="Search Holder" [(ngModel)]="HoldersData" [ngModelOptions]="{standalone: true}"  [nzAutocomplete]="auto" (ngModelChange)="getData(HoldersData)" maxlength="10">
+        <nz-autocomplete #auto>
+          <nz-auto-option *ngFor="let option of resultArray"  [nzValue]="HoldersData"   class="aleternateColor" (click)="fetchHolderData(option,'P')">
+            <span [innerHTML]="'PAN - '+option.PAN+' , TradeCode - '+option.TradeCode+',DP - '+option.DP+' | '+option.ClientID"></span>
+          <!-- <span [innerHTML]="option"></span>""""| highlighting:HoldersData"""" 
+          (click)="fetchHolderData(option)"
+         -->
+          </nz-auto-option>
+        
+        </nz-autocomplete>
+  
+        </nz-input-group>
+        <!-- <ng-template #suffixIconSearch>
+          <i nz-icon type="search" (click)="getData(HoldersData)"></i>
+        </ng-template>
+         -->
+        </nz-card>
+  </div>
+</div>
+<br>
+
+      <nz-card [nzTitle]="title1" [ngSwitch]="form.value.masterForm.holCount">
+          <ng-template #title1>
+        <i nz-icon type="usergroup-add" class="icon text-danger"></i>Holder Details
+            </ng-template>
+          <div nz-row nzGutter="5" *ngSwitchCase="1" formGroupName="oneHolder">
+            <div nz-col nzLg="2" nzMd="4">
+              <nz-form-item >
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-label class="required">First Holder:
+                </nz-form-label>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label>Pan Number</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0" formControlName="FirstHolderpanNumber" required  maxlength="10" minlength="10" (ngModelChange)="checkPan($event)" style="text-transform: uppercase;" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="2" nzMd="4">
+              <nz-form-item>
+                <nz-form-label>Title</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="FirstHoldertitle" nzAllowClear  nzPlaceHolder="Title" required>
+                    <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                    <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                    <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label>First Name</nz-form-label>
+                <nz-form-control>
+                <input nz-input placeholder="First Name" class="required"  formControlName="FirstHolderfirstName"  required/>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label>Middle Name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="Middle Name"  formControlName="FirstHoldermiddleName"  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzMd="4">
+              <nz-form-item>
+                <nz-form-label>Last Name</nz-form-label>
+                <nz-form-control>
+                  <input nz-input placeholder="Last Name"  formControlName="FirstHolderlastName" required />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col  nzLg="4">
+              <nz-form-item>
+                  <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                  <nz-form-control>
+                      <nz-date-picker  formControlName="FirstHolderdob" nzPlaceHolder="YYYY-MM-DD"   []="disabledFutureDate" required [nzDisabled]="!isholder1Pan || isfirstHolderDobValid" (ngModelChange)="CheckFirstHolderDobWithKRADetails()" ></nz-date-picker>
+                      <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                      <!-- {{form.value.dob}} -->
+                  </nz-form-control>
+              </nz-form-item>
+          </div>
+          <!-- <div nz-col nzLg="2">
+            <nz-form-item>
+                <nz-form-label nzFor="name">&nbsp;</nz-form-label>
+                <nz-form-control>
+                    <button nz-button nzType="primary" (click)="CheckFirstHolderDobWithKRADetails()"
+                        [disabled]="isfirstHolderDobValid">Verify DOB</button>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+            <!-- <div nz-col nzMd="6" class="row-actions">
+              <nz-form-item>
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-control>
+                  <button nz-button nzType="primary" nzSize="small" nzShape="circle" (click)="addHolder()"
+                    *ngIf="i==0 && form.controls.holders.controls.length<3"><i nz-icon nzType="plus"
+                      nzTheme="outline"></i></button>
+                  <button nz-button nzType="danger" nzSize="small" nzShape="circle" (click)="removeHolder(i)" *ngIf="i!=0"><i
+                      nz-icon nzType="minus" nzTheme="outline"></i></button>
+                </nz-form-control>
+              </nz-form-item>
+            </div> -->
+          </div>
+          
+        
+      
+      <div  *ngSwitchCase="2" formGroupName="twoHolder">
+             <div nz-row nzGutter="5">
+              <div nz-col nzLg="2" nzMd="4">
+                <nz-form-item >
+                  <nz-form-label>&nbsp;</nz-form-label>
+                  <nz-form-label class="required">First Holder:
+                  </nz-form-label>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Pan Number</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0"  formControlName="FirstHolderpanNumber" required  maxlength="10" minlength="10" (ngModelChange)="holder2checkPan1($event)" style="text-transform: uppercase;" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzLg="2" nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Title</nz-form-label>
+                  <nz-form-control  nzErrorTip="">
+                    <nz-select formControlName="FirstHoldertitle" nzAllowClear nzPlaceHolder="Title" required>
+                      <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                      <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                      <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label  >First Name</nz-form-label>
+                  <nz-form-control  nzErrorTip="">
+                  <input nz-input placeholder="First Name"  formControlName="FirstHolderfirstName"  required/>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label >Middle Name</nz-form-label>
+                  <nz-form-control  nzErrorTip="">
+                    <input nz-input placeholder="Middle Name"  formControlName="FirstHoldermiddleName"  />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label >Last Name</nz-form-label>
+                  <nz-form-control>
+                    <input nz-input placeholder="Last Name"  formControlName="FirstHolderlastName" required />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col  nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker  formControlName="FirstHolderdob" nzPlaceHolder="YYYY-MM-DD"    [nzDisabledDate]="disabledFutureDate" required [nzDisabled]="!holder2Pan1 || isfirstHolderDobValid " (ngModelChange)="CheckFirstHolderDobWithKRADetails()" ></nz-date-picker>
+                        <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                        <!-- {{form.value.dob}} -->
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+          
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzLg="2" nzMd="4">
+                  <nz-form-item >
+                    <nz-form-label>&nbsp;</nz-form-label>
+                    <nz-form-label class="required">Second Holder:
+                    </nz-form-label>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label>Pan Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0" formControlName="SecondHolderpanNumber" required  maxlength="10" minlength="10" (ngModelChange)="holder2checkPan2($event)" style="text-transform: uppercase;" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzLg="2" nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label>Title</nz-form-label>
+                    <nz-form-control  nzErrorTip="">
+                      <nz-select formControlName="SecondHoldertitle" nzAllowClear nzPlaceHolder="Choose" required>
+                        <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                        <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                        <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label  >First Name</nz-form-label>
+                    <nz-form-control  nzErrorTip="">
+                    <input nz-input placeholder="First Name"  formControlName="SecondHolderfirstName"  required/>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label >Middle Name</nz-form-label>
+                    <nz-form-control  nzErrorTip="">
+                      <input nz-input placeholder="Middle Name"  formControlName="SecondHoldermiddleName"  />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label >Last Name</nz-form-label>
+                    <nz-form-control>
+                      <input nz-input placeholder="Last Name"  formControlName="SecondHolderlastName" required />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+      
+                <div nz-col  nzLg="4">
+                  <nz-form-item>
+                      <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                      <nz-form-control>
+                          <nz-date-picker  formControlName="SecondHolderdob"  nzPlaceHolder="YYYY-MM-DD"   [nzDisabledDate]="disabledFutureDate" required [nzDisabled]="!holder2Pan2 || isSecondHolderDobValid " (ngModelChange)="CheckSecondHolderDobWithKRADetails()" ></nz-date-picker>
+                          <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                          <!-- {{form.value.dob}} -->
+                      </nz-form-control>
+                  </nz-form-item>
+              </div>
+          </div>
+      
+      </div>
+      <div  *ngSwitchCase="3" formGroupName="threeHolder">
+        
+              <div nz-row nzGutter="5">
+               <div nz-col nzLg="2" nzMd="4">
+                 <nz-form-item >
+                   <nz-form-label>&nbsp;</nz-form-label>
+                   <nz-form-label class="required">First Holder:
+                   </nz-form-label>
+                 </nz-form-item>
+               </div>
+               <div nz-col nzMd="4">
+                <nz-form-item>
+                  <nz-form-label>Pan Number</nz-form-label>
+                  <nz-form-control>
+                      <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0"  formControlName="FirstHolderpanNumber" required  maxlength="10" minlength="10" (ngModelChange)="holder3checkPan1($event)" style="text-transform: uppercase;" />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+               <div nz-col nzLg="2" nzMd="4">
+                 <nz-form-item>
+                   <nz-form-label>Title</nz-form-label>
+                   <nz-form-control  nzErrorTip="">
+                     <nz-select formControlName="FirstHoldertitle" nzAllowClear nzPlaceHolder="Choose" required>
+                       <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                       <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                       <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                     </nz-select>
+                   </nz-form-control>
+                 </nz-form-item>
+               </div>
+               <div nz-col nzMd="4">
+                 <nz-form-item>
+                   <nz-form-label  >First Name</nz-form-label>
+                   <nz-form-control  nzErrorTip="">
+                   <input nz-input placeholder="First Name"  formControlName="FirstHolderfirstName"  required/>
+                   </nz-form-control>
+                 </nz-form-item>
+               </div>
+               <div nz-col nzMd="4">
+                 <nz-form-item>
+                   <nz-form-label >Middle Name</nz-form-label>
+                   <nz-form-control  nzErrorTip="">
+                     <input nz-input placeholder="Middle Name"  formControlName="FirstHoldermiddleName"  />
+                   </nz-form-control>
+                 </nz-form-item>
+               </div>
+               <div nz-col nzMd="4">
+                 <nz-form-item>
+                   <nz-form-label >Last Name</nz-form-label>
+                   <nz-form-control>
+                     <input nz-input placeholder="Last Name"  formControlName="FirstHolderlastName" required />
+                   </nz-form-control>
+                 </nz-form-item>
+               </div>
+               <div nz-col  nzLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker  formControlName="FirstHolderdob"  nzPlaceHolder="YYYY-MM-DD"   [nzDisabledDate]="disabledFutureDate" required [nzDisabled]="!holder3Pan1 || isfirstHolderDobValid " (ngModelChange)="CheckFirstHolderDobWithKRADetails()" ></nz-date-picker>
+                        <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                        <!-- {{form.value.dob}} -->
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+             
+             </div>
+             <div nz-row nzGutter="5">
+                 <div nz-col nzLg="2" nzMd="4">
+                   <nz-form-item >
+                     <nz-form-label>&nbsp;</nz-form-label>
+                     <nz-form-label class="required">Second Holder:
+                     </nz-form-label>
+                   </nz-form-item>
+                 </div>
+                 <div nz-col nzMd="4">
+                  <nz-form-item>
+                    <nz-form-label>Pan Number</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0" formControlName="SecondHolderpanNumber" required  maxlength="10"  minlength="10" (ngModelChange)="holder3checkPan2($event)"style="text-transform: uppercase;" />
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+             
+                 <div nz-col nzLg="2" nzMd="4">
+                   <nz-form-item>
+                     <nz-form-label>Title</nz-form-label>
+                     <nz-form-control  nzErrorTip="">
+                       <nz-select formControlName="SecondHoldertitle" nzAllowClear nzPlaceHolder="Choose" required>
+                         <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                         <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                         <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                       </nz-select>
+                     </nz-form-control>
+                   </nz-form-item>
+                 </div>
+                 <div nz-col nzMd="4">
+                   <nz-form-item>
+                     <nz-form-label  >First Name</nz-form-label>
+                     <nz-form-control  nzErrorTip="">
+                     <input nz-input placeholder="First Name"  formControlName="SecondHolderfirstName"  required/>
+                     </nz-form-control>
+                   </nz-form-item>
+                 </div>
+                 <div nz-col nzMd="4">
+                   <nz-form-item>
+                     <nz-form-label >Middle Name</nz-form-label>
+                     <nz-form-control  nzErrorTip="">
+                       <input nz-input placeholder="Middle Name"  formControlName="SecondHoldermiddleName"  />
+                     </nz-form-control>
+                   </nz-form-item>
+                 </div>
+                 <div nz-col nzMd="4">
+                   <nz-form-item>
+                     <nz-form-label >Last Name</nz-form-label>
+                     <nz-form-control>
+                       <input nz-input placeholder="Last Name"  formControlName="SecondHolderlastName" required />
+                     </nz-form-control>
+                   </nz-form-item>
+                 </div>
+                 <div nz-col  nzLg="4">
+                  <nz-form-item>
+                      <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                      <nz-form-control>
+                          <nz-date-picker  formControlName="SecondHolderdob"  nzPlaceHolder="YYYY-MM-DD"   [nzDisabledDate]="disabledFutureDate" required [nzDisabled]="!holder3Pan2 || isSecondHolderDobValid " (ngModelChange)="CheckSecondHolderDobWithKRADetails()" ></nz-date-picker>
+                          <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                          <!-- {{form.value.dob}} -->
+                      </nz-form-control>
+                  </nz-form-item>
+              </div>
+          
+               </div>
+               <div nz-row nzGutter="5">
+                  <div nz-col nzLg="2" nzMd="4">
+                    <nz-form-item >
+                      <nz-form-label>&nbsp;</nz-form-label>
+                      <nz-form-label class="required">Third Holder:
+                      </nz-form-label>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>Pan Number</nz-form-label>
+                      <nz-form-control>
+                          <input nz-input placeholder="Pan Number" [readonly]="ClientSerialNo>0" formControlName="ThirdHolderpanNumber" required maxlength="10"  minlength="10" (ngModelChange)="holder3checkPan3($event)" style="text-transform: uppercase;" />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzLg="2" nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label>Title</nz-form-label>
+                      <nz-form-control  nzErrorTip="">
+                        <nz-select formControlName="ThirdHoldertitle" nzAllowClear nzPlaceHolder="Choose" required>
+                          <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                          <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                          <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label  >First Name</nz-form-label>
+                      <nz-form-control  nzErrorTip="">
+                      <input nz-input placeholder="First Name"  formControlName="ThirdHolderfirstName"  required/>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label >Middle Name</nz-form-label>
+                      <nz-form-control  nzErrorTip="">
+                        <input nz-input placeholder="Middle Name"  formControlName="ThirdHoldermiddleName"  />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                  <div nz-col nzMd="4">
+                    <nz-form-item>
+                      <nz-form-label >Last Name</nz-form-label>
+                      <nz-form-control>
+                        <input nz-input placeholder="Last Name"  formControlName="ThirdHolderlastName" required />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+         
+                  <div nz-col  nzLg="4">
+                    <nz-form-item>
+                        <nz-form-label class="required" nzFor="name">DOB</nz-form-label>
+                        <nz-form-control>
+                            <nz-date-picker  formControlName="ThirdHolderdob" nzPlaceHolder="YYYY-MM-DD"   [nzDisabledDate]="disabledFutureDate" required [nzDisabled]="!holder3Pan3 || isThirdHolderDobValid " (ngModelChange)="CheckThirdDobWithKRADetails()"  ></nz-date-picker>
+                            <!-- <input type="date"  formControlName="dob" class=date name="bday" maxlength="10"> -->
+                            <!-- {{form.value.dob}} -->
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+           </div>
+        </div>
+        </nz-card>
+</form>
+<br>
+<button nz-button nzType="primary" class="float-right" (click)="continueNext()" [disabled]="!isPanValid">Next</button>
+ <!-- <button nz-button nzType="primary" class="float-right" (click)="next1()">trading</button>
+<button nz-button nzType="primary" class="float-right" (click)="nextKyc()"title="kyc">Kyc</button>
+<button nz-button nzType="primary" class="float-right" (click)="fin()">fin</button>
+<button nz-button nzType="primary" class="float-right" (click)="dp()">dp</button>
+<button nz-button nzType="primary" class="float-right" (click)="sceme()">sceme</button>
+<button nz-button nzType="primary" class="float-right" (click)="IU()">IU</button>
+<button nz-button nzType="primary" class="float-right" (click)="rej()">app/rej</button> -->
+<app-loader *ngIf="spin"></app-loader> 

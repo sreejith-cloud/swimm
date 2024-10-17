@@ -1,0 +1,84 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="24">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Inactive Code Activation</h3>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div nz-row nzGutter="24">
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel"> From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="FromDate" nzFormat="dd-MM-yyyy" name="fromdate" [nzDisabledDate]="disabledFutureDate" (ngModelChange)="onDateChange()"
+              nzAllowClear="false">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label class="boldinglabel"> To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="ToDate" nzFormat="dd-MM-yyyy" name="Todate" [nzDisabledDate]="disabledFutureDate" (ngModelChange)="onDateChange()" nzAllowClear="false">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="16">
+        <form-handler (onPreview)="view()" (onReset)="Reset()" (onExportExcel)="export()"></form-handler>
+      </div>
+    </div>
+  </form>
+  <br>
+  <br>
+  <div class="report-content">
+    <div nz-row *ngIf="inactiveClienResultSet.length" #htmlView>
+      <nz-table #inactiveClientTable [nzData]="inactiveClienResultSet" [nzShowPagination]="true"
+        [nzShowPagination]="inactiveClientTable.data.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+            <th *ngFor="let header of inactiveClienResultSetHeader">{{header}}</th>
+            <!-- <th>Name</th>
+            <th>Trade Code</th>
+            <th>Pan No</th>
+            <th>DPID and ClientID</th>
+            <th>Serial NO</th>
+            <th>State</th>
+            <th>Location</th>
+            <th>Region</th>
+            <th>Inactivation Date</th>
+            <th>Reactivation Date</th>
+            <th>Mode Of Reactivation</th>
+            <th>Last Traded Date</th>
+            <th>Last KYC Update Date</th>
+            <th>Mail Status</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of inactiveClientTable.data;let i = index" class="resulttable">
+            <td *ngFor="let header of inactiveClienResultSetHeader">{{data[header]}}</td>
+            <!-- <td>{{data['Name']}}</td>
+            <td>{{data['TradeCode']}}</td>
+            <td>{{data['PAN NO']}}</td>
+            <td>{{data['DPID AND ClientID']}}</td>
+            <td>{{data['Serial No']}}</td>
+            <td>{{data['STATE']}}</td>
+            <td>{{data['LOCATION']}}</td>
+            <td>{{data['REGION']}}</td>
+            <td>{{data['InActivation Date']}}</td>
+            <td>{{data['ReActivation Date']}}</td>
+            <td>{{data['Mode of Reactivation']}}</td>
+            <td>{{data['Last Traded Date']}}</td>
+            <td>{{data['Last Kyc Update Date']}}</td>
+            <td>{{data['Mail Status']}}</td> -->
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+  <app-loader *ngIf="isloading"></app-loader>
+</div>

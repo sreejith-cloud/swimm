@@ -1,0 +1,152 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Scheme Mapping Report</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+<form-handler (onPreview)="view()" (onReset)="resetForm()"></form-handler>
+</div>
+</div>
+<app-loader *ngIf="isSpinVisible"></app-loader>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="5" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>Scheme Name</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="SchemenameFindopt" (ngModelChange)="onChangeScheme($event)" [(ngModel)]="model.schemename" name="schemename"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="1" nzLg="2">
+    <nz-form-item>
+      <nz-form-label>Client Type</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.applicablefor" nzPlaceHolder="applicablefor" name="applicablefor" nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of applicablefor " [nzLabel]="item.ApplicableType" [nzValue]="item.ApplicableType">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="1" nzLg="4">
+    <nz-form-item>
+      <nz-form-label>State</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="stateFindopt" (ngModelChange)="onChangestate($event);" [(ngModel)]="model.state" name="State"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="3" nzLg="2">
+    <nz-form-item>
+      <nz-form-label>Region</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="RegionFindopt" (ngModelChange)="onChangeRegion($event);" [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="3" nzLg="2">
+    <nz-form-item>
+      <nz-form-label>Location</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" (ngModelChange)="onChangeLocation($event)" name="location">
+        </master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="4" nzLg="2">
+    <nz-form-item>
+      <nz-form-label>Tradecode</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="model.Tradecode" name="Tradecode"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="3" nzLg="2">
+    <nz-form-item>
+      <nz-form-label>DpId</nz-form-label>
+      <nz-form-control>
+        <nz-select [(ngModel)]="model.dpid" nzPlaceHolder="Dpid" name="Dpid" nzDropdownMatchSelectWidth="true">
+          <nz-option *ngFor="let item of Dpids" [nzLabel]="item.DPID" [nzValue]="item.DPID">
+          </nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="2" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>Dp Client Id</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="DpClientidFindopt" [(ngModel)]="model.dpClientid" (ngModelChange)="filldata($event)" name="dpClientid"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="24" *ngIf="VoucherList.length">
+    <!-- 
+    <nz-table     [nzData]="VoucherList" [nzPageSize]=15 #basicTable
+    [nzShowPagination]=true nzSize="small"  class="tranTbl" nzBodered="true"> -->
+    <nz-table [nzShowPagination]=true class="tranTbl table-responsive table-themed" nzPageSize="15" nzSize="middle" #zoneTable1
+      [hidden]="VoucherList.length==0" [nzData]="VoucherList">
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>Region</th>
+          <th>Location</th>
+          <th>TradeCode</th>
+          <th>DpID</th>
+          <th>DPClientID</th>
+          <th>Scheme Name</th>
+          <th>Scheme Refernce No</th>
+          <th>Applicable Type</th>
+          <th>Period From</th>
+          <th>Period To</th>
+          <th>Remarks </th>
+          <th> Cash Or Bank</th>
+          <th nzAlign='center'>Bank</th>
+          <th>Cheque No</th>
+          <th>Cheque Date</th>
+          <th nzAlign='right'>Amount </th>
+          <th nzAlign='right'> GST</th>
+          <th nzAlign='right'>Additional Cess</th>
+          <th nzAlign='right'>Net Amount</th>
+          <!--<th nzAlign='right'>Trading Fee</th>-->
+          <!--<th nzAlign='right'>DP Fee</th>-->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of zoneTable1.data;let i=index">
+          <td>{{data.State}}</td>
+          <td>{{data.Region}}</td>
+          <td>{{data.Location}}</td>
+          <td>{{data.TradeCode}}</td>
+          <td>{{data.DpID}}</td>
+          <td>{{data.DPClientID}}</td>
+          <td>{{data.Scheme}}</td>
+          <td>{{data.SchemeRefernceNo}}</td>
+          <td>{{data.ApplicableType}}</td>
+          <td>{{data.PeriodFrom}}</td>
+          <td>{{data.PeriodTo}}</td>
+          <td>{{data.Remarks}}</td>
+          <td>{{data.Cash_Or_Bank}}</td>
+          <td>{{data.Bank}}</td>
+          <td>{{data.ChequeNo}}</td>
+          <td>{{data.ChequeDate}}</td>
+          <td class="text-right" id="holdvalue">{{data.Amount | number :'1.2-2'}}</td>
+          <td class="text-right" id="holdvalue">{{data.GST | number :'1.2-2'}}</td>
+          <td class="text-right" id="holdvalue">{{data.AdditionalCess | number :'1.2-2'}}</td>
+          <td class="text-right" id="holdvalue">{{data.NetAmount | number :'1.2-2'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+</form>
+</div>

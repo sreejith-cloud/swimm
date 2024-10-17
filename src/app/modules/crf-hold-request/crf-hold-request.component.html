@@ -1,0 +1,55 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+
+    <div nz-row nzGutter="8" style="margin-left: 12px">
+
+      <p style="font-size: 20px"><b>Change Request - Hold</b></p>
+
+      <label style="color: #333232 ; font-size: 12px;"> <b>Serial Number :</b></label>
+
+      <input nz-input style="width:300px;left: 20px;" [(ngModel)]="serialNo" name="serialNo" />
+
+
+
+
+      <!-- <form-handler (onPreview)="view()" (onReset)="Reset()" (onExportExcel)="exportData()">
+      </form-handler> -->
+      <button nz-button nzType="primary" style="width: 70px;margin-left: 24px;" (click)="search()"> Search</button>
+      <button nz-button nzType="primary" style="width: 50px;margin-left: 1px;background-color:rgb(228, 130, 19);"
+        (click)="hold()">Hold</button>
+      <button nz-button nzType="primary" style="width: 60px;margin-left: 1px; background-color:green;"
+        (click)="view()">View</button>
+      <button nz-button nzType="primary" style="width: 60px;margin-left: 1px; background-color:rgb(66, 222, 250);"
+        (click)="reset()">Reset</button>
+
+  </div>
+  <br>
+    <div  nz-row *ngIf="DetailData.length" >
+      <nz-table #basicDPDetailsTable [nzData]="DetailData" [nzPageSize]=15 [nzShowPagination]="true" nzSize="small"
+        [nzShowPagination]="basicDPDetailsTable.data1.length>10" class="tranTbl table-responsive table-themed">
+        <thead>
+          <tr>
+
+            <th id="header" *ngFor="let header of detailDataTitles;let i= index"
+              [ngClass]="[header=='selectedtopool' ? 'display':'',header=='rowId' ? 'display':'']">
+              <span>{{header}}</span>
+
+            </th>
+            <th *ngIf="buttonStatus==='view'">Retrieve</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicDPDetailsTable.data;let i = index" class="resulttable">
+            <td *ngFor="let header of detailDataHeads">
+
+              <span> {{data[header]}}</span>
+            </td>
+            <td *ngIf="buttonStatus==='view'" id="txt" (click)="retrieve(data)">Retrieve</td>
+
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </form>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

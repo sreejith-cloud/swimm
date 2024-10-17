@@ -1,0 +1,382 @@
+<div class="main-content">
+
+
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">{{titile}}</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="view()" (onReset)="Reset()" (onExportExcel)="exportData()">
+        </form-handler>
+      </div>
+    </div>
+
+    <app-loader *ngIf="isSpinVisible"></app-loader>
+
+
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="5" *ngIf="HO">
+        <nz-form-item>
+          <nz-form-label>State</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="stateFindopt" (ngModelChange)="onChangestate($event);"
+              [(ngModel)]="model.state" name="State"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3" *ngIf="HO">
+        <nz-form-item>
+          <nz-form-label>Region</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="RegionFindopt" (ngModelChange)="onChangeRegion($event);"
+              [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3" *ngIf="HO">
+        <nz-form-item>
+          <nz-form-label>Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.FD" name="FD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.TD" name="TD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="PAN" [(ngModel)]="model.PAN" type="text" name="PAN">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Serial Number</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="slno" [(ngModel)]="model.slno" type="text" name="slno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Request From</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.requestFrom" name="requestFrom" nzAllowClear>
+              <nz-option nzValue="HO" nzLabel="HO"></nz-option>
+              <nz-option nzValue="BRH" nzLabel="Branch"></nz-option>
+              <nz-option nzValue="GCC" nzLabel="GCC"></nz-option>
+              <nz-option nzValue="ALl" nzLabel="All"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.type" name="type">
+              <nz-option nzValue="Type1" nzLabel="NRI TO CL"></nz-option>
+              <nz-option nzValue="Type2" nzLabel="NRE TO NRO"></nz-option>
+              <nz-option nzValue="Type3" nzLabel="CL TO NRO"></nz-option>
+              <!-- <nz-option nzValue="Mobile" nzLabel="Mobile"></nz-option>
+              <nz-option nzValue="Telephone" nzLabel="Telephone"></nz-option>
+              <nz-option nzValue="Nominee" nzLabel="Nominee"></nz-option>
+              <nz-option nzValue="Financials" nzLabel="Financials"></nz-option>
+              <nz-option nzValue="KRA" nzLabel="KRA"></nz-option>
+              <nz-option nzValue="All" nzLabel="All"></nz-option> -->
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>HO processsed User</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="HOprocessUser" [(ngModel)]="model.HOprocessUser" type="text" name="slno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Account Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.accountType" name="accountType" nzAllowClear>
+              <nz-option nzValue="T" nzLabel="Trading"></nz-option>
+              <nz-option nzValue="D" nzLabel="DP"></nz-option>
+              <nz-option nzValue="B" nzLabel="Both"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div> -->
+      <div nz-col nzMd="15">
+        <nz-form-item>
+          <nz-form-label>Status</nz-form-label>
+          <nz-form-control>
+            <!-- <fieldset class="fieldset_made"> -->
+            <!-- <input nz-input placeholder="slno" [(ngModel)]="model.Status" type="text" name="status"> -->
+            <nz-checkbox-group [(ngModel)]="statusOptions" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+            <!-- </fieldset> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="24">
+        <nz-form-item>
+          <nz-form-label>Search by</nz-form-label>
+          <label nz-checkbox [(ngModel)]="model.clientLocation" [ngModelOptions]="{standalone: true}"> Client Loc</label>
+          <label nz-checkbox [(ngModel)]="model.approvalDate" [ngModelOptions]="{standalone: true}"> HO processed date </label>
+        </nz-form-item>
+      </div> -->
+
+
+    </div>
+    <hr>
+
+    <div *ngIf="HO" class="overflowy">
+    <nz-table  #expandTable *ngIf="DetailData" [nzData]="DetailData" [nzPageSize]=10 #basicTable [nzShowPagination]=true
+      nzSize="small" class="tranTbl  maxwidthset" nzBodered="true">
+      <thead>
+        <tr style="color: #710505d9;background-color:#e0ecf3 ! important ">
+          <!-- <th nzWidth="5%" nzAlign='left'>SerialNo</th>
+          <th nzWidth="10%" nzAlign='left'>State</th>
+          <th nzWidth="5%" nzAlign='left'>Region</th>
+          <th nzWidth="5%" nzAlign='left'>Location</th>
+          <th nzWidth="10%" nzAlign='left'>ClientName</th>
+          <th nzWidth="5%" nzAlign='left'>PAN</th>
+          <th nzWidth="10%" nzAlign='left'>ClientType</th>
+          <th nzWidth="10%" nzAlign='left'>EntryUser</th>
+          <th nzWidth="10%" nzAlign='left'>EntryDate</th>
+          <th nzWidth="5%" nzAlign='left'>Status</th>
+          <th nzWidth="10%" nzAlign='left'>FinalizedUser</th>
+          <th nzWidth="10%" nzAlign='left'>FinalizedDate</th>
+          <th nzWidth="5%" nzAlign='left'>HO Approved</th>
+          <th nzWidth="15%" nzAlign='left'>HO Approved Date</th> -->
+          <th nzWidth="5%" nzAlign='left'>Name</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code</th>
+          <th nzWidth="5%" nzAlign='left'>Demat Account Number</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code Location</th>
+          <th nzWidth="5%" nzAlign='left'>Entry Type</th>
+          <th nzWidth="5%" nzAlign='left'>Serial Number</th>
+          <th nzWidth="5%" nzAlign='left'>PAN</th>
+          <th nzWidth="5%" nzAlign='left'>Entry Date</th>
+          <th nzWidth="5%" nzAlign='left'>Finalized Date</th>
+          <th nzWidth="5%" nzAlign='left'>Finalized User</th>
+          <th nzWidth="5%" nzAlign='left'>Entry User</th>
+          <th nzWidth="7%" nzAlign='left'>First Level Verified User and Date</th>
+          <th nzWidth="7%" nzAlign='left'>Final verified User and Date</th>
+          <th nzWidth="7%" nzAlign='left'>Manual Work Doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>UCC doneby and Date</th>
+          <th nzWidth="7%" nzAlign='left'>Trade Code Transfer doneby and Date</th>
+          <th nzWidth="7%" nzAlign='left'>Trade Code Transfer UCC doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Status</th>
+          <th nzWidth="5%" nzAlign='left'>Remarks</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of expandTable.data">
+
+          <!-- <td nzWidth="10%" nzAlign='left' (click)="createComponentModal(data)" class="treeName">{{data.SerialNo}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.ReportingState}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.Region}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.Curlocation}} </td>
+          <td nzWidth="20%" nzAlign='left'>{{data.Name}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.PAN}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.ClientType}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.Entryuser}} </td>
+          <td nzWidth="10%" nzAlign='left'>{{data.EntryDate}} </td>
+          <td nzWidth="5%" nzAlign='left'> {{data.Status?'Y':'N'}} </td>
+          <td nzWidth="10%" nzAlign='left'> {{data.FinalizedUser}}</td>
+          <td nzWidth="10%" nzAlign='left'> {{data.FinalizedDate}} </td>
+          <td nzWidth="5%" nzAlign='left'> {{data.HOapproved?'Y':'N'}}</td>
+          <td nzWidth="15%" nzAlign='left'> {{data.HOapprovedDate}} </td> -->
+          <!-- <th nzWidth="5%" nzAlign='left'>Name</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code</th>
+          <th nzWidth="5%" nzAlign='left'>Demat Account Number</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code Location</th>
+          <th nzWidth="5%" nzAlign='left'>Entry Type</th>
+          <th nzWidth="5%" nzAlign='left'>Serial Number</th>
+          <th nzWidth="5%" nzAlign='left'>PAN</th>
+          <th nzWidth="5%" nzAlign='left'>Entry Date</th>
+          <th nzWidth="5%" nzAlign='left'>Finalized Date</th>
+          <th nzWidth="5%" nzAlign='left'>Entry User</th>
+          <th nzWidth="5%" nzAlign='left'>First Level Verified User and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Final verified User and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Manual Work Doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>UCC doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code Transfer doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Trade Code Transfer UCC doneby and Date</th>
+          <th nzWidth="5%" nzAlign='left'>Status</th>
+          <th nzWidth="5%" nzAlign='left'>Remarks</th> -->
+          <td  nzAlign='left'> {{data.Name}} </td>
+          <td  nzAlign='left'> {{data.Tradecode}} </td>
+          <td  nzAlign='left'> {{data.DematAccountNumber}} </td>
+          <td  nzAlign='left'> {{data.TradeCodeLocation}} </td>
+          <td  nzAlign='left'>
+            <span *ngIf="data.EntryType  =='Type1'">NRI TO CL</span>
+            <span *ngIf="data.EntryType =='Type2'">NRE TO NRO</span>
+            <span *ngIf="data.EntryType =='Type3'">CL TO NRO</span>
+            <!-- <nz-option nzValue="Type1" nzLabel="NRI TO CL"></nz-option>
+                              <nz-option nzValue="Type2" nzLabel="NRE TO NRO"></nz-option>
+                              <nz-option nzValue="Type3" nzLabel="CL TO NRO"></nz-option> -->
+          </td>
+          <td  nzAlign='left' (click)="createComponentModal(data)" class="treeName"> {{data.SerialNo}}</td>
+          <td  nzAlign='left'> {{data.PAN}} </td>
+          <td  nzAlign='left'> {{data.EntryDate}} </td>
+          <td  nzAlign='left'> {{data.FinalisedDate}} </td>
+          <td  nzAlign='left'> {{data.FinalisedUser}} </td>
+
+          <td  nzAlign='left'> {{data.Entryuser}} </td><!--entryuser-->
+          <td  nzAlign='left'> {{data.FirstLevelVerifiedUserAndDate}} </td><!--firstleveluser-->
+          <td  nzAlign='left'> {{data.FinalVerifiedUserAndDate}} </td><!--finalverifieduser-->
+          <td  nzAlign='left'> {{data.ManualWorkDoneUserAndDate}} </td><!--manualdoneby-->
+          <td  nzAlign='left'> {{data.UCCDoneUserAndDate}} </td><!--uccdoneby-->
+          <td  nzAlign='left'> {{data.TradeCodeTransferDoneUserAndDate}} </td><!--tradecodedoneby-->
+          <td  nzAlign='left'> {{data.TradeCodeTransferUCCDoneUserAndDate}} </td><!--tradecodeuccdoneby-->
+
+          <td  nzAlign='left'>
+            <span *ngIf="data.CurrentStatus=='P'">Processing</span>
+            <span *ngIf="data.CurrentStatus=='I'">Pending</span>
+            <span *ngIf="data.CurrentStatus=='A'">First Level Verified</span>
+            <span *ngIf="data.CurrentStatus=='AF'">Final Verified</span>
+            <span *ngIf="data.CurrentStatus=='AR'">CP Removal</span>
+            <span *ngIf="data.CurrentStatus=='AU'">UCC</span>
+            <span *ngIf="data.CurrentStatus=='AC'">Converted</span>
+            <span *ngIf="data.CurrentStatus=='AT'">Trade Code Transfer</span>
+            <!-- <span *ngIf="data.CurrentStatus=='AE'">UCC Trade Code Transfer</span> -->
+            <span *ngIf="data.CurrentStatus=='AE'">Completed</span>
+            <span *ngIf="data.CurrentStatus=='R'">Rejected</span>
+          </td>
+          <td  nzAlign='left'> {{data.Remarks}} </td><!--tradecodeuccdoneby-->
+
+          <!-- "ApplicantName","TradeCode","DematAcNo","EntryType","SerialNo","PAN","EntryDate","Status" -->
+
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  <div *ngIf="!HO">
+  <nz-table  #expandTable *ngIf="DetailData" [nzData]="DetailData" [nzPageSize]=10 #basicTable [nzShowPagination]=true
+  nzSize="small" class="tranTbl" nzBodered="true">
+  <thead>
+    <tr style="color: #710505d9;background-color:#e0ecf3 ! important ">
+
+      <!-- <th nzWidth="5%" nzAlign='left'>SerialNo</th>
+      <th nzWidth="10%" nzAlign='left'>State</th>
+      <th nzWidth="5%" nzAlign='left'>Region</th>
+      <th nzWidth="5%" nzAlign='left'>Location</th>
+      <th nzWidth="10%" nzAlign='left'>ClientName</th>
+      <th nzWidth="5%" nzAlign='left'>PAN</th>
+      <th nzWidth="10%" nzAlign='left'>ClientType</th>
+      <th nzWidth="10%" nzAlign='left'>EntryUser</th>
+      <th nzWidth="10%" nzAlign='left'>EntryDate</th>
+      <th nzWidth="5%" nzAlign='left'>Status</th>
+      <th nzWidth="10%" nzAlign='left'>FinalizedUser</th>
+      <th nzWidth="10%" nzAlign='left'>FinalizedDate</th>
+      <th nzWidth="5%" nzAlign='left'>HO Approved</th>
+      <th nzWidth="15%" nzAlign='left'>HO Approved Date</th> -->
+      <th nzWidth="5%" nzAlign='left'>ApplicantName</th>
+      <th nzWidth="5%" nzAlign='left'>TradeCode</th>
+      <th nzWidth="5%" nzAlign='left'>DematAcNo</th>
+      <th nzWidth="5%" nzAlign='left'>EntryType</th>
+      <th nzWidth="5%" nzAlign='left'>SerialNo</th>
+      <th nzWidth="5%" nzAlign='left'>PAN</th>
+      <th nzWidth="5%" nzAlign='left'>EntryDate</th>
+      <th nzWidth="5%" nzAlign='left'>Status</th>
+
+    </tr>
+
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let data of expandTable.data">
+
+      <!-- <td nzWidth="10%" nzAlign='left' (click)="createComponentModal(data)" class="treeName">{{data.SerialNo}}</td>
+      <td nzWidth="10%" nzAlign='left'>{{data.ReportingState}} </td>
+      <td nzWidth="5%" nzAlign='left'>{{data.Region}} </td>
+      <td nzWidth="5%" nzAlign='left'>{{data.Curlocation}} </td>
+      <td nzWidth="20%" nzAlign='left'>{{data.Name}} </td>
+      <td nzWidth="5%" nzAlign='left'>{{data.PAN}}</td>
+      <td nzWidth="10%" nzAlign='left'>{{data.ClientType}}</td>
+      <td nzWidth="10%" nzAlign='left'>{{data.Entryuser}} </td>
+      <td nzWidth="10%" nzAlign='left'>{{data.EntryDate}} </td>
+      <td nzWidth="5%" nzAlign='left'> {{data.Status?'Y':'N'}} </td>
+      <td nzWidth="10%" nzAlign='left'> {{data.FinalizedUser}}</td>
+      <td nzWidth="10%" nzAlign='left'> {{data.FinalizedDate}} </td>
+      <td nzWidth="5%" nzAlign='left'> {{data.HOapproved?'Y':'N'}}</td>
+      <td nzWidth="15%" nzAlign='left'> {{data.HOapprovedDate}} </td> -->
+      <td nzWidth="15%" nzAlign='left'> {{data.Name}} </td>
+      <td nzWidth="15%" nzAlign='left'> {{data.Tradecode}} </td>
+      <td nzWidth="15%" nzAlign='left'> {{data.DematAccountNumber}} </td>
+      <td nzWidth="15%" nzAlign='left'>
+        <span *ngIf="data.EntryType  =='Type1'">NRI TO CL</span>
+        <span *ngIf="data.EntryType =='Type2'">NRE TO NRO</span>
+        <span *ngIf="data.EntryType =='Type3'">CL TO NRO</span>
+        <!-- <nz-option nzValue="Type1" nzLabel="NRI TO CL"></nz-option>
+                          <nz-option nzValue="Type2" nzLabel="NRE TO NRO"></nz-option>
+                          <nz-option nzValue="Type3" nzLabel="CL TO NRO"></nz-option> -->
+      </td>
+      <td nzWidth="15%" nzAlign='left'> {{data.SerialNo}}</td>
+      <td nzWidth="15%" nzAlign='left'> {{data.PAN}} </td>
+      <td nzWidth="15%" nzAlign='left'> {{data.EntryDate}} </td>
+      <td nzWidth="15%" nzAlign='left'>
+        <span *ngIf="data.CurrentStatus=='P'">Processing</span>
+        <span *ngIf="data.CurrentStatus=='I'">Pending</span>
+        <span *ngIf="data.CurrentStatus=='A'">First Level Verified</span>
+        <span *ngIf="data.CurrentStatus=='AF'">Final Verified</span>
+        <span *ngIf="data.CurrentStatus=='AR'">CP Removal</span>
+        <span *ngIf="data.CurrentStatus=='AU'">UCC</span>
+        <span *ngIf="data.CurrentStatus=='AC'">Converted</span>
+        <span *ngIf="data.CurrentStatus=='AT'">Trade Code Transfer</span>
+        <!-- <span *ngIf="data.CurrentStatus=='AE'">UCC Trade Code Transfer</span> -->
+        <span *ngIf="data.CurrentStatus=='AE'">Completed</span>
+        <span *ngIf="data.CurrentStatus=='R'">Rejected</span>
+      </td>
+
+      <!-- "ApplicantName","TradeCode","DematAcNo","EntryType","SerialNo","PAN","EntryDate","Status" -->
+
+    </tr>
+  </tbody>
+</nz-table>
+</div>
+
+
+
+
+    <nz-drawer [nzClosable]="false" [nzVisible]="isVisible" [nzPlacement]="placement" [nzWidth]="'1200px'"
+      (nzOnClose)="close()">
+
+    </nz-drawer>
+
+
+  </form>
+  <nz-modal [(nzVisible)]="isVisibleHo" nzTitle="HO Modification" (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleCancel()" nzWidth="60%">
+    <div [innerHtml]="filePreiewContent"></div>
+  </nz-modal>
+
+</div>

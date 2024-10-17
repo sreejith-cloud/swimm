@@ -1,0 +1,96 @@
+<div class="main-content">
+  <div nz-row>
+    <div nz-col nzMd="12">
+      <div>
+        <h3>Document Verification Report</h3>
+      </div>
+    </div>
+    <div nz-col nzMd="12" style="text-align: right;">
+        <form-handler (onPreview)="view()" (onReset)="
+          Reset()" (onExportExcel)="Export()">
+        </form-handler>
+        <!-- <button nz-button type="submit" style="margin-right:5px">Find</button>
+        <button nz-button type="button">Reset</button> -->
+      </div>  
+  </div>
+  <div nz-row nzGutter="5">
+      <div nz-col nzMd="3">
+          <span>Report By </span>
+          <nz-select [(ngModel)]="reportBy">
+            <nz-option nzValue="E" nzLabel="Entry Date"></nz-option>
+            <nz-option nzValue="R" nzLabel="Received Date"></nz-option>
+            <nz-option nzValue="A" nzLabel="Approved Date"></nz-option>
+            <!-- <nz-option nzValue="A" nzLabel="ALL"></nz-option> -->
+          </nz-select>
+        </div>
+    <div nz-col nzMd="3">
+      <span>From Date </span>
+      <nz-date-picker [(ngModel)]="fromDate" name="FD" nzFormat="dd-MM-yyyy" ></nz-date-picker>
+    </div>
+    <div nz-col nzMd="3">
+      <span>To Date</span>
+      <nz-date-picker [(ngModel)]="toDate" name="TD" nzFormat="dd-MM-yyyy" >
+      </nz-date-picker>
+    </div>
+    <div nz-col nzMd="3">
+      <span>Received Flag </span>
+      <nz-select [(ngModel)]="DocReceived">
+        <nz-option nzValue="Y" nzLabel="YES"></nz-option>
+        <nz-option nzValue="N" nzLabel="NO" ></nz-option>
+        <nz-option nzValue="A" nzLabel="ALL"></nz-option>
+      </nz-select>
+    </div>
+    <!-- <div nz-col nzMd="3" *ngIf="DocReceived== 'Y'">
+      <span>Received Date </span>
+      <nz-date-picker [(ngModel)]="receivedDate" name="RD" nzFormat="dd-MM-yyyy"></nz-date-picker>
+    </div> -->
+    <div nz-col nzMd="3" >
+        <span>Status</span>
+        <nz-select [(ngModel)]="Status">
+          <nz-option nzValue="A" nzLabel="Approved"></nz-option>
+          <nz-option nzValue="N" nzLabel="Pending"></nz-option>
+          <nz-option nzValue="R" nzLabel="Rejected"></nz-option>
+          <nz-option nzValue="ALL" nzLabel="All" ></nz-option>        
+        </nz-select>
+      </div>
+    <div nz-col nzMd="3">
+      <span>Location </span>
+      <master-find-ctrl [options]="LocationFind" [(ngModel)]="location" name="Location"></master-find-ctrl>
+    </div>
+    <div nz-col nzMd="3">
+        <span>Region </span>
+        <master-find-ctrl [options]="RegionFind" [(ngModel)]="region" name="Region"></master-find-ctrl>
+      </div>
+    <div nz-col nzMd="3">
+      <span>Serial Number </span>
+      <input nz-input [(ngModel)]="SerialNumber" name="serialNumber" />
+    </div>
+  </div>
+    <!-- <div nz-col nzMd="4" style="text-align: right;">
+      <form-handler (onPreview)="view()" (onReset)="
+        Reset()" (onExportExcel)="Export()">
+      </form-handler>
+      <button nz-button type="submit" style="margin-right:5px">Find</button>
+      <button nz-button type="button">Reset</button> 
+    </div> -->
+  <div nz-row nzGutter=5 style="margin-top: 10px;">
+    <div nz-col nzMd="8" *ngIf="TotalRecords">Total Records:<b>{{TotalRecords}}</b></div>
+    <div nz-col nzMd="8" *ngIf="TotalReceived">Total Document Received:<b>{{TotalReceived}}</b></div>
+    <div nz-col nzMd="8" *ngIf="TotalPending">Total Document Pending:<b>{{TotalPending}}</b></div>
+  </div>
+    <div class="resulttable " *ngIf="DocumentsArray.length>0">
+      <nz-table #DocumentTable [nzData]="DocumentsArray" class="tranTbl table-responsive table-theme" nzPageSize="15">
+        <thead>
+          <tr>
+            <th *ngFor="let head of DocumentsArrayHeads">{{head}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DocumentTable.data" style="text-align: center;">
+            <td  *ngFor="let heads of DocumentsArrayHeads"> {{data[heads]}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

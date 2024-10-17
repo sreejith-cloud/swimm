@@ -1,0 +1,220 @@
+<div class="main-content">
+  <div nz-row nzGutter="8">
+
+    <div nz-col nzMd="3">
+      <form nz-form>
+        <nz-form-item>
+          <nz-form-label nzRequired>Trade Code</nz-form-label>
+          <nz-form-control>
+            <lib-master-nonautofind [options]="TradecodeFindopt" [(ngModel)]="tradecode1" name="tradecode1"
+              (focusout)="submit()" autocomplete="off">
+            </lib-master-nonautofind>
+          </nz-form-control>
+        </nz-form-item>
+        <button type="submit" nz-button nzType="primary" (click)="submit()" hidden>
+          <i nz-icon type="save" theme="outline"></i>Preview</button>
+      </form>
+    </div>
+
+    <div nz-col nzMd="2">
+      <nz-form-item>
+        <nz-form-label>Location</nz-form-label>
+        <nz-form-control>
+          <input nz-input nzPlaceHolder="Select location" [(ngModel)]="location" type="text" name="location" readonly>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="6">
+      <nz-form-item>
+        <nz-form-label>Name</nz-form-label>
+        <nz-form-control>
+          <input nz-input nzPlaceHolder="Select Tradecode" [(ngModel)]="Tradecode" type="text" name="Tradecode"
+            readonly>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <!-- dropdown -->
+
+    <!-- <div nz-col nzMd="2" >
+    <nz-form-item >
+      <nz-form-label>DP ID</nz-form-label>
+      <nz-form-control>
+        <nz-select  [(ngModel)]="dpid" nzPlaceHolder="choose DPID" style="width: 100%;" (ngModelChange)="click($event)">
+          <nz-option  *ngFor="let item of clientdata;let i=index" [nzLabel]="item.DPID" [nzValue]="item"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="12">
+    <nz-form-item >
+      <nz-form-label>DP Client ID</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="dpclientid" name="DpClientid" [disabled]="dpclientid" >
+          <label nz-radio  *ngFor="let item of clientdata;let i=index"[nzValue]="item" >{{item.DpClientid}}</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div> -->
+
+
+
+    <!-- dropdown end -->
+
+
+    <!-- radiobutton select -->
+
+    <!-- <div nz-col nzMd="3" *ngIf="enable==true">
+            <nz-form-item>
+                <nz-form-label>DP ID</nz-form-label>
+                <nz-form-control>
+                    <input nz-input *ngFor="let item of clientdata" nzPlaceHolder="Select DP ID" [(ngModel)]="item.DPID" type="text" name="dpid" readonly>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+
+
+    <div nz-col nzMd="3" *ngIf="enable==true">
+      <nz-form-item>
+        <nz-form-label>DP Client ID</nz-form-label>
+        <nz-form-control>
+          <nz-radio-group [(ngModel)]="dpclientid" name="DpClientid" (ngModelChange)="click($event)">
+            <label nz-radio *ngFor="let item of clientdata;let i=index" [nzValue]="item">{{item.Clntid}}</label>
+          </nz-radio-group>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="2" *ngIf="enable==true">
+      <nz-form-item>
+        <nz-form-label>Status</nz-form-label>
+        <nz-form-control>
+          <input nz-input *ngFor="let item of clientdata;let i=index" [(ngModel)]="item.Status" type="text"
+            name="status" readonly>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+
+    <!-- radiobutton end -->
+    <!--
+  <div nz-col nzMd="2"  *ngIf="enable==true">
+    <nz-form-item>
+      <nz-form-label>DP ID</nz-form-label>
+      <nz-form-control>
+        <input nz-input *ngFor="let item of clientdata" nzPlaceHolder="Select DP ID" [(ngModel)]="item.DPID"  type="text" name="dpid" readonly>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="2" *ngIf="enable==true">
+    <nz-form-item >
+      <nz-form-label>DP Client ID</nz-form-label>
+      <nz-form-control>
+        <nz-radio-group [(ngModel)]="dpclientid" name="DpClientid"  >
+          <label nz-radio  *ngFor="let item of clientdata;let i=index"[nzValue]="item.DpClientid" >{{item.DpClientid}}</label>
+        </nz-radio-group>
+      </nz-form-control>
+    </nz-form-item>
+  </div>  -->
+
+  </div>
+
+  <div nz-row nzGutter="5">
+
+    <div nz-col nzMd="7" nzLg="5" style="margin-top: -7px;">
+      <nz-form-item>
+        <nz-form-label class="required">Upload Document:</nz-form-label>
+        <nz-form-control>
+          <nz-upload [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList" [nzShowUploadList]=false nzMultiple
+            [nzLimit]="1">
+            <button type="button" nz-button [disabled]="ddpiDisabled"><i nz-icon type="upload"></i>
+              <span *ngIf="imgkeys.length>0">Uploaded</span>
+              <span *ngIf="imgkeys.length==0">Select File</span>
+            </button>
+          </nz-upload>
+          <button nz-button type="button" nzType="primary" (click)="imagePreview()" *ngIf="imgkeys.length>0"><i nz-icon
+              type="eye"></i></button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="14" nzLg="14" style="margin-top: 34px;">
+      <nz-form-item>
+        <nz-form-control>
+          <label nz-checkbox [(ngModel)]="DDPI_Pledge" [disabled]="DDPI_Pledge">DDPI Pledge</label>
+          <label nz-checkbox [(ngModel)]="DDPI_Transfer" [disabled]="DDPI_Transfer">DDPI Transfer</label>
+          <label nz-checkbox [(ngModel)]="DDPI_MFTransactions" [disabled]="DDPI_MFTransactions">DDPI MF Transactions
+          </label>
+          <label nz-checkbox [(ngModel)]="DDPI_TenderingofShares" [disabled]="DDPI_TenderingofShares">DDPI Tendering of
+            Shares</label>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <!-- najad mod -->
+
+  <div nz-row nzGutter="5">
+
+    <!-- <div nz-col nzMd="5" nzLg="5" style="margin-top: 20px;">
+            <nz-form-item>
+                <nz-form-control>
+                    <label nz-checkbox [(ngModel)]="POA_Revocation" [disabled]="isDisabled">POA Revocation</label>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+
+
+
+    <!-- <div nz-col nzMd="5" nzLg="5" style="margin-top: -7px;" *ngIf="POA_Revocation==true">
+      <nz-form-item>
+        <nz-form-label class="required">POA Revocation form</nz-form-label>
+        <nz-form-control>
+          <nz-upload [nzBeforeUpload]="beforeUpload1" [(nzFileList)]="fileList1" [nzShowUploadList]=false nzMultiple
+            [nzLimit]="1" >
+            <button type="button" nz-button><i nz-icon type="upload"></i>
+              <span *ngIf="imgkeys1.length>0">Uploaded</span>
+              <span *ngIf="imgkeys1.length==0">Select File</span>
+            </button>
+          </nz-upload>
+          <button nz-button type="button" nzType="primary" (click)="imagePreview1()" *ngIf="imgkeys1.length>0"><i nz-icon
+              type="eye"></i></button>
+              <button type="submit" nz-button nzType="primary" (click)="POARevocation()" style="margin-left: 10%;">submit</button>
+
+        </nz-form-control>
+      </nz-form-item>
+    </div> -->
+
+  </div>
+
+  <!-- end -->
+
+
+  <div nz-row nzGutter="8">
+    <div nz-col nzMd="24" nzLg="24" align="left" style="padding-top: 5px;">
+      <button type="primary" nz-button nzType="primary" (click)="save()" [disabled]="ddpiDisabled">
+        <i nz-icon type="save" theme="outline"></i>Save</button>
+      <button nz-button nzType="danger" (click)="reset()" class="clientButtonMargin" style="margin-left: 5px;">
+        <i nz-icon type="rollback" nzTheme="outline" style="font-size: 14px"></i>Reset</button>
+    </div>
+
+  </div>
+
+  <div nz-row nzGutter="8" style="margin-top: 30px">
+
+    <div nz-col nzMd="12" nzLg="12">
+      <nz-card>
+        <h3 style="color: red">Common Reasons for Rejection</h3>
+        <div *ngFor="let data of rejectedremarkarray;let i = index" class="fontcolor">{{i+1}}. {{data.Reason}} </div>
+      </nz-card>
+    </div>
+
+  </div>
+
+  <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent"
+    [contentType]="filePreiewContentType" [fileName]="filePreiewFilename"></app-file-preview>
+</div>
+<app-loader *ngIf="isSpinVisible"></app-loader>

@@ -1,0 +1,34 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <nz-divider nzText="KRA Details" nzOrientation="left"></nz-divider>
+
+    <div nz-row nzGutter="5">
+
+        <div nz-col nzMd="12">
+            <nz-form-item>
+                <nz-form-label>KRA done by</nz-form-label>
+                <nz-form-control>
+                    <input nz-input />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="12">
+            <nz-form-item>
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-label>
+                    <label nz-checkbox>Change in KRA</label>
+                </nz-form-label>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col nzMd="6">
+            <nz-form-item>
+                <nz-form-label>&nbsp;</nz-form-label>
+                <nz-form-label>
+                    <h3>KRA Verified <i nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'"
+                            [nzTwotoneColor]="'#52c41a'"></i></h3>
+                </nz-form-label>
+            </nz-form-item>
+        </div> -->
+    </div>
+
+</form>

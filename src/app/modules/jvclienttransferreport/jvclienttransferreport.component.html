@@ -1,0 +1,111 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h1>JV Client Transfer Report</h1>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+<form-handler (onPreview)="view()" (onReset)="resetForm()"></form-handler>
+</div>
+</div>
+<div nz-row nzGutter="8">
+  <div nz-col nzMd="4" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>From Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="model.fd" name="Date"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>To Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker nzFormat="dd-MM-yyyy" [(ngModel)]="model.td" name="Date1"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>Region</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="RegionFindopt" [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+        <!--(ngModelChange)="onChangeRegion($event)"-->
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" nzLg="3">
+    <nz-form-item>
+      <nz-form-label>Location</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" (ngModelChange)="onChangeLocation($event)" name="Location">
+        </master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" nzLg="4">
+    <nz-form-item>
+      <nz-form-label>TradeCode</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="tradecodeFindopt" [(ngModel)]="model.Tradecode" name="TradeCode">
+        </master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="5" nzLg="5">
+    <nz-form-item>
+      <nz-form-label>PAN</nz-form-label>
+      <nz-form-control>
+        <master-find-ctrl [options]="PANFindopt" [(ngModel)]="model.PAN" name="pan"></master-find-ctrl>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="24" *ngIf="VoucherList.length">
+    <!-- 
+    <nz-table     [nzData]="VoucherList" [nzPageSize]=15 #basicTable
+    [nzShowPagination]=true nzSize="small"  class="tranTbl" nzBodered="true"> -->
+    <nz-table [nzShowPagination]=true class="tranTbl table-responsive table-themed" nzPageSize="15" nzSize="middle" #zoneTable1
+      [hidden]="VoucherList.length==0" [nzData]="VoucherList">
+      <thead>
+        <tr>
+          <th>Loc Code</th>
+          <th>Loc Name</th>
+          <th>Region</th>
+          <th>JV Name</th>
+          <th>Tradecode</th>
+          <th>Report Date</th>
+
+          <th>Trfd Loc</th>
+          <th>New Tradecode</th>
+          <th>Transfer Date</th>
+          <th nzAlign='right'>No of days</th>
+          <th nzAlign='right'>Brokerage </th>
+          <th nzAlign='right'> Income share to JV</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of zoneTable1.data;let i=index">
+          <td>{{data.Location}}</td>
+          <td>{{data.JVName}}</td>
+          <td>{{data.Region}}</td>
+          <td>{{data.Name}}</td>
+          <td>{{data.Tradecode}}</td>
+          <td>{{data.ReportDate}}</td>
+
+          <td>{{data.TrfdLoc}}</td>
+          <td>{{data.NewTradecode}}</td>
+          <td>{{data.TransferDate}}</td>
+          <td class="text-right" id="holdvalue">{{data.Noofdays }}</td>
+          <td class="text-right" id="holdvalue">{{data.Brokerage | number :'1.2-2'}}</td>
+          <td class="text-right" id="holdvalue">{{data.IncomesharetoJV | number :'1.2-2'}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+  </div>
+
+</div>
+</form>
+</div>

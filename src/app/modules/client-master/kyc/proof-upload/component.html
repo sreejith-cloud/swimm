@@ -1,0 +1,86 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <nz-card [nzTitle]="title2">
+        <ng-template #title2>
+            <i nz-icon nzType="upload" nzTheme="outline" class="icon text-primary"></i>Upload Proofs</ng-template>
+<div style="padding:10px 20px;">
+    <form nz-form nzLayout="vertical">
+        <div nz-row nzGutter="10">
+            <div nz-col nzLg="4" ngMd="8">
+                <nz-form-item>
+                    <nz-form-label class="required">Documents
+                    </nz-form-label>
+                    <nz-form-control>
+                        <nz-select [(ngModel)]="ImgTypeData" name="Img">
+                            <nz-option *ngFor="let data of ImgTypeDatalist" [nzValue]="data"
+                                [nzLabel]="data">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+            </div>
+            <div nz-col nzMd="8" ngLg="4">
+                <nz-form-item>
+                    <nz-form-label class="required">Upload Documents </nz-form-label>
+                    <nz-form-control>
+                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/"
+                            [nzBeforeUpload]="beforeUpload" [(nzFileList)]="fileList">
+                            <button nz-button [disabled]="ImgTypeData==null"><i nz-icon type="upload"></i><span>Select File</span></button>
+                        </nz-upload>
+                        <!-- <div *ngIf="fileList2.length">
+                        <button nz-button nzType="primary" *ngFor="let file of fileList2"
+                            (click)="showModal(file)"><i nz-icon type="eye"></i></button>
+                    </div> -->
+                    </nz-form-control>
+
+                </nz-form-item>
+            </div>
+
+
+        </div>
+
+
+    </form>
+    <br>
+
+</div>
+<div nz-row nzGutter="10">
+    <div nz-col nzMd="4">
+    </div>
+    <div nz-col nzMd="16" *ngIf="SupportFiles.length" style="max-height: 400px;  overflow: scroll;padding-bottom: 20px;">
+        <table class="tranTbl"
+            style="width: 100%;border:1px solid rgb(233, 233, 233);border-radius: 5px;margin-top: -2px;">
+            <thead *ngIf="!ho">
+                <!--<tr style="color: #710505d9;background-color:#e0ecf3 ! important ">-->
+
+                <tr>
+                    <th>Document Name</th>
+                    <!-- <th>File Name</th> -->
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of SupportFiles;let i=index">
+                    <td>{{data.docname}}</td>
+                    <!-- <td>{{data.Docfile}}</td> -->
+
+                    <td class="text-right"><button nz-button nzType="primary" (click)="showModal(data)"  title="Preview" ><i
+                                nz-icon type="eye"></i></button>
+                        <button  nz-button style="background:red;color: white;" title="Delete"
+                            (click)="Deleterow(i)"><i nz-icon type="delete"></i></button> </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div nz-col nzMd="4">
+        <!-- <button (click)="getData()">lkjsdfj</button> -->
+    </div>
+</div>
+</nz-card>
+</form> 
+
+<app-file-preview  [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+    [fileName]="filePreiewFilename"></app-file-preview>

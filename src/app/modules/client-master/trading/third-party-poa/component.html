@@ -1,0 +1,147 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+    <nz-card [nzTitle]="groupTitle" nzOrientation="left">
+        <ng-template #groupTitle>
+            <label nz-checkbox formControlName="poa">Third Party POA </label>
+        </ng-template>
+        <!-- form.value.DebitmandatefromNACH==true -->
+        <!-- [(ngModel)]="hasSection1" name="hasSection1" -->
+        <div *ngIf="form.value.poa==true">
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="8" nzLg="4">
+                    <nz-form-item>
+                         <nz-form-label class="required">Authorised person name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="POAAuthorisedPersonName" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+        
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Address1</nz-form-label>
+                        <nz-form-control>
+                            <input placeholder="House Name" nz-input formControlName="POAhouseName"
+                                placeholder="house Name" />
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Address2</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input placeholder="House Number" formControlName="POAhouseNumber"
+                                placeholder="house Number" />
+                        </nz-form-control>
+                    </nz-form-item>
+
+                </div>
+
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label class="required">Address3</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input placeholder="Street" formControlName="POAstreet" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6" nzLg="4">
+                    <nz-form-item>
+                         <nz-form-label class="required">DOB</nz-form-label>
+                        <nz-form-control>
+                            <!-- <input type="date"  formControlName="POAdob" class=date> -->
+                            <nz-date-picker nzPlaceHolder="YYYY-MM-DD" [nzDisabledDate]="disabledFutureDate"  formControlName="POAdob"></nz-date-picker>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+          
+                    <div nz-col nzMd="4">
+                            <nz-form-item>
+                                 <nz-form-label class="required">Mobile</nz-form-label>
+                                <nz-form-control>
+                                    <input nz-input formControlName="POAMobile" [textMask]="{mask: inputMasks.numeric}"
+                                        maxlength="10" minlength="10"/>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                         <nz-form-label >Landline</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="POALandline" [textMask]="{mask: inputMasks.numeric}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                         <nz-form-label>Email</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input formControlName="POAEmail" [textMask]="{mask: inputMasks.email}" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                         <nz-form-label class="required">Proof of Identity</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="proofOfIdentity" nzAllowClear>
+                            <nz-option *ngFor="let data of POAidentityProof" [nzValue]="data.Item" [nzLabel]="data.Item"></nz-option>
+
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzMd="4" *ngIf="form.value.proofOfIdentity!=null">
+                    <nz-form-item>
+                         <nz-form-label class="required">{{form.value.proofOfIdentity}} Number</nz-form-label>
+                            <nz-form-control >
+                                <input nz-input formControlName="POAdocumentNo" (keypress)="form.value.proofOfIdentity=='PAN'?ValidatePan($event):form.value.proofOfIdentity=='Aadhaar'?numberOnly($event):charrestrict($event)" (keyup)="form.value.proofOfIdentity=='Aadhaar'?maskAdharNum(form.value.POAdocumentNo):''" [maxlength]="form.value.proofOfIdentity=='Aadhaar'?12:form.value.proofOfIdentity=='Passport'?10:form.value.proofOfIdentity=='PAN'?10:20" >
+                            </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <!-- <div nz-col nzMd="4">
+                    <nz-form-item>
+                         <nz-form-label class="required">Proof of ID</nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div> -->
+                <div nz-col nzMd="3">
+                        <nz-form-item>
+                             <nz-form-label class="required">Proof of ID</nz-form-label>
+                            <nz-form-control>
+                                <button nz-button nzType="primary" *ngIf="fileList.length"  (click)="showModal()" style="float: right;" title="Preview"><i nz-icon type="eye"  ></i></button>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload"  [(nzFileList)]="fileList" [nzLimit]="1">
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                </nz-upload>
+                                <p *ngIf="fileList.length && fileList[0].Docname" class="filelistName">{{fileList[0].Docname}}</p>
+                            
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    
+                <div nz-col nzMd="4" *ngIf="clientType=='nonIndividual'">
+                    <nz-form-item>
+                         <nz-form-label class="required">Upload Resolution for Trading </nz-form-label>
+                        <nz-form-control>
+                                <button nz-button nzType="primary" *ngIf="fileList1.length"  (click)="showModal()" style="float: right;"><i nz-icon type="eye" title="Preview" ></i></button>
+                                <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" nzMultiple   [nzBeforeUpload]="beforeUpload1"  [(nzFileList)]="fileList1" [nzLimit]="1">
+                                    <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+        
+                   
+            </div>
+        </div>
+    </nz-card>
+</form>
+<app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+[fileName]="filePreiewFilename"></app-file-preview>
+<br>

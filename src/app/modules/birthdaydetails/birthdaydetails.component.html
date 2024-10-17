@@ -1,0 +1,65 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Birthday Details Of Clients</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="view()" (onReset)=" Reset()">
+        </form-handler>
+      </div>
+    </div>
+  <div nz-row nzGutter="10" class="mb-20">
+    <div nz-col nzMd="3">
+      <nz-form-item>
+        <nz-form-label class="boldinglabel">Location</nz-form-label>
+        <nz-form-control>
+          <lib-master-nonautofind *ngIf="locationview==false" [options]="locationFindopt" [(ngModel)]="location" name="Location">
+          </lib-master-nonautofind>
+
+            <input nz-input *ngIf="locationview==true" [disabled]="true" type="text" maxlength="10" [(ngModel)]="location.Location"
+            name="location">
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="3">
+      <nz-form-item>
+        <nz-form-label class="boldinglabel">From Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="fromDate" name="FD" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+    <div nz-col nzMd="3">
+      <nz-form-item>
+        <nz-form-label class="boldinglabel">To Date</nz-form-label>
+        <nz-form-control>
+          <nz-date-picker [(ngModel)]="toDate" name="TD" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <div *ngIf="ReportResponse.length>0" nz-row
+    style="background-color: white; padding: 15px; margin-top: 15px; border-radius:5px;">
+    <nz-table class="tranTbl table-responsive table-themed" #ReportTable [nzData]="ReportResponse" [nzPageSize]="20"
+      [nzShowPagination]="ReportResponse.length>20" [nzScroll]="{ x: '1000px' }" nzSize="small">
+      <thead>
+        <tr style="padding: 5px 5px; color: black;background-color: #96bcd3;">
+          <th style="text-transform: capitalize;" *ngFor="let header of ReportResponseHeader;" class="text-left">
+            {{header}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of ReportTable.data;let i = index" class="resulttable">
+          <td *ngFor="let header of ReportResponseHeader" class="text-left">{{data[header]}}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+
+</form>
+</div>
+<app-loader *ngIf="isSpinning"></app-loader>

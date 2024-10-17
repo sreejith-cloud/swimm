@@ -1,0 +1,134 @@
+<div class="main-content" #mainwindow>
+  <nz-card style="margin-bottom: 20px;">
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="12">
+        <div nz-row nzGutter="5">
+          <div nz-col nzMd="4">
+            PAN Number
+          </div>
+          <div nz-col nzMd="20" class="bold">
+            : {{PANNO}}
+          </div>
+        </div>
+        <ng-container *ngIf="tab!='ModeofOperation' ; else templateModeOperationHoldersName">
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="4">
+              Name
+            </div>
+            <div nz-col nzMd="20" class="bold">
+              : {{clientName}}
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #templateModeOperationHoldersName>
+          <div nz-row nzGutter="5">
+            <div nz-col nzMd="4">
+              Holders Name
+            </div>
+            <div nz-col nzMd="20" class="bold">
+              : {{clientName}}
+            </div>
+            <div class="bold" *ngIf="SecondHolderName"  class="holdersnameformodeOfOperation" style="font-weight: bolder;">
+              : {{SecondHolderName}}
+            </div>
+            <div class="bold" *ngIf="ThirdHolderName" class="holdersnameformodeOfOperation" style="font-weight: bolder;">
+              : {{ThirdHolderName}}
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div nz-col nzMd="12">
+        <span style="float:right;" class="bold" *ngIf="requestID!=''||requestID!=undefined"> ID : {{requestID}}</span><br>
+        <a href="#" (click)="ViewAccounts()" style="float: right;">View Accounts</a><br>
+        <a *ngIf="(HO && !saveButtonFlag) || (HO && applicationStatus=='R')" href="#" (click)="callURL()" style="float: right;">Document Verification</a><br>
+        <a *ngIf="tab=='Bank'" href="#" (click)="ShowBankAccounts()" style="float: right;">Bank Accounts</a><br>
+        <a *ngIf=" HO && applicationStatus=='F'" href="#" (click)="ShowHOModifications()" style="float: right;">HO Modifications</a><br>
+      </div>
+    </div>
+  </nz-card>
+  <div *ngIf="tab=='Address'">
+    <crf-address #Addresss [tab]=tab></crf-address>
+  </div>
+  <div *ngIf="tab=='Email'||tab=='Mobile'||tab=='Telephone'">
+    <crf-contact-details [tab]=tab #ContactDetails></crf-contact-details>
+  </div>
+  <div *ngIf="tab=='Bank'">
+    <crf-bank-details [tab]=tab #FinancialDetails></crf-bank-details>
+  </div>
+  <div *ngIf="tab=='Nominee'">
+    <crf-nominee-details [tab]=tab #NomineeDetails></crf-nominee-details>
+  </div>
+  <div *ngIf="tab=='KRAKYC'||tab=='CKYC'||tab=='Reactivation'">
+    <crf-kyc #KYCDetails [tab]=tab></crf-kyc>
+  </div>
+  <div *ngIf ="tab=='Financials'">
+    <app-financials [tab]=tab></app-financials>
+  </div> 
+  <div *ngIf ="tab=='SignatureUpdation'">
+    <app-crf-signature-updation [tab]=tab></app-crf-signature-updation>
+  </div>
+  <div *ngIf ="tab=='ModeofOperation'">
+    <app-modeof-operation [tab]=tab></app-modeof-operation>
+  </div>
+  <div *ngIf="tab=='SegmentAddition'"> <!-- mod:aksa -->
+    <app-crf-segment-addition [tab]=tab></app-crf-segment-addition>
+  </div>
+  <div *ngIf ="tab=='Additionaltc'">
+    <app-additionaltc [tab]=tab></app-additionaltc>
+  </div>
+
+</div>
+<nz-modal [(nzVisible)]="isVisibleApproved" nzTitle="Accounts To be Updated" (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleCancel()" nzWidth="60%">
+  <nz-table #ClientChangeArraytable [nzData]="changeAccounts" [nzSize]="'small'" [nzShowPagination]="false"
+    [nzFrontPagination]="false">
+    <thead>
+      <tr style="background: rgba(137, 238, 204, 0.678);">
+        <th>Account Type</th>
+        <th>Account Code</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Enrol Date</th>
+        <th>DOB</th>
+        <th>Account Status</th>
+        <th>Account Type</th>
+        <th>Account SubType</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of ClientChangeArraytable.data">
+        <td>{{data.AccountType}}</td>
+        <td [class.linktext]="data.AccountSignature !=null&&HO" (click)="ShowSignature(data);">
+          {{data.AccountCode}}</td>
+        <td [class.linktext]="data.permanentAddress !='' &&HO||data.currespondanceAddress !=''&&HO"
+          (click)="ShowexistingAddress(data)">{{data.AccountName}}</td>
+        <td>{{data.AccountLocation}}</td>
+        <td>{{data.AccountEnrolDate| slice:0:10 }}</td>
+        <td>{{data.AccountDOB | slice:0:10}}</td>
+        <td> {{data.AccountStatus}}</td>
+        <td>{{data.AccountClientType}}</td>
+        <td>{{data.AccountClientSubType}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-modal>
+<nz-modal [(nzVisible)]="isVisibleBankAccounts" nzTitle="Existing Maped Bank Accounts" (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleCancel()" nzWidth="60%">
+  <nz-table #BankAccounts [nzData]="BankAccountsArray" [nzSize]="'small'" [nzShowPagination]="false"
+    [nzFrontPagination]="false">
+    <thead>
+      <tr style="background:rgba(137, 238, 204, 0.678);">
+        <th *ngFor="let header of BankAccountsArrayHead;let i = index">
+          {{header}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of BankAccounts.data" class="resulttable">
+        <td *ngFor="let header of BankAccountsArrayHead">{{data[header]}}
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-modal>
+<crf-app-image-preview *ngIf="filePreiewVisible" [imageData]="filePreiewContent" [source]="opentype" [acccode]="acc"></crf-app-image-preview>

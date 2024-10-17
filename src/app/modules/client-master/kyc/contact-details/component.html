@@ -1,0 +1,351 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+    <div nz-row nzGutter="10">
+        <div nz-col nzLg="12" class="mb-2">
+            <nz-card [nzTitle]="title1">
+                    <ng-template #title1>
+                            <i nz-icon nzType="phone" nzTheme="outline" class="icon text-primary"></i>   Contact Details
+                    </ng-template>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Telephone (Office)</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="telephoneOff" [textMask]="{mask: inputMasks.numeric}" maxlength="15"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Telephone (Res)</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="telephoneRes" [textMask]="{mask: inputMasks.numeric}" maxlength="15"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Fax</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="fax" [textMask]="{mask: inputMasks.numeric}" maxlength="15"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>SMS Facility</nz-form-label>
+                            <nz-form-control  >
+                                <nz-switch formControlName="smsFacility"></nz-switch>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Mobile</nz-form-label>
+                        <nz-form-control>
+                                <nz-input-group nzCompact>
+                                        <input type="text" nz-input  formControlName="isdCode" [readonly]="disableKrarelatedFields"  style="width: 40%;" [nzAutocomplete]="auto" maxlength="3" />
+                                        <nz-autocomplete #auto>
+                                          <nz-auto-option *ngFor="let option of isdCodeArray"  [nzValue]="option.ISD_Code" [nzLabel]="option.ISD_Code"  class="aleternateColor">
+                                          <span [innerHTML]="option.ISD_Code"></span>
+                                          </nz-auto-option>
+                                        </nz-autocomplete>
+
+                                        <input nz-input  formControlName="mobile" [readonly]="disableKrarelatedFields" style="width: 60%;" [textMask]="{mask: inputMasks.numeric}" maxlength="12" minlength="10"/>
+                                      </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Relation</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="relation" nzAllowClear>
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code" [nzLabel]="item.Code"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing Client</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingClient"  readonly/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing PAN</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingPan" readonly minlength="10" maxlength="10" style="text-transform: uppercase;" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+           
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Additional Mobile</nz-form-label>
+                        <nz-form-control>
+                                <nz-input-group nzCompact>
+                                        <input type="text" nz-input  formControlName="AddisdCode"  style="width: 40%;"[nzAutocomplete]="auto1" maxlength="3" />
+                                        <nz-autocomplete #auto1>
+                                          <nz-auto-option *ngFor="let option of isdCodeArray"  [nzValue]="option.ISD_Code" [nzLabel]="option.ISD_Code"  class="aleternateColor">
+                                          <span [innerHTML]="option.ISD_Code"></span>
+                                          </nz-auto-option>
+                                        </nz-autocomplete>
+                                        <input nz-input  style="width:60%;" formControlName="additionalMblNo" [textMask]="{mask: inputMasks.numeric}" maxlength="10" minlenght="10" />
+                                      </nz-input-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Relation</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="relation1" nzAllowClear>
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code" [nzLabel]="item.Code"></nz-option>
+
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing Client</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingClient1" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing PAN</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingPan1" readonly maxlength="10" minlength="10" style="text-transform: uppercase;" >
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Email</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input  formControlName="email" [pattern]="inputPatterns.emailId"  [readonly]="disableKrarelatedFields" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="relation2" nzAllowClear >
+                                        <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code" [nzLabel]="item.Code"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Existing Client</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input  formControlName="existingClient2" readonly />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>Existing PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input  formControlName="existingPan2" readonly maxlength="10" minlength="10" style="text-transform: uppercase;" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Additional Email</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="addEmail" [pattern]="inputPatterns.emailId" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Relation</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="relation3" nzAllowClear >
+                                    <nz-option *ngFor="let item of relationArray" [nzValue]="item.Code" [nzLabel]="item.Code"></nz-option>
+                                
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing Client</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingClient3" readonly />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="6">
+                    <nz-form-item>
+                        <nz-form-label>Existing PAN</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input  formControlName="existingPan3" readonly maxlength="10" minlength="10" style="text-transform: uppercase;" />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            </nz-card>
+        </div>
+        <!-- <div nz-col nzLg="12" *ngIf="false">
+            <nz-divider nzText="Details of related person" nzOrientation="left"></nz-divider>
+
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>KYC no of related person</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>&nbsp;</nz-form-label>
+                        <nz-form-label>Name:</nz-form-label>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="4">
+                    <nz-form-item>
+                        <nz-form-label>Title</nz-form-label>
+                        <nz-form-control>
+                            <nz-select nzAllowClear nzPlaceHolder="Choose">
+                                <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                                <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                                <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>First Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>Middle Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="5">
+                    <nz-form-item>
+                        <nz-form-label>Last Name</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input />
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <div nz-row nzGutter="5">
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>Proof Of Identity</nz-form-label>
+                        <nz-form-control>
+                            <nz-select>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label>&nbsp;</nz-form-label>
+                        <nz-form-control>
+                            <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                                <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                            </nz-upload>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+
+            <nz-form-item>
+                <nz-form-label>Remarks</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input style="max-height: 100px;"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </div> -->
+
+        <div nz-col nzMd="24" nzLg="12" >
+            <nz-card [nzTitle]="title2" class="cardHeight">
+                <ng-template #title2>
+                        <i nz-icon nzType="solution" nzTheme="outline" class="icon text-danger"></i>   IPV / KYC Details / Applicant declaration
+                </ng-template>
+                <kyc-ipv></kyc-ipv>
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label>&nbsp;</nz-form-label>
+                            <nz-form-label>Applicant declaration:</nz-form-label>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label class="required">Date</nz-form-label>
+                            <nz-form-control>
+                                <!-- <input type="date"  class=date name="bday"> -->
+                                <nz-date-picker  nzPlaceHolder="YYYY-MM-DD" formControlName="dateOfDeclaration" [nzDisabledDate]="disabledFutureDate" ></nz-date-picker>
+
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="6">
+                        <nz-form-item>
+                            <nz-form-label class="required">Place</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="placeOfDeclaration" (keypress)="charrestrict($event)"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            <!-- <div nz-row nzGutter="5">
+                <div nz-col nzMd="16">
+                        <kyc-kra-details></kyc-kra-details>
+                </div>
+                <div nz-col nzMd="8">
+                        <nz-divider nzText="Signature" nzOrientation="left"></nz-divider>
+                                <nz-form-item>
+                                    <nz-form-label>&nbsp;</nz-form-label>
+                                    <nz-form-control>
+                                        <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/">
+                                            <button nz-button><i nz-icon type="upload"></i><span>Select File</span></button>
+                                        </nz-upload>
+                                    </nz-form-control>
+                                </nz-form-item>
+                           
+                </div>
+            </div> -->
+        </nz-card>
+        </div>
+    </div>
+
+    
+</form>

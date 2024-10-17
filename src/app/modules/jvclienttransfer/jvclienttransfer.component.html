@@ -1,0 +1,99 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">JV Client Transfer</h3>
+      </div>
+    </div>
+    <div nz-row nzGutter="8">
+      <div nz-row nzGutter="8">
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>PAN</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="PANFindopt" [(ngModel)]="model.PAN" name="pan"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzMd="5" nzLg="5">
+          <nz-form-item>
+            <nz-form-label>Tradecode</nz-form-label>
+            <nz-form-control>
+              <master-find-ctrl [options]="TradeFindopt" (ngModelChange)="getjvcdetails($event)" [(ngModel)]="model.Tradecode" name="Tradecode"></master-find-ctrl>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <app-loader *ngIf="isSpinning"></app-loader>
+      </div>
+
+
+
+      <div nz-row nzGutter="8" *ngIf="JVCdetails">
+        <div nz-col nzMd="4" nzLg="4"></div>
+        <div nz-col nzMd="7" nzLg="7">
+          <fieldset class="fieldset-shadow-condensed" style="width:150%">
+<legend class="fieldset-shadow-condensed">
+  <span class="boldinglabel">Details</span>
+</legend>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="8" nzLg="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Location</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Location" [(ngModel)]="model.location" type="text" name="location">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div nz-col nzMd="8" nzLg="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Location Description</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Location Description" [(ngModel)]="model.locationdescription" type="text" name="locationdescription">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>
+<div nz-row nzGutter="10">
+  <div nz-col nzMd="8" nzLg="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel">Client Name</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Client Name" [(ngModel)]="model.clientname" type="text" name="clientname">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <div nz-col nzMd="8" nzLg="10">
+    <nz-form-item>
+      <nz-form-label class="boldinglabel"> Referral Date</nz-form-label>
+      <nz-form-control>
+        <input disabled="true" nz-input placeholder="Referral Date" [(ngModel)]="model.referraldate" type="text" name="referraldate">
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+</div>
+</fieldset>
+</div>
+</div>
+</div>
+<nz-card *ngIf="JVCdetails">
+  <div *ngIf="JVCdetails" nz-row nzGutter="20">
+    <div nz-row nzGutter="20">
+       <div nz-col nzMd="19" nzLg="80"></div>
+      <div     style="padding-left: 00px;padding-right: 0px;" nz-col nzMd="1" nzLg="80" align="right">
+        <nz-form-label>&nbsp;</nz-form-label>
+        <button type="primary" nz-button style="background-color:green;color: white" class="mr-2" (click)="save()">
+<i nz-icon type="save" theme="outline"></i> Save</button>
+</div>
+
+<div nz-col nzMd="1" nzLg="2" align="right">
+  <nz-form-label>&nbsp;</nz-form-label>
+  <button type="primary" nz-button style="background-color:red;color: white" class="mr-6" (click)="resetForm()">
+<i nz-icon type="save" theme="outline"></i> Cancel</button>
+</div>
+</div>
+</div>
+</nz-card>
+</form>
+</div>

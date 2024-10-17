@@ -1,0 +1,12 @@
+.report-content {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.ant-table-tbody>tr>td {
+  padding: 5px 5px !important;
+}
+
+.resulttable {
+  text-align: center !important;
+}

@@ -1,0 +1,62 @@
+<div class="main-content">
+  <div nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">Additional Agreements Signed Report</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="View()" (onReset)="
+        Resetform()" (onExportExcel)="exportData()">
+        </form-handler>
+      </div>
+    </div>
+    <div style ="margin-top: 1%" nz-row nzGutter="10">
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label style ="font-weight:bold">Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt"
+              [(ngModel)]="Location" name="Location" (ngModelChange)="onChangelocation($event)">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="6">
+        <nz-form-item>
+            <nz-form-label class="boldinglabel">Tradecode</nz-form-label>
+            <nz-form-control>
+                <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode"
+                  >
+                </master-find-ctrl>
+            </nz-form-control>
+        </nz-form-item>
+    </div>
+    
+      </div>
+      <hr>
+      <app-loader *ngIf="isSpinning"></app-loader>
+      <div class="report-content" style ="margin-top: 10px">
+        <nz-table *ngIf="ReportResponse.length>0" class="tranTbl table-responsive table-themed" #ReportTable
+          [nzData]="ReportResponse" [nzPageSize]="10" [nzShowPagination]="ReportResponse.length>10"
+          [nzScroll]="{ x: '1400px' }" nzSize="small">
+          <thead>
+            <tr>
+              <th *ngFor="let header of ReportResponseHeader;let i = index"  style="padding: 5px 5px; color: black;background-color:rgb(85, 167, 182);">
+                <b>{{header }}</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of ReportTable.data" class="resulttable">
+              <td *ngFor="let header of ReportResponseHeader"><span
+                  *ngIf="data[header]!='0.00'">
+                  <span *ngIf="header=='Amount'" style=" float: right;">{{data[header]|number:'1.2-2'}}</span><span
+                    *ngIf="header!='Amount'">{{data[header]}}</span></span>
+              </td>
+            </tr>
+          </tbody>
+  
+        </nz-table>
+      </div>
+  </div>
+</div>

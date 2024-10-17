@@ -1,0 +1,130 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-col nzMd="20" nzLg="10">
+      <h3 class="content-title"> Custodian Master</h3>
+    </div>
+
+    <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+      <form-handler (onReset)="Reset()" (onSave)="save()">
+        <!-- (onPreview)="preview()" -->
+      </form-handler>
+    </div>
+    <div nz-row>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Custodian id</nz-form-label>
+          <nz-form-control [textMask]="{mask: inputMasks.numeric}">
+            <lib-master-nonautofind (keypress)="characterstrict($event)" [options]="custodianFindopt" [(ngModel)]="cid"
+              name="id" (ngModelChange)="onChangecustodian($event);"></lib-master-nonautofind>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="6">
+        <nz-form-item>
+          <nz-form-label> Custodian Name</nz-form-label>
+          <nz-form-control>
+            <input nz-input (keypress)="Validatename($event)" maxlength="255" [(ngModel)]="name" name="nme" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <input nz-input (keypress)="ValidatePan($event)" style="text-transform: uppercase;" [(ngModel)]="pan"
+              name="pannum" maxlength="10" minlength="10" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Mobile Number</nz-form-label>
+          <nz-form-control>
+            <input nz-input [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="mobile" name="mob" maxlength="10"
+              minlength="10" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="6">
+        <nz-form-item>
+          <nz-form-label class="required">Address</nz-form-label>
+          <nz-form-control>
+            <textarea nz-input rows="4" maxlength="250" [(ngModel)]="address" name="address1" style="max-height: 80px;"
+              [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Email ID</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="emailid" name="mailid" maxlength="200" [pattern]="inputPatterns.emailId"
+              [textMask]="{mask: inputMasks.email}" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label class="required">Pin Code</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="pincode" name="pin" (ngModelChange)="getPinData($event)"
+              [textMask]="{mask: inputMasks.numeric}" maxlength="6" class='upper' />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+    
+    <div *ngIf="pindata">
+      <div>
+        <p>City:{{pindata.District}}</p>
+        <p>State:{{pindata.STATENAME}}</p>
+        <p>Country:{{pindata.Country}}</p>
+      </div>
+    </div>
+
+    <div nz-row nzGutter="5">
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>ISD Code</nz-form-label>
+          <nz-form-control>
+            <nz-select (keypress)="characterstrict($event)" nzShowSearch nzAllowClear [(ngModel)]="isd" name="code"
+              (ngModelChange)="SetPhoneNumberLen('SecondMob',$event)">
+              <nz-option *ngFor="let item of CountrycodeArray" [nzLabel]="item.CODE" [nzValue]="item.CODE">
+              </nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>STD Code</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="std" name="code1" [textMask]="{mask: inputMasks.numeric}" maxlength="4" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Telephone No</nz-form-label>
+          <nz-form-control>
+            <input nz-input [textMask]="{mask: inputMasks.numeric}" [(ngModel)]="telephone" name="tele" maxlength="9"
+              minlength="6" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </div>
+
+  </form>
+</div>

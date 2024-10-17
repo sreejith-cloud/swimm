@@ -1,0 +1,153 @@
+export const KYCvalidataions = {
+
+    ContactDetails: {
+        "dateOfDeclaration": "Please Enter  Applicant Date Of Declaration",
+        "placeOfDeclaration": "Please Enter  Applicant Place Of Declaration"
+    },
+
+    CurrentAddress: {
+        "city": "Please Enter  City in Current/Permanent/OverSeas Address",
+        "country": "Please Enter  Country in Current/Permanent/OverSeas Address",
+        "district": "Please Enter  District in Current/Permanent/OverSeas Address",
+        "houseName": "Please Enter  House Name/No in Current/Permanent/OverSeas Address",
+        "addressType": "Please Select  client Address Type",
+        "pinCode": "Please Enter  PinCode in Current/Permanent/OverSeas Address",
+        "proofOfAddress": "Please Select  Proof Of Address in Current/Permanent/OverSeas Address",
+        "state": "Please Enter  State in Current/Permanent/OverSeas Address",
+        "street": "Please Enter  Street in Current/Permanent/OverSeas Address"
+    },
+
+
+    IPVDetails: {
+        "date": "Please Enter IPV Date",
+        "empBranch": "Please Enter Employee Branch in IPV Details",
+        "empCode": "Please Enter Employee Code in IPV Details",
+        "empDesingation": "Please Enter  Employee Designation in IPV Details",
+        "empName": "Please Enter Employee Name in IPV Details"
+    },
+
+
+    JurisAddress: {
+        "city": "Please Enter  City in Jurisdiction Address",
+        "country": "Please Enter  Country in Jurisdiction Address",
+        "countryOfBirth": "Please Enter  Country Of Birth",
+        "district": "Please Enter  District in Jurisdiction Address",
+        "fatca": "Please Enter  FATCA status",
+        "houseName": "Please Enter  House Name/No in Jurisdiction Address",
+        "pinCode": "Please Enter  PinCode in Jurisdiction Address",
+        "placeOfBirth": "Please Enter  Place/City Of Birth",
+        "proofOfAddress": "Please Select  Proof Of Address in Jurisdiction Address",
+        "state": "Please Enter  State in Jurisdiction Address",
+        "street": "Please Enter  Street in Jurisdiction Address",
+        "taxCountry": "Please Enter  Country Of Residence as per Tax",
+        "taxIdentification": "Please Enter  Tax Identification No"
+    },
+
+
+    LocalAddress: {
+        "city": "Please Enter  City in Correspondence/Local Address",
+        "country": "Please Enter  Country in Correspondence/Local Address",
+        "district": "Please Enter  District in Correspondence/Local Address",
+        "houseName": "Please Enter  House Name/No in Correspondence/Local Address",
+        "pinCode": "Please Enter  PinCode in Correspondence/Local Address",
+        "proofOfAddress": "Please Select  Proof Of Address in Correspondence/Local Address",
+        "state": "Please Enter  State in Correspondence/Local Address",
+        "street": "Please Enter  Street in Correspondence/Local Address"
+    },
+
+
+    PersonalDetails: {
+
+        "citizenship": "Please Select Citizenship",
+        "dob": "Please Enter DOB",
+        "FatherfirstName": "Please Enter Father/Spouse First Name",
+        "fatherOrSpouse": "Please Select Father/Spouse option",
+        "Fathertitle": "Please Select Title for Father/Spouse",
+        "gender": "Please Select Gender",
+        "maritalStatus": "Please Select Marital Status",
+        "MotherfirstName": "Please Enter Mother's First Name",
+        "Mothertitle": "Please Select Title for Mother",
+        "namefirstName": "Please Enter Holder First Name",
+        "namelastName": "Please Enter Holder Last Name",
+        "nametitle": "Please Select Title for Holder Name",
+        "occupationType": "Please Select Occupation Type",
+        "pan": "Please Enter Pan",
+        "pep": "Please Select client PEP Status",
+        "ProceedType": "Please Select an option you want to proceed with",
+        "residentialStatus": "Please Select  Residential Status",
+        "riskCountry": "Please Select  client Risk Country",
+        otherOccupationValue:'Please Enter Occupation'
+    },
+    correspondenceAddress:{
+        houseName: "Please Enter  Address1 in Address for correspondence",
+        houseNumber: "Please Enter  Address2 in Address for correspondence",
+        street: "Please Enter  Address2 in Address for correspondence",
+        pincode: "Please Enter  pincode in Address for correspondence",
+        city: "Please Enter  city in  Address for correspondence",
+        state: "Please Enter  state in Address for correspondence",
+        country: "Please Enter  country in Address for correspondence",
+        proofOfAddress: "Please Enter proofOfAddress  in   Address for correspondence",
+        ExpiryDate: "Please Enter  ExpiryDate in Address for correspondence",
+        riskCountry: "Please Enter  riskCountry in  Address for correspondence",
+    },
+    // RegisteredAddress:{
+    //     sameascorrespondence:"",
+    //   houseName:"",
+    //   houseNumber:"",
+    //   street:"",
+    //   pincode:"",
+    //   city:"",
+    //   state:"",
+    //   country:"",
+    //   proofOfAddress:"",
+    //   ExpiryDate:"",
+    //   riskCountry: "",
+    // },
+    // detialsofPromoters: {
+    //     houseName: "",
+    //     houseNumber: "",
+    //     street: "",
+    //     Promotername: "",
+    //     PAN: "",
+    //     WhetherPoliticallyExposed: "",
+    //     clientRelationship: "",
+    //     DIN:"",
+    //     UID:"",
+    // },
+    // AuthorisedDetails: {
+    //     AuthorisedName: "",
+    //     AuthorisedDesingnation: ""
+    // },
+    // UltimateBeneficialOwnerDetails: {
+    //     UltimateBeneficialOwnerName: "",
+    //     UltimateBeneficialOwnerPan: "",
+    //     UltimateBeneficialOwnerhouseName: "",
+    //     UltimateBeneficialOwnerhouseNumber: "",
+    //     UltimateBeneficialOwnerstreet: "",
+    //     UltimateBeneficialOwnerRelatedEntity: "",
+    //     UBORelationshipwiththeentity: "",
+    //     UltimateBeneficialOwnerEmail: "",
+    //     UltimateBeneficialOwnerContactNumber: "",
+    // }
+    // companyBasic:{
+    //     Nameofapplicant:[null],
+    //     DateofIncorporation:[null],
+    //     PlaceofIncorporation:[null],
+    //     RegistrationNo:[null],
+    //     RegistrationAuthority:[null],
+    //     CIN:[null],
+    //     Dateofcommencementofbusiness:[null],
+    //     Status:[null],
+    //     PAN:[null],
+    // },
+    // companyContactDetails:{
+    //     TelephoneOffice:[null],
+    //     TelephoneRes:[null],
+    //     Mobile:[null],
+    //     Relation:[null],
+    //     ExistingClient:[null],
+    //     ExistingPan:[null],
+    //     Fax:[null],
+    //     Email:[null],
+    // }
+}

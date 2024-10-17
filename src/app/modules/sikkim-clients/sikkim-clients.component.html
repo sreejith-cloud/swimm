@@ -1,0 +1,124 @@
+<div class="main-content">
+  <div nz-row class="sikkimClientHead">
+    <div nz-col nzMd="12">
+      <div>
+        <h3>Sikkim Client</h3>
+      </div>
+    </div>
+  </div>
+  <div nz-row nzGutter="24">
+
+    <div nz-col nzMd="3" nzLg="3" style="margin-top: 8px;">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-date-picker [nzDisabledDate]="disabledFutureDate" [(ngModel)]="model.TD" name="TD" nzFormat="dd-MM-yyyy">
+          </nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="3" nzLg="2" style="margin-top: 7px;">
+      <nz-form-item>
+        <nz-form-control>
+          <nz-upload [(nzFileList)]="dis" [nzBeforeUpload]="beforeUpload" [nzLimit]="1" type="file" nzAccept=".csv">
+            <button type="file" nz-button nzType="primary"
+              style="background-color: goldenrod;color: white;border: rgb(162, 118, 8);">
+              Browse</button>
+          </nz-upload>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="3" nzLg="2" style="margin-top: 7px;">
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" class="hand-cursor" (click)="uploadUserFile()"
+            [disabled]="fileToUpload===null || dis.length===0">
+            Upload
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+
+    <div nz-col nzMd="8" nzLg="8" style="margin-top: 7px;">
+      <nz-form-item>
+        <nz-form-control>
+          <form-handler (onPreview)="clientReport()" (onExportExcel)="exportexcel()" (onReset)="resetForm()"
+            id="form"></form-handler>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </div>
+
+  <nz-table #borderedTable nzBordered [nzData]="reportArray" *ngIf="reportArray!=''" [nzFrontPagination]="true"
+    [nzScroll]="{ x: '100%' }" [nzPageSize]="15" [nzShowPagination]="true" id="excel-table">
+    <thead>
+      <tr>
+        <th id="thead">Name</th>
+        <th id="thead">Pan</th>
+        <th id="thead">Client ID</th>
+        <th id="thead">DP ID</th>
+        <th id="thead">Type of Client</th>
+        <th id="thead">Address</th>
+        <th id="thead">Address Changed Date</th>
+        <th id="thead">Address Proof</th>
+        <th id="thead">Trade Code</th>
+        <th id="thead">Trade Code Status</th>
+        <th id="thead">Segments Enrolled</th>
+        <th id="thead">KRA Status</th>
+        <th id="thead">CKYC Number</th>
+        <th id="thead" nzWidth="80px">Address Proof Sent To Exchange</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of borderedTable.data">
+        <td>{{data.Name}}</td>
+        <td>{{data.PAN}}</td>
+        <td>{{data['DP Client ID']}}</td>
+        <td>{{data.DPID}}</td>
+        <td>{{data['Type Of Client']}}</td>
+        <td>
+          <ng-container *ngIf="data.Address && data.Address.length < 15; else templateaddress">
+            {{data.Address}}
+          </ng-container>
+          <ng-template #templateaddress>
+            <span nz-tooltip [nzTitle]="data.Address">{{data.Address ? data.Address.slice(0,11) + '...' : ''}}</span>
+          </ng-template>
+        </td>
+        <td>{{data['Address Changed Date']}}</td>
+        <td>{{data['Address Proof']}}</td>
+        <td>{{data.TradeCode}}</td>
+        <td>{{data['TradeCode Status']}}</td>
+        <td>
+          <ng-container
+            *ngIf="data.SegmentsEnrolled && data.SegmentsEnrolled.length < 10; else templateSegmentsEnrolled">
+            {{data.SegmentsEnrolled}}
+          </ng-container>
+          <ng-template #templateSegmentsEnrolled>
+            <span nz-tooltip [nzTitle]="data.SegmentsEnrolled">{{data.SegmentsEnrolled ?
+              data.SegmentsEnrolled.slice(0,11) + '...' : ''}}</span>
+          </ng-template>
+        </td>
+        <td>
+          <ng-container *ngIf="data['KRA Status'] && data['KRA Status'].length < 10; else templateKRAStatus">
+            {{data['KRA Status']}}
+          </ng-container>
+          <ng-template #templateKRAStatus>
+            <span nz-tooltip [nzTitle]="data['KRA Status']">{{data['KRA Status'] ? data['KRA Status'].slice(0,11) +
+              '...' : ''}}</span>
+          </ng-template>
+        </td>
+        <td>{{data['CKYC Number']}}</td>
+        <td>
+          <select [(ngModel)]="data['Address Proof Sent to Exchange']" [id]="data.SLNo"
+            [disabled]="data['Address Proof Sent to Exchange']" name="changeAddress" style="width: 100%;"
+            (ngModelChange)="showConfirm(data['Client ID'],data['Address Proof Sent to Exchange'] ? yesData : noData,data.SLNo)">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <app-loader *ngIf="isSpinning"></app-loader>

@@ -1,0 +1,108 @@
+<div class="main-content">
+    <h3 class="content-title">MTF-LOC Approval</h3>
+    <div nz-col nzMd="24" nzLg="24" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="getData()" (onReset)="
+        reset()">
+        </form-handler>
+      </div>
+  <form nz-form nzLayout="vertical">
+<div nz-row nzGutter="5">
+  <div nz-col nzMd="6">
+      <nz-form-item>
+          <nz-form-label class="boldinglabel">Tradecode</nz-form-label>
+          <nz-form-control>
+              <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="Tradecode" name="Tradecode"
+                >
+              </master-find-ctrl>
+          </nz-form-control>
+      </nz-form-item>
+  </div>
+  <div nz-col nzMd="4" >
+        <nz-form-item>
+          <nz-form-label class="boldinglabel">Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" 
+              [(ngModel)]="Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div> 
+ <div nz-col nzMd="4" >
+    <nz-form-item>
+      <nz-form-label  class="boldinglabel">From Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [(ngModel)]="fromdate" name="FD" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div> 
+  <div nz-col nzMd="4">
+    <nz-form-item>
+      <nz-form-label  class="boldinglabel">To Date</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker [(ngModel)]="todate" name="TD" nzFormat="dd-MM-yyyy">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </div> 
+  <!-- <div nz-col nzMd="4">
+        <nz-form-item>
+          <nz-form-label>&nbsp;</nz-form-label>
+          <nz-form-control>
+            
+        <button nz-button nzType="primary" (click)="getData()" class="mr-2">View</button>
+        <button nz-button nzType="danger" (click)="reset()">Clear</button>
+          </nz-form-control>
+
+        </nz-form-item>
+      </div> -->
+  </div>
+  <hr>
+  <app-loader *ngIf="isSpinning"></app-loader>
+
+  <div nz-row *ngIf="totalData.length">
+    <div nz-col nzMd="24">
+        <nz-table #basicDPDetailsTable [nzData]="totalData" [nzPageSize]=15  [nzShowPagination]="totalData.length>15" [nzFrontPagination]="false" class="tranTbl table-responsive table-themed"
+        nzSize="medium" >
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>TradeCode</th>
+                    <th>DP ID</th>
+                    <th>DP Account No</th>
+                    <th>Remark</th>
+                    <th>Mode</th>
+                    <th>Document</th>
+                    <th>Approve/Reject</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of basicDPDetailsTable.data">
+                    <td>MTFLOC</td>
+                    <td>{{data.TradeCode}}</td>
+                    <td>{{data.DpId}}</td>
+                    <td>{{data.DPACNO}}</td>
+                    <td>{{data.Remarks}}</td>
+                    <td>{{data.Mode}}</td>
+                  <td><button nz-button nzType="primary" (click)="showModal(data.TradeCode)"><i nz-icon type="download" ></i></button> </td>
+                  <td>
+                        <nz-radio-group [(ngModel)]="data.approveValue" name="Approve">
+                                <label nz-radio nzValue="A">Approve</label>
+                                <label nz-radio nzValue="R">Reject</label>
+                            
+                              </nz-radio-group>
+                  </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+
+
+  <div style="width: 100%;text-align: right;margin-top: 10px">
+  <button nz-button nzType="primary" (click)="save()">Save</button>
+  </div>
+</div>
+</form>
+  <app-file-preview [(isVisible)]="filePreiewVisible" [content]="filePreiewContent" [contentType]="filePreiewContentType"
+  [fileName]="filePreiewFilename"></app-file-preview>
+  </div>

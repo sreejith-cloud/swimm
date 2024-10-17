@@ -1,0 +1,388 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+                   <nz-card [nzTitle]="groupTitle">
+                        <ng-template #groupTitle> <label nz-checkbox formControlName="isNominee"
+                            > Nominee Details</label>
+                        </ng-template>
+                <div nz-row nzGutter="5" *ngIf="form.value.isNominee">
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Title</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzAllowClear nzPlaceHolder="Choose" formControlName="NomineeTitle">
+                                    <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                                    <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                                    <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">First Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeFirstName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Middle Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeMiddleName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Last Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeLastName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Relationship with Nominee</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="RelationshipWithNominee" nzAllowClear>
+                                        <nz-option *ngFor="let item of relationshipArray" [nzValue]="item.Relation" [nzLabel]="item.Relation"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+            
+                    <!-- <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Address of Nominee</nz-form-label>
+                            <nz-form-control>
+                                <textarea formControlName="AdreessOfNominee" nz-input rows="1"
+                                    style="max-height: 100px;">
+                                    </textarea>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+            <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label class="required">Address1</nz-form-label>
+                <nz-form-control>
+                    <input placeholder="House Name" nz-input formControlName="NomineehouseName" placeholder="house Name"/>
+                </nz-form-control>
+            </nz-form-item>
+
+        </div>
+
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label class="required">Address2</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="House Number" formControlName="NomineehouseNumber" placeholder="house Number" />
+                </nz-form-control>
+            </nz-form-item>
+
+        </div>
+
+
+        <div nz-col nzMd="4">
+            <nz-form-item>
+                <nz-form-label >Address3</nz-form-label>
+                <nz-form-control>
+                    <input nz-input placeholder="Street" formControlName="Nomineestreet" />
+                </nz-form-control>
+            </nz-form-item>
+
+        </div>
+
+              
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">PIN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineePIN" minlength="6" maxlength="6" [textMask]="{mask: inputMasks.numeric}" (keyup)="getPinData($event,'Nominee')" maxlength="6" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+         
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">City</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeCity" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+            
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeState" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeCountry" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+         
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Mobile</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input minlength="10" maxlength="10" [textMask]="{mask: inputMasks.numeric}" formControlName="NomineeMobile" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Telephone No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="NomineeTelephoneNo" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Email Id</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineeEmailId" [pattern]="inputPatterns.emailId" [textMask]="{mask: inputMasks.email}" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+            
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Nominee ID</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="NomineeID" (ngModelChange)="clearid('N',$event)" nzAllowClear>
+                                        <nz-option *ngFor="let data of identityProof" [nzValue]="data.Item" [nzLabel]="data.Item"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="form.value.NomineeID!='Photograph & Signature'&& form.value.NomineeID">
+                        <nz-form-item>
+                            <nz-form-label class="required">{{form.value.NomineeID}} Number</nz-form-label>
+                            <nz-form-control >
+                                <input nz-input formControlName="NomineeIdNumber" (keypress)="form.value.NomineeID=='PAN'?ValidatePan($event):form.value.NomineeID=='Aadhaar'?numberOnly($event):charrestrict($event)" (keyup)="form.value.NomineeID=='Aadhaar'?maskAdharNum('N',form.value.NomineeIdNumber):''" [maxlength]="form.value.NomineeID=='Passport'?10:''">
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                      
+
+                    <!-- <div nz-col nzMd="4" *ngIf="form.value.NomineeID=='PAN'">
+                        <nz-form-item>
+                            <nz-form-label class="required">PAN</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="NomineePAN" maxlength="10"/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="form.value.NomineeID=='Aadhaar'">
+                        <nz-form-item>
+                            <nz-form-label class="required">Aadhar</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input minlength="12" maxlength="12" (blur)="maskAdharNum($event)" formControlName="NomineeAdhaar" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+           
+                    <div nz-col nzMd="8" nzLg="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">DOB</nz-form-label>
+                            <nz-form-control>
+                                <!-- <input type="date"  formControlName="NomineeDOB" class=date> -->
+                                <nz-date-picker [nzDisabledDate]="disabledFutureDate" nzPlaceHolder="YYYY-MM-DD"  formControlName="NomineeDOB"></nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+            </nz-card>
+        
+  
+    <br>
+    <div *ngIf="age < 18 && form.value.NomineeDOB">
+   
+            <nz-card nzTitle="Guardian Details">
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Title</nz-form-label>
+                            <nz-form-control>
+                                <nz-select nzAllowClear nzPlaceHolder="Choose" formControlName="GuardianTitle">
+                                    <nz-option nzValue="Mr" nzLabel="Mr"></nz-option>
+                                    <nz-option nzValue="Mrs" nzLabel="Mrs"></nz-option>
+                                    <nz-option nzValue="Ms" nzLabel="Ms"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">First Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="GuardianFirstName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Middle Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="GuardianMiddleName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Last Name</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="GuardianLastName" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Relation</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="GuardianRelation" nzAllowClear>
+                                        <nz-option *ngFor="let item of relationshipArray" [nzValue]="item.Relation" [nzLabel]="item.Relation"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address1</nz-form-label>
+                            <nz-form-control>
+                                <input placeholder="House Name" nz-input formControlName="GuardianhouseName" placeholder="house Name"/>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                </div>
+
+                <div nz-row nzGutter="5">
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input placeholder="House Number" formControlName="GuardianhouseNumber" placeholder="house Number" />
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label >Address3</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input placeholder="Street" formControlName="Guardianstreet" />
+                                    </nz-form-control>
+                                </nz-form-item>
+        
+                            </div>
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">PIN</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input minlength="6" maxlength="6" [textMask]="{mask: inputMasks.numeric}" formControlName="GuardianPIN"  [textMask]="{mask: inputMasks.numeric}" (keyup)="getPinData($event,'Guardian')" maxlength="6" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+          
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">City</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="GuardianCity" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">State</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="GuardianState" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label class="required">Country</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="GuardianCountry" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        </div>
+
+                        <div nz-row nzGutter="5">
+
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label>Mobile</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input minlength="10" maxlength="10" [textMask]="{mask: inputMasks.numeric}" formControlName="GuardianMobile" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>          
+
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label>Telephone No</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="GuardianTelephoneNO" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                        <div nz-col nzMd="4">
+                                <nz-form-item>
+                                    <nz-form-label>Email Id</nz-form-label>
+                                    <nz-form-control>
+                                        <input nz-input formControlName="GuardianEmailID" [pattern]="inputPatterns.emailId" [textMask]="{mask: inputMasks.email}" />
+                                    </nz-form-control>
+                                </nz-form-item>
+                            </div>
+                    <div nz-col nzMd="4">
+                        <nz-form-item>
+                            <nz-form-label class="required">Guardian ID</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="GuardianId" (ngModelChange)="clearid('G',$event)" nzAllowClear>
+                                        <nz-option *ngFor="let data of identityProof" [nzValue]="data.Item" [nzLabel]="data.Item"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="4" *ngIf="form.value.GuardianId!='Photograph & Signature'&& form.value.GuardianId">
+                        <nz-form-item>
+                            <nz-form-label class="required">{{form.value.GuardianId}} Number</nz-form-label>
+                            <nz-form-control >
+                                <input nz-input formControlName="GuardianProofNumber" (keypress)="form.value.GuardianId=='PAN'?ValidatePan($event):form.value.GuardianId=='Aadhaar'?numberOnly($event):charrestrict($event)" (keyup)="form.value.GuardianId=='Aadhaar'?maskAdharNum('G',form.value.GuardianProofNumber):''" [maxlength]="form.value.GuardianId=='Passport'?10:''">
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="4" *ngIf="form.value.GuardianId=='Aadhaar'">
+                        <nz-form-item>
+                            <nz-form-label>Aadhaar No</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [textMask]="{mask: inputMasks.numeric}" formControlName="GuardianAdhaar" />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                </div>
+            </nz-card>
+      
+    </div>
+
+</form>

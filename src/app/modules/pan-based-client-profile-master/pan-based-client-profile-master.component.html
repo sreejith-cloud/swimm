@@ -1,0 +1,58 @@
+<div class="main-content">
+  <div nz-row>
+    <div nz-col nzMd="12">
+      <div>
+        <h3>PAN Based Client Profile Master</h3>
+      </div>
+    </div>
+    <div nz-col nzMd="12" style="text-align: right;">
+        <form-handler class="form1" (onPreview)="view()" (onReset)="reset()" (onExportExcel)="export()"></form-handler>
+        <!-- <button nz-button type="submit" style="margin-right:5px">Find</button>
+        <button nz-button type="button">Reset</button> -->
+      </div>
+  </div>
+  <div nz-row nzGutter="5">
+    <div nz-col nzMd="3">
+      <span>PAN </span>
+      <master-find-ctrl [options]="panFind" [(ngModel)]="pan" name="pan"></master-find-ctrl>
+    </div>
+  </div>
+
+    <!-- <div nz-col nzMd="4" style="text-align: right;">
+      <form-handler (onPreview)="view()" (onReset)="
+        Reset()" (onExportExcel)="Export()">
+      </form-handler>
+      <button nz-button type="submit" style="margin-right:5px">Find</button>
+      <button nz-button type="button">Reset</button>
+    </div> -->
+    <div nz-row *ngIf="DocumentsArray.length>0">
+      <div nz-col class="padding1">
+      <nz-table #DocumentTable [nzData]="DocumentsArray" nzSize="small" class="tranTbl table-responsive table-themed" nzPageSize="15">
+        <thead>
+          <tr>
+            <ng-container *ngFor="let head of DocumentsArrayHeads">
+              <th *ngIf="head != 'Full Form'">{{head}}</th>
+            </ng-container>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of DocumentTable.data" style="text-align: center;">
+            <ng-container *ngFor="let heads of DocumentsArrayHeads">
+              <ng-container *ngIf="heads != 'Full Form'">
+                <ng-container *ngIf="heads == 'Segment / Product'; else nonProduct">
+                  <td nzCustomContent>
+                    <span  nz-tooltip [nzTitle]="data['Full Form']">{{data[heads]}}</span>
+                  </td>
+                </ng-container>
+                <ng-template #nonProduct>
+                  <td>{{data[heads]}}</td>
+                </ng-template>
+                </ng-container>
+            </ng-container>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    </div>
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

@@ -1,0 +1,191 @@
+<div class="main-content">
+  <form nz-form nzLayout="vertical">
+    <div nz-col nzLg="24">
+
+      <nz-card nzTitle="AOF IPV Process">
+        <div nz-row nzGutter="5">
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>Region</nz-form-label>
+              <nz-form-control>
+                <master-find-ctrl [options]="RegionFindOption" [(ngModel)]="model.region" name="region"
+                  (ngModelChange)="regionchange()">
+                </master-find-ctrl>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>Location</nz-form-label>
+              <nz-form-control>
+                <master-find-ctrl [options]="locationFindOption" [(ngModel)]="model.location" name="location"
+                  (ngModelChange)="locationchange()">
+                </master-find-ctrl>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>Serial No</nz-form-label>
+              <nz-form-control>
+                <master-find-ctrl [options]="serialnoFindOption" [(ngModel)]="model.serialno" name="serial_no">
+                </master-find-ctrl>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>Kit No</nz-form-label>
+              <nz-form-control>
+                <master-find-ctrl [options]="kitnoFindOption" [(ngModel)]="model.kitno" name="kit_no">
+                </master-find-ctrl>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+
+          <div nz-col nzMd="4">
+            <nz-form-item>
+              <nz-form-label>IPV Status</nz-form-label>
+              <nz-form-control>
+                <nz-radio-group name="process_type" [(ngModel)]="model.processtype"
+                  (ngModelChange)="onprocesschange($event)">
+                  <label nz-radio nzValue="P">Pending</label>
+                  <label nz-radio nzValue="A">Approved</label>
+                </nz-radio-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+
+          <div nz-col nzMd="3">
+            <nz-form-item>
+              <nz-form-label>Refresh Minutes</nz-form-label>
+              <nz-form-control>
+                <input  [(ngModel)]="model.refresh"  [textMask]="{mask: inputMasks.numeric}"
+                 name="refresh" (ngModelChange)="fresh($event)" maxlength="3" >
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzLg="2">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button nzType="primary" (click)="pooldata()">POOL</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzMd="2" *ngIf="showExport==true">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button nzType="danger" (click)="Export()"> Export</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div class="mb-20">
+          <nz-table #Clientdetails [nzData]="ClientDetails" [nzFrontPagination]="true" 
+          *ngIf="ClientDetailsShow"
+            [nzPageSize]="10" [nzShowPagination]="true" [nzScroll]="{ x: '1800px' }">
+            <thead>
+              <tr>
+                <th nzLeft="0px" style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="10px">Location</th>
+                <th nzLeft="10px" style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="100px">Name</th>
+                <th nzLeft="110px" style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="50px">Kit No</th>
+                <th nzLeft="200px" style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="50px">Serial No</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="200px">DOB</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="50px">Pan No</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="100px">Email</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);" nzWidth="50px">Mobile</th>
+                <th *ngIf="model.processtype == 'P'" style="background-color: rgba(137, 238, 204, 0.678);"
+                nzWidth="200px">IPV Status</th>
+                <th style="background-color: rgba(137, 238, 204, 0.678);"
+                nzWidth="800px" >IPV Url</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);"  nzWidth="200px">HO Processed By</th>
+                <th  style="background-color: rgba(137, 238, 204, 0.678);"  nzWidth="200px" >HO Processed On</th>
+                <th *ngIf="model.processtype == 'A'" style="background-color: rgba(137, 238, 204, 0.678);"
+                nzWidth="200px">IPV Done By</th>
+                <th *ngIf="model.processtype == 'A'" style="background-color: rgba(137, 238, 204, 0.678);"
+                nzWidth="200px">IPV Done On</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let items of Clientdetails.data;let i = index">
+                <td nzLeft="0px" nzWidth="10px">{{items.curlocation}} </td>
+                <td nzLeft="10px" zWidth="100px">{{items.FirstHolderName}}</td>
+                <td nzLeft="110px" nzWidth="50px" [class.linktext]="items.Kitno !=null" (click)="Showdata(items);">{{items.Kitno}} </td>
+                <td nzLeft="200px" nzWidth="50px">{{items.ClientSerialNo}}</td>
+                <td  nzWidth="200px">{{items.DOB}} </td>
+                <td  nzWidth="50px">{{items.FirstHolderPANNO}}</td>
+                <td  nzWidth="100px">{{items.FirstHolderEMAIL}} </td>
+                <td  nzWidth="50px">{{items.FirstHolderMobilePhone}}</td>
+                <td nzWidth="250px"*ngIf="model.processtype == 'P'"><label nz-checkbox [(ngModel)]="items.ipv" name="ipv"> IPV
+                    Done</label></td>
+                <td  nzWidth="800px">
+                  <div *ngIf = "items.ipv_url == null && !items.linkeditflag " ><input nz-input [(ngModel)]="items.ipvurl" name="ipvurl"> </div>
+                  <div *ngIf = "items.ipv_url != null && !items.linkeditflag" >{{items.ipv_url}}</div>
+                  <div *ngIf = "items.ipv_url == null && items.linkeditflag" > <input nz-input [(ngModel)]="items.ipvurl" name="ipvurl"></div> 
+                  <div *ngIf = "items.ipv_url != null && items.linkeditflag" > <input nz-input [(ngModel)]="items.ipv_url" name="ipvurl{{i}}"></div>
+                </td>
+                <td  nzWidth="200px" >{{items.Processeduser}}</td>
+                <td  nzWidth="200px">{{items.ProcessedTime}}</td>
+                <td nzWidth="200px" *ngIf="model.processtype == 'A'">{{items.IPVdoneBY}}</td>
+                <td nzWidth="200px" *ngIf="model.processtype == 'A'">{{items.IPVdoneOn}}</td>
+              </tr>
+            </tbody>
+          </nz-table>
+        </div>
+
+        <div nz-row nzGutter="5" *ngIf=" ClientDetailsShow == true">
+          <div nz-col nzMd="22">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+            </nz-form-item>
+          </div>
+          <div nz-col nzMd="2" *ngIf="showSave==true">
+            <nz-form-item>
+              <nz-form-label>&nbsp;</nz-form-label>
+              <nz-form-control>
+                <button nz-button nzType="primary" (click)="Save(model.processtype)"> Save</button>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </nz-card>
+    </div>
+  </form>
+</div>
+
+<nz-modal [(nzVisible)]="dataVisible" [nzFooter]=null nzTitle="Client Details" nzWidth="60%"
+  (nzOnCancel)="handleCancel()">
+  <table Width="100%">
+    <thead>
+      <tr>
+        <th style="background-color: rgba(137, 238, 204, 0.678);font-size:13px" Width="20%">Kitno</th>
+        <th style="background-color: rgba(137, 238, 204, 0.678);font-size:13px" Width="30%">Name</th>
+        <th style="background-color: rgba(137, 238, 204, 0.678);font-size:13px" Width="30%">Email</th>
+        <th style="background-color: rgba(137, 238, 204, 0.678);font-size:13x" Width="15%">Mobile</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-size:12px">{{dataContent?.Kitno}}</td>
+        <td style="font-size:12px">{{dataContent?.FirstHolderName}}</td>
+        <td style="font-size:12px">{{dataContent?.FirstHolderEMAIL}}</td>
+        <td style="font-size:12px">{{dataContent?.FirstHolderMobilePhone}} </td>
+      </tr>
+    </tbody>
+  </table>
+</nz-modal>
+
+
+<app-loader *ngIf="isSpinVisible"></app-loader>
+

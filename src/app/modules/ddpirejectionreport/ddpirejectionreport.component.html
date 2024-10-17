@@ -1,0 +1,70 @@
+<div>
+
+    <div nz-row nzGutter="10">
+        <h2 style="margin-left: 10px;margin-top: 10px">DDPI Rejection Report</h2>
+    </div>
+
+    <div nz-row nzGutter="10">
+
+        <div nz-col nzMd="2" style="margin-left: 10px">
+            <b>Location</b>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.location" name="location">
+            </master-find-ctrl>
+        </div>
+
+        <div nz-col nzMd="5">
+            <b>Tradecode</b>
+            <master-find-ctrl [options]="TradeFindopt" [(ngModel)]="model.tradecode" name="tradecode">
+            </master-find-ctrl>
+        </div>
+
+        <div nz-col nzMd="2">
+            <b>From Date</b>
+            <nz-date-picker name="fd" nzFormat="dd-MM-yyyy" [(ngModel)]="model.fromdate" [nzDisabledDate]="disabledFutureDate">
+            </nz-date-picker>
+        </div>
+
+        <div nz-col nzMd="2">
+            <b>To Date</b>
+            <nz-date-picker name="td" nzFormat="dd-MM-yyyy" [(ngModel)]="model.todate" [nzDisabledDate]="disabledFutureDate">
+            </nz-date-picker>
+        </div>
+
+
+        <div nz-col nzMd="5" style="float:right;margin-right: 20px;">
+            <form-handler (onPreview)="Viewdata()" (onExportExcel)="Export()" (onReset)="Reset()"></form-handler>
+        </div>
+
+    </div>
+    <br>
+    <br>
+
+    <div *ngIf="showtable">
+
+        <nz-table #ReportTable class="tranTbl table-responsive table-themed" [nzData]="DetailData" nzBordered nzPageSize="20" nzSize="small" style="border:1px solid rgba(0, 0, 0, 0.329);width: 80%;margin-left: 7%;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.432); " [nzShowPagination]="DetailData.length>20">
+
+            <thead>
+                <tr>
+                    <th>TRADECODE</th>
+                    <th>REJECTION REASON</th>
+                    <th>REJECTED DATE</th>
+                    <!-- <th *ngFor=" let header of detailsheader;let i=index ">
+            {{header}}
+          </th> -->
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let data of ReportTable.data ">
+                    <td>{{data.Tradecode}}</td>
+                    <td>{{data.RejectedReason}}</td>
+                    <td>{{data.RejectdDate}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+
+
+</div>
+<app-loader *ngIf="isSpinVisible"></app-loader>

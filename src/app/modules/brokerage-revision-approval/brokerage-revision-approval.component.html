@@ -1,0 +1,624 @@
+<div class="main-content">
+  <h3 class="content-title">Brokerage Revision Approval</h3>
+  <div nz-col nzMd="24">
+    <form-handler (onPreview)="findData()" (onReset)="reset()">
+    </form-handler>
+  </div>
+  <div nz-row nzGutter="8">
+    <div nz-col nzMd="24">
+      <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="radioChange()">
+        <label nz-radio [nzValue]="'RM'">
+          <span style="font-size:larger;"><b>RM Approval</b></span>
+        </label>
+        <label nz-radio [nzValue]="'SH'">
+          <span style="font-size:larger;"><b>SH Approval</b></span>
+        </label>
+        <label nz-radio [nzValue]="'SalesHeads'">
+          <span style="font-size:larger;"><b>Sales Head Approval</b></span>
+        </label>
+        <label nz-radio [nzValue]="'ED'">
+          <span style="font-size:larger;"><b>ED Approval</b></span>
+        </label>
+      </nz-radio-group>
+    </div>
+  </div>
+  <hr>
+
+  <div nz-row nzGutter="8">
+    <div nz-col nzMd="15" *ngIf="radioValue">
+      <nz-table #brokerageRevisionTbl [nzPageSize]="15" [nzShowPagination]="true" [nzData]="dataSet"
+        class="tranTbl table-responsive table-themed" [nzShowPagination]="dataSet">
+        <thead>
+          <tr style="color: #710505d9;background-color:#e0ecf3 !important ">
+            <th nzAlign='left'>Location Code</th>
+            <th nzAlign='left'>Trade Code</th>
+            <th nzAlign='left' *ngIf="radioValue ==='SH' || radioValue ==='SalesHeads' || radioValue ==='ED'">Region</th>
+            <th nzAlign='left' *ngIf="radioValue ==='SalesHeads' || radioValue ==='ED'">SH Name</th>
+            <th nzAlign='left' *ngIf="radioValue ==='ED'">Sales Head Name</th>
+            <th nzAlign='left'></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of brokerageRevisionTbl.data; let i=index;">
+            <td nzAlign='left'>{{data[1]}}</td>
+            <td nzAlign='left'>{{data[2]}}</td>
+            <td nzAlign='left' *ngIf="radioValue ==='SH' || radioValue ==='SalesHeads' || radioValue ==='ED'">{{data[3]}}</td>
+            <td nzAlign='left' *ngIf="radioValue ==='SalesHeads' || radioValue ==='ED'">{{data[4]}}</td>
+            <td nzAlign='left' *ngIf="radioValue ==='ED'">{{data[5]}}</td>
+            <td (click)="showBrokerageModal(data); brokerageRevisionFn(data);"> <a>View</a> </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  </div>
+
+
+  <nz-modal [(nzVisible)]="modalShow && BrokerageRevisionModalTbl" nzTitle="Present Brokerage Details"
+    (nzOnCancel)="handleCancel()" (nzOnOk)="handleCancel()" nzWidth="90%">
+
+    <nz-table [nzData]="DetailData" [nzPageSize]=15 [nzShowPagination]="false" nzSize="small"
+      class="tranTbl table-responsive table-themed" [nzScroll]="{ x: '1000px' }">
+      <thead>
+        <tr>
+          <th colspan="6">Present Brokerage Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Client Name </b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ClentName}}</b> -->
+            <b>:- {{this.DetailData[1]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Status </b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.Status}}</b> -->
+            <b>:- {{this.DetailData[2]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Category </b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.Category}}</b> -->
+            <b>:- {{this.DetailData[3]}}</b>
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Present Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[4]}}</b>
+            <!-- <b>:- {{this.DetailData[0]?.DlvBrokeragePercent}}</b> -->
+          </td>
+          <td class="width-25">
+            <b>Speculation Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[5]}}</b>
+            <!-- <b>:- {{this.DetailData[0]?.SpecBrokeragePercent}}</b> -->
+          </td>
+          <td class="width-25">
+
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Online Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OnlineDlvBrokerage}}</b> -->
+            <b>:- {{this.DetailData[9]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Online Speculation Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OnlineSpecBrokerage}}</b> -->
+            <b>:- {{this.DetailData[10]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Futures Brokerage Offline % and lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.FuturesBrokeragePercent}} - {{this.DetailData[0]?.FuturesBrokerageLot}}</b> -->
+            <b>:- {{this.DetailData[12]}} - {{this.DetailData[13]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Futures Brokerage Online % and lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.FuturesPercent_Online }} - {{this.DetailData[0]?.FuturesperLot_Online}}</b> -->
+            <b>:- {{this.DetailData[14] }} - {{this.DetailData[15]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Option Online Intraday Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OptionOnlineIntradayPerlot}}</b> -->
+            <b>:- {{this.DetailData[17]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Option Online Carryforward Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OptionOnlineCarryforwardPerlot}}</b> -->
+            <b>:- {{this.DetailData[18]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Option Offline Intraday Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OptionOfflineIntradayPerlot}}</b> -->
+            <b>:- {{this.DetailData[19]}}</b>
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Option Offline Carryforward Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.OptionofflineCarryforwardPerlot}}</b> -->
+            <b>:- {{this.DetailData[20]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Currency Futures Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.CurFuturesBrokperLot}}</b> -->
+            <b>:- {{this.DetailData[21]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Currency Options Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.CurOptionsBrokperLot}}</b> -->
+            <b>:- {{this.DetailData[22]}}</b>
+          </td>
+        </tr>
+        <!-- <tr class="resulttable">
+          <td class="width-25">
+            <b>MCX-SX Futures Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.MCXSXFuturesBrokperLot}}</b>
+            <b>:- {{this.DetailData[23]}}</b>
+          </td>
+          <td class="width-25">
+            <b>MCX-SX Options Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.MCXSXOptBrokperLot}}</b>
+            <b>:- {{this.DetailData[24]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Min Brok</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.BrokMin}}</b>
+            <b>:- {{this.DetailData[42]}}</b>
+          </td>
+        </tr> -->
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>COM MCX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComMCXFuturesNormalBrkPer}}</b> -->
+            <b>:- {{this.DetailData[25]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM MCX Futures - Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComMCXFuturesDeliveryBrk}}</b> -->
+            <b>:- {{this.DetailData[26]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM MCX Futures - Intraday Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComMCXFuturesIntradayBrkPer}}</b> -->
+            <b>:- {{this.DetailData[27]}}</b>
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>COM NCDEX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComNCDEXFuturesNormalBrkPer}}</b> -->
+            <b>:- {{this.DetailData[28]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM NCDEX Futures - Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComNCDEXFuturesDeliveryBrk}}</b> -->
+            <b>:- {{this.DetailData[29]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM NCDEX Futures - Intraday Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.ComNCDEXFuturesIntradayBrkPer}}</b> -->
+            <b>:- {{this.DetailData[30]}}</b>
+          </td>
+        </tr>
+        <!-- <tr class="resulttable">
+          <td class="width-25">
+            <b>COM ICEX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.ComICEXFuturesNormalBrkPer}}</b>
+            <b>:- {{this.DetailData[33]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM ICEX Futures - Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.ComICEXFuturesDeliveryBrk}}</b>
+            <b>:- {{this.DetailData[34]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM ICEX Futures - Intraday Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.DetailData[0]?.ComICEXFuturesIntradayBrkPer}}</b>
+            <b>:- {{this.DetailData[35]}}</b>
+          </td>
+        </tr>  -->
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>COM Options - Normal Brokerage Per Lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.COMOptionsNormalBrokperLot}}</b> -->
+            <b>:- {{this.DetailData[31]}}</b>
+          </td>
+          <td class="width-25">
+            <b>COM Options - Intraday Brokerage Per Lot</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.COMOptionsIntradayBrokperLot}}</b> -->
+            <b>:- {{this.DetailData[32]}}</b>
+          </td>
+          <td class="width-25">
+            <b>SLB Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.SLB_Brok_Per}}</b> -->
+            <b>:- {{this.DetailData[6]}}</b>
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td class="width-25">
+            <b>Bond Delivery Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.BondDlvBrokeragePercent}}</b> -->
+            <b>:- {{this.DetailData[37]}}</b>
+          </td>
+          <td class="width-25">
+            <b>Bond Speculation Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <!-- <b>:- {{this.DetailData[0]?.BondSpecBrokeragePercent}}</b> -->
+            <b>:- {{this.DetailData[38]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+
+    <nz-table [nzData]="brokerageRevisionDownwrdArray" [nzPageSize]=15 [nzShowPagination]="false" nzSize="small"
+      class="tranTbl table-responsive table-themed mt-3 mb-3" [nzScroll]="{ x: '1000px' }">
+      <thead>
+        <tr>
+          <th colspan="6">Brokerage Downward Revision Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="resulttable">
+          <td align="left">
+            <b>Client Name </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[2]}}</b>
+          </td>
+          <td align="left">
+            <b>Location </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[5]}}</b>
+          </td>
+          <td align="left">
+            <b>Tradecode </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[6]}}</b>
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td align="left">
+            <b>Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[7]}}</b>
+          </td>
+          <td align="left">
+            <b>Speculation Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[8]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td align="left">
+            <b>Online Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[34]}}</b>
+          </td>
+          <td align="left">
+            <b>Online Speculation Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[35]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td align="left">
+            <b>Futures Brokerage Offline % and lot </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[9]}} - {{this.brokerageRevisionDownwrdArray[10]}}</b>
+          </td>
+          <td align="left">
+            <b>Futures Brokerage Online % and lot </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[36]}} - {{this.brokerageRevisionDownwrdArray[37]}}</b>
+          </td>
+          <td class="width-25">
+          </td>
+          <td class="width-25">
+          </td>
+        </tr>
+        <tr class="resulttable">
+          <td align="left">
+            <b>Option Online Intraday Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[12]}}</b>
+          </td>
+          <td align="left">
+            <b>Option Online Carryforward Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[13]}}</b>
+          </td>
+          <td align="left">
+            <b>Option Offline Intraday Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[14]}}</b>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <b>Option Offline Carryforward Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[15]}}</b>
+          </td>
+          <td align="left">
+            <b>Currency Futures Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[16]}}</b>
+          </td>
+          <td align="left">
+            <b>Currency Options Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[17]}}</b>
+          </td>
+        </tr>
+        <!-- <tr>
+          <td align="left">
+            <b>MCX-SX Futures Brokerage per lot </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[18]}}</b>
+          </td>
+          <td align="left">
+            <b>MCX-SX Options Brokerage per lot </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[19]}}</b>
+          </td>
+          <td align="left">
+            <b>Min. Brok</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[38]}}</b>
+          </td>
+        </tr> -->
+        <tr>
+          <td align="left">
+            <b>COM MCX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[20]}}</b>
+          </td>
+          <td align="left">
+            <b>COM MCX Futures - Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[21]}}</b>
+          </td>
+          <td align="left">
+            <b>COM MCX Futures - Intraday Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[22]}}</b>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <b>COM NCDEX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[23]}}</b>
+          </td>
+          <td align="left">
+            <b>COM NCDEX Futures - Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[24]}}</b>
+          </td>
+          <td align="left">
+            <b>COM NCDEX Futures - Intraday Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[25]}}</b>
+          </td>
+        </tr>
+        <!-- <tr>
+          <td align="left">
+            <b>COM ICEX Futures - Normal Brokerage % (Overnight Positions)</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[28]}}</b>
+          </td>
+          <td align="left">
+            <b>COM ICEX Futures - Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[29]}}</b>
+          </td>
+          <td align="left">
+            <b>COM ICEX Futures - Intraday Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[30]}}</b>
+          </td>
+        </tr> -->
+        <tr>
+          <td align="left">
+            <b>COM Options - Normal Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[26]}}</b>
+          </td>
+          <td align="left">
+            <b>COM Options - Intraday Brokerage per lot</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[27]}}</b>
+          </td>
+          <td align="left">
+            <b>SLB Brokerage %</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[33]}}</b>
+          </td>
+        </tr>
+        <tr>
+          <td align="left">
+            <b>Bond Delivery Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[31]}}</b>
+          </td>
+          <td align="left">
+            <b>Bond Speculation Brokerage % </b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[32]}}</b>
+          </td>
+          <td align="left">
+            <b>Projected Brokerage Per Month</b>
+          </td>
+          <td class="width-25">
+            <b>:- {{this.brokerageRevisionDownwrdArray[40]}}</b>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="10">
+        <div nz-col nzSpan="9">
+          <nz-form-label>Reason for Revision</nz-form-label>
+        </div>
+        <div nz-col nzSpan="15">
+          <nz-form-item>
+            <nz-form-control>
+              <textarea nz-input placeholder="Autosize height based on content lines" [(ngModel)]="RevisionReason"
+                nzAutosize readonly></textarea>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      <div nz-col nzMd="10">
+        <div nz-col nzSpan="9">
+          <nz-form-label>Rejection Remarks</nz-form-label>
+        </div>
+        <div nz-col nzSpan="15">
+          <nz-form-item>
+            <nz-form-control>
+              <input nz-input type="text" [(ngModel)]="BrokerageRejRemarks" name="BrokerageRejRemarks">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="17">
+        <p style="text-align: right;">
+          <button nz-button nzType="primary" (click)="ApproveorReject('Y')">Approve</button>
+          <button nz-button nzType="primary" class="mx-3" (click)="ApproveorReject('R')">Reject</button>
+        </p>
+      </div>
+    </div>
+
+
+
+  </nz-modal>
+
+
+
+</div>
+<app-loader *ngIf="isSpining"></app-loader>

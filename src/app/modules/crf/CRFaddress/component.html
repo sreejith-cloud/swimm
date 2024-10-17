@@ -1,0 +1,548 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+    <div nz-row nzGutter="10">
+        <nz-card style="margin-bottom: 20px;">
+            <div nz-col nzMd="24">
+                <div nz-row nzGutter="5" style="margin-bottom: 5px;">
+                    <div nz-col nzMd="6">
+                        <span>Select Address:</span>
+                        <nz-select formControlName="selectedAddress" (ngModelChange)="SetAddressFiels($event)">
+                            <nz-option nzValue="Permanent" nzLabel="Local/Permanent address"></nz-option>
+                            <nz-option nzValue="Currespondance" nzLabel="Correspondence/Foreign address"></nz-option>
+                            <nz-option nzValue="Both" nzLabel="Both"></nz-option>
+                        </nz-select>
+                    </div>
+                    <div nz-col nzMd="10" *ngIf=" (applicationStatus=='P' || this.applicationStatus == 'F' ) && HO">
+                        Set Communication Address:
+                        <fieldset class="fieldset_made">
+                            <nz-radio-group [(ngModel)]="setCommunicationAddress" [ngModelOptions]={standalone:true}>
+                                <label nz-radio nzValue="Y">local / Permanent address</label>
+                                <label nz-radio nzValue="N">Correspondence/ Foreign address </label>
+                            </nz-radio-group>
+                        </fieldset>
+                    </div>
+                    <div nz-col nzMd="6" *ngIf="(applicationStatus=='P' || this.applicationStatus == 'F' ) && HO">
+                        Risk Country:
+                        <input nz-input name="country" [(ngModel)]="RiskCountry" (keypress)="charrestrict($event)"
+                            (ngModelChange)="setrisccountry($event)" maxlength="36" [nzAutocomplete]="risc"
+                            [ngModelOptions]="{standalone: true}" />
+                        <nz-autocomplete #risc>
+                            <nz-auto-option *ngFor="let option of countryArray3" [nzValue]="option.Country"
+                                [nzLabel]="option.Country" class="aleternateColor">
+                                <span [innerHTML]="option.Country"></span>
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                    </div>
+                    <div nz-col nzMd="2" class='editButtonDiv' *ngIf="applicationStatus=='P' && HO">
+                        <button  nz-button nzType="primary" class='editButton' type="button" (click)="editButton()">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+
+        <div nz-col nzLg="12" [ngSwitch]="form.value.address1.proofOfAddress">
+            <nz-card [nzTitle]="title1">
+                <ng-template #title1>
+                    <i nz-icon nzType="home" nzTheme="outline" class="icon text-primary"></i> &nbsp;&nbsp; Local / Permanent address
+                </ng-template>
+                <!-- <nz-divider nzText="Current / Permanent / Overseas Address" nzOrientation="left"></nz-divider> -->
+                <div nz-row nzGutter="5" formGroupName="address1">
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Address1</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseName" name="House Name"
+                                    (keypress)="charrestrict($event)" maxlength="36" class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label>House Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseNumber" (keypress)="charrestrict($event)"
+                                    maxlength="10"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Address2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street" (keypress)="charrestrict($event)"
+                                    maxlength="36"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="">Address3<span class="pAddress">(Details entered in Address 3 line will be updated only in BO and will NOT be updated in Exchange / DPM)</span></nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="landmark" (keypress)="charrestrict($event)"
+                                    maxlength="150"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pinCode" [textMask]="{mask: inputMasks.numeric}"
+                                    (ngModelChange)="getPinData($event,'address1')" maxlength="6"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="16">
+                        <nz-form-item >
+                            <nz-form-label class="required1">City/ Post Office</nz-form-label>
+                            <nz-form-control *ngIf="isResPin=='false'">
+                                <input nz-input formControlName="city" (keypress)="charrestrict($event)"
+                                    maxlength="36"  class='upper'/>
+                                <!-- [class.disabled]="!enbleCDSL" -->
+                            </nz-form-control>
+                            <nz-form-control *ngIf="isResPin=='true'">
+                                <nz-select formControlName="city" nzPlaceHolder="Choose"  (ngModelChange)="changResCity($event)">
+                                    <!-- <nz-option nzValue="select">select</nz-option> -->
+                                    <nz-option *ngFor="let data of Pdistrict"
+                                        [nzValue]="data" [nzLabel]="data"
+                                        style="word-break:break-word;"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required1">District</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="district" [class.disabled]="isResPin=='true'"
+                                    (ngModelChange)="changResDistrict($event)" maxlength="36"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required1">State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="state" readonly maxlength="36"  class='upper'/>
+                                <!-- <nz-select formControlName="state">
+                                        </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="country" (keypress)="charrestrict($event)"
+                                    maxlength="36" [nzAutocomplete]="auto" (blur)="CheckCountryvalid('A1',$event)" />
+                                <nz-autocomplete #auto>
+                                    <nz-auto-option *ngFor="let option of countryArray1" [nzValue]="option.Country"
+                                        [nzLabel]="option.Country" class="aleternateColor">
+                                        <span [innerHTML]="option.Country"></span>
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                                <!-- <nz-select formControlName="country">
+                                </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Proof Of Address</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="proofOfAddress"
+                                    [class.disabled]="(applicationStatus == 'P' && !this.HO) ||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A'|| disablePermanent">
+                                    <nz-option *ngFor="let data of PermanentAddressProofDetails" [nzValue]="data.Code"
+                                        [nzLabel]="data.Description"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+                <div nz-row nzGutter="5" *ngIf="Address1formFeilds.length>0">
+                    <div nz-col nzMd="8" *ngFor="let item of Address1formFeilds;let i = index">
+                        <nz-form-item>
+                            <nz-form-label class="required">{{item.label}}</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="item['proof'+i]" [ngModelOptions]="{standalone: true}"
+                                    *ngIf="item.type=='Text'" required [minlength]="minlength1" 
+                                    [disabled]="(applicationStatus == 'P' && !this.HO) ||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A' ||disablePermanent"
+                                    (keypress)="item.Code=='34'?ValidatePan($event):item.Code=='10'?setlength1($event):charrestrict($event)" />
+                                <nz-date-picker [(ngModel)]="item['proof'+i]" nzFormat="yyyy-MM-dd"
+                                    nzPlaceHolder="YYYY-MM-DD"
+                                    [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'" required
+                                    (ngModelChange)="validateDate1(item.label,$event)"
+                                    [disabled]="(applicationStatus == 'P' && !this.HO) ||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A' ||disablePermanent">
+                                </nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+        <div nz-col nzLg="12" [ngSwitch]="form.value.address2.proofOfAddress">
+            <nz-card [nzTitle]="groupTitle">
+
+                <ng-template #groupTitle>
+                    <i nz-icon nzType="home" nzTheme="outline" class="icon text-primary"></i>
+                    &nbsp;&nbsp; Correspondence/ Foreign address <label
+                        *ngIf=" !disableCurrespondance && !disablePermanent"
+                        nz-checkbox formControlName="sameAsPermant" (ngModelChange)="selectPermantADD($event)">Same as
+                        Permanent
+                        address</label>
+                </ng-template>
+
+                <div nz-row nzGutter="5" formGroupName="address2">
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required1">Address1</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [class.disabled]="isPemantSelected" formControlName="houseName"
+                                    (keypress)="charrestrict($event)" maxlength="36"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <!-- <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label>House Number</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="houseNumber" (keypress)="charrestrict($event)"
+                                    maxlength="10" [class.disabled]="isPemantSelected"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div> -->
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Address2</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="street" (keypress)="charrestrict($event)"
+                                    maxlength="36" [class.disabled]="isPemantSelected"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="">Address3<span class="pAddress">(Details entered in Address 3 line will be updated only in BO and will NOT be updated in Exchange / DPM)</span></nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="landmark" (keypress)="charrestrict($event)"
+                                    maxlength="150" [class.disabled]="isPemantSelected" class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="8">
+                        <nz-form-item>
+                            <nz-form-label class="required">Pin Code</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="pinCode"
+                                    (ngModelChange)="getPinData($event,'address2')"
+                                    [textMask]="{mask: inputMasks.numeric}" maxlength="6"
+                                    [class.disabled]="isPemantSelected"  class='upper' />
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="16">
+                        <nz-form-item>
+                            <nz-form-label class="required">City/Post Office</nz-form-label>
+                            <nz-form-control *ngIf="isCurPin =='true'">
+                                <input nz-input formControlName="city" (keypress)="charrestrict($event)" maxlength="36"
+                                    [class.disabled]="isPemantSelected"  class='upper'/>
+                                <!-- [class.disabled]="isPemantSelected || !enbleCDSL" -->
+                            </nz-form-control>
+                            <nz-form-control *ngIf="isCurPin =='false'">
+                                <nz-select formControlName="city" nzPlaceHolder="Choose"
+                                [class.disabled]="true"  (ngModelChange)="changCurCity($event)">
+                                    <nz-option *ngFor="let data of Cdistrict"
+                                        [nzValue]="data" [nzLabel]="data"
+                                        style="word-break:break-word;"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required">District</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="district" maxlength="36"
+                                    [class.disabled]="isPemantSelected || isCurPin=='false'"
+                                    (ngModelChange)="changeCurDistrict($event)"  class='upper'/>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="12">
+                        <nz-form-item>
+                            <nz-form-label class="required">State</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="state" readonly maxlength="36"
+                                    [class.disabled]="isPemantSelected"  class='upper' />
+                                <!-- <nz-select formControlName="state">
+                                        </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Country</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input formControlName="country" (keypress)="charrestrict($event)"
+                                    maxlength="36" [nzAutocomplete]="auto1" [class.disabled]="isPemantSelected"
+                                    (blur)="CheckCountryvalid('A2',$event)" />
+                                <nz-autocomplete #auto1>
+                                    <nz-auto-option *ngFor="let option of countryArray2" [nzValue]="option.Country"
+                                        [nzLabel]="option.Country" class="aleternateColor">
+                                        <span [innerHTML]="option.Country"></span>
+                                    </nz-auto-option>
+                                </nz-autocomplete>
+                                <!-- <nz-select formControlName="country">
+                                    </nz-select> -->
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzMd="24">
+                        <nz-form-item>
+                            <nz-form-label class="required">Proof Of Address</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="proofOfAddress" nzPlaceHolder="Choose"
+                                    [class.disabled]="(applicationStatus == 'P' && !this.HO)||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A' || disableCurrespondance">
+                                    <nz-option *ngFor="let data of CorrespondanceAddressProofDetails"
+                                        [nzValue]="data.Code" [nzLabel]="data.Description"
+                                        style="word-break:break-word;"></nz-option>
+
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+
+                </div>
+                <div nz-row nzGutter="5" *ngIf="Address2formFeilds.length>0">
+                    <div nz-col nzMd="8" *ngFor="let item of Address2formFeilds;let i = index">
+                        <nz-form-item>
+                            <nz-form-label class="required">{{item.label}}</nz-form-label>
+                            <nz-form-control>
+                                <input nz-input [(ngModel)]="item['proof'+i]" [minlength]="minlength2" 
+                                    [disabled]="(applicationStatus == 'P' && !this.HO) ||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A' ||isPemantSelected||disableCurrespondance"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Text'"
+                                    (keypress)="item.Code=='34'?ValidatePan($event):item.Code=='10'?setlength2($event):charrestrict($event)" />
+                                <nz-date-picker [(ngModel)]="item['proof'+i]" nzFormat="yyyy-MM-dd"
+                                    nzPlaceHolder="YYYY-MM-DD"
+                                    [nzDisabledDate]="item.label=='DOI'?disabledFutureDate:item.label=='Expiry Date'?disabledPastDate:false"
+                                    [ngModelOptions]="{standalone: true}" *ngIf="item.type=='Date'"
+                                    (ngModelChange)="validateDate2(item.label,$event)" required
+                                    [disabled]="(applicationStatus == 'P' && !this.HO) ||applicationStatus=='T'||applicationStatus=='F'||applicationStatus=='A' ||isPemantSelected||disableCurrespondance">
+                                </nz-date-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </nz-card>
+        </div>
+    </div>
+    <br>
+    <div *ngIf="applicationStatus=='P'||applicationStatus=='T'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F'">
+        <app-crfipv></app-crfipv>
+    </div>
+    
+    <div *ngIf="tab=='Address'" style="margin-top: 10px; margin-bottom: 10px;">
+        <crf-image-upload></crf-image-upload>
+    </div>
+    <div nz-row nzGutter="5" formGroupName="Rejection">
+        <div nz-col nzMd="15">
+            <div nz-col nzSpan="5">
+                <nz-form-label>{{Remks}}</nz-form-label>
+            </div>
+            <div nz-col nzSpan="15">
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="RejRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                            [nzAutocomplete]="remarks2" />
+                        <nz-autocomplete #remarks2>
+                            <nz-auto-option *ngFor="let option of rejectionRemarks" [nzValue]="option.Remarks"
+                                [nzLabel]="option.Remarks" class="aleternateColor">
+                                <span [innerHTML]="option.Remarks"></span>
+                            </nz-auto-option>
+                        </nz-autocomplete>
+
+                    </nz-form-control>
+
+                </nz-form-item>
+            </div>
+            <div *ngIf="applicationStatus=='P'">
+                <div nz-col nzSpan="4">
+                    <button nz-button nzType="primary" type="button" (click)="fetchReasons()"
+                        title="Click here for Rejection Reasons">Select</button>
+                </div>
+            </div>
+        </div>
+        <div nz-col nzMd="9">
+            <p class="text-right" *ngIf="tab=='Address'">
+                <button nz-button nzType="primary" type="button" (click)="onBackClick()">Back</button>
+                <button nz-button nzType="primary" type="submit" (click)="SaveAddress('save')"
+                    *ngIf="saveButtonFlag&&applicationStatus!='T'">Save</button>
+                <!-- <button nz-button nzType="primary" type="submit" (click)="SaveAddress()"
+                    *ngIf="!isForApproval && canAdd && !ViewOnly ||!isForApproval && canModify&&!ViewOnly">Save</button> -->
+                <button nz-button nzType="primary" type="submit" (click)="SaveAddress('savefinalise')"
+                    *ngIf="saveButtonFlag &&applicationStatus=='T'">Save and Finalize</button>
+                <button nz-button nzType="primary" type="button" (click)="BranchReject()"
+                    *ngIf="saveButtonFlag&&applicationStatus=='T'&&!HO">Branch Reject</button>
+                <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag || finalApproveOrRejectButtonFlag"
+                    (click)="Reject()">Reject</button>
+                    <button nz-button nzType="primary" type="button" *ngIf="approveOrRejectButtonFlag && editFlag"
+                    (click)="initialApprove()">First level Approve</button>
+                <button nz-button nzType="primary" class="btnApprove1" type="button" *ngIf="finalApproveOrRejectButtonFlag ||  (approveOrRejectButtonFlag && !editFlag)"
+                    (click)="Approve()">Final Approve</button>
+                <button nz-button nzType="primary" style="float: right;" type="button"
+                    *ngIf="requestID!=''&&!(approveOrRejectButtonFlag ||finalApproveOrRejectButtonFlag) " (click)="PrintForm()">Print {{tab}} Form</button>
+            </p>
+        </div>
+        <div *ngIf="checkBoxArray.length!=0 || AllcheckboxArray.length!=0">
+            <table class="RejectedTable">
+                <thead style="text-align: center; background-color: #32aa8d; color: white;">
+                    <b>Rejected Reasons</b>
+                </thead>
+                <div *ngFor="let item of checkBoxArray; let i = index;">
+                    <tbody _ngcontent-c61="">
+                        <tr _ngcontent-c61="" class="ng-star-inserted">
+                            <td class="Sno"><b>{{i+1}}</b>
+                            </td>&nbsp;
+                            <td _ngcontent-c61="" class="RejectedList">
+                                <b> <input type="hidden" [checked]="checkBoxSelected"
+                                        [disabled]="Cbox_Disabled">{{item.Description}}</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
+                <div *ngFor="let item of AllcheckboxArray; let i = index;">
+                    <tbody _ngcontent-c61="">
+                        <tr _ngcontent-c61="" class="ng-star-inserted">
+                            <td class="Sno"><b>{{i+1}}</b>
+                            </td>&nbsp;
+                            <td _ngcontent-c61="" class="RejectedList">
+                                <b> <input type="hidden" [checked]="checkBoxSelected"
+                                        [disabled]="Cbox_Disabled">{{item}}</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </div>
+            </table>
+        </div>
+        <br><br>
+        <div *ngIf="applicationStatus=='R'&& reasonList.length!=0" class="rejectedReasonsData">
+            <nz-table [nzData]="reasonList" [nzShowPagination]=false nzSize="default" class="tranTbl">
+                <thead>
+                    <tr>
+                        <th>
+                            <div style="margin-left: 34px;
+                            word-break: normal;color: white;">Sl no</div>
+                        </th>
+                        <th>
+                            <div style="margin-left: -75pc;
+                            text-align: center;color: white;">Reasons</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div class="ReasonCheckbox reasons">
+                        <tr _ngcontent-c61="" class="ng-star-inserted" *ngFor="let data of reasonList; let i = index">
+                            <td class="checkBox">
+
+                                <div><a><input class="Rcheckboxes" #saveUserNameCheckBox id="saveUserNameCheckBox"
+                                            type="checkbox" [checked]="checkBoxSelect" (change)="changed($event,data)"
+                                            [disabled]="applicationStatus=='R'" />
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="Sno"><span>{{i+1}}</span>
+                            </td>
+                            <td _ngcontent-c61="">
+                                <label><span> {{data.Description}}</span></label><br>
+                            </td><br>
+                        </tr>
+                    </div>
+                </tbody>
+            </nz-table>
+            <br>
+        </div>
+        <div nz-col nzMd="15" *ngIf="(applicationStatus=='P'||applicationStatus=='A'||applicationStatus=='R'||applicationStatus=='F')&&  !editFlag">
+            <div nz-col nzSpan="5">Approval Remarks</div>
+            <div nz-col nzSpan="15">
+                <nz-form-item>
+                    <nz-form-control>
+                        <input nz-input formControlName="AppRemarks" [disabled]="applicationStatus!='P'&&!HO"
+                            [nzAutocomplete]="remarks1" />
+                        <nz-autocomplete #remarks1>
+                            <nz-auto-option *ngFor="let option of approvelRemarks" [nzValue]="option.Remarks"
+                                [nzLabel]="option.Remarks" class="aleternateColor">
+                                <span [innerHTML]="option.Remarks"></span>
+                            </nz-auto-option>
+                        </nz-autocomplete>
+                        <!-- <nz-select formControlName="country">
+                        </nz-select> -->
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+        <div *ngIf="applicationStatus=='P'">
+            <div class="wrapper">
+                <nz-modal [(nzVisible)]="isVisible" nzTitle="Rejection Reasons" (nzOnCancel)="isVisible=false"
+                    (nzOnOk)="popOut()" nzWidth="850px" [nzBodyStyle]="{ height: '610px', 'padding-bottom':'53px' }"
+                    [nzStyle]="{top:'8px'}">
+                    <table>
+                        <thead>
+                            <div style="margin-top: 137%;">
+                                <div class="SelectAll">
+                                    <div *ngIf="checkBoxArray.length==0 || checkedArray.length==0">
+                                        <div class="tooltip">
+                                            <input #saveUserNameCheckBox id="saveUserNameCheckBox" type="checkbox"
+                                                [checked]="checkBoxSelect" (change)="onSaveCheckBoxChanged($event)"
+                                                [disabled]="applicationStatus=='R'" />
+                                            <span class="tooltiptext">
+                                                Proceed with this selection only if all the reasons provided below
+                                                are
+                                                applicable
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modalserialno">
+                                    <b>Sl No</b>
+                                </div>
+                                <div class="modalReasonList">
+                                    <b>Reasons</b>
+                                </div>
+                            </div>
+                        </thead>
+                        <br>
+                        <tbody class="">
+                            <div class="ReasonCheckbox">
+                                <div class="Popboxreasons ">
+                                    <tr class="ant-modal-body" *ngFor="let data of reasonsList; let i = index;">
+
+                                        <td>
+                                            <div><a><input class="PopupcheckBox" #saveUserNameCheckBox
+                                                        id="saveUserNameCheckBox" type="checkbox"
+                                                        [checked]="checkboxSelected[i]" (change)="changed($event,data)"
+                                                        [disabled]="applicationStatus=='R'" />
+                                                </a></div>
+                                        </td>
+                                        <td><span class="SLno">{{i+1}}</span>
+                                        </td>&nbsp;&nbsp;&nbsp;
+                                        <td _ngcontent-c61="">
+                                            <label><span class="RejectionList">{{data.Description}}</span></label><br>
+                                        </td>
+                                    </tr>
+                                    <br>
+                                </div>
+                            </div>
+                        </tbody>
+                    </table>
+                </nz-modal>
+            </div>
+        </div>
+    </div>
+</form>
+<app-loader *ngIf="isSpining"></app-loader>

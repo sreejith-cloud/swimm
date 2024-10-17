@@ -1,0 +1,291 @@
+<div class="main-content">
+  <!-- <app-acmanagement></app-acmanagement> -->
+  <!-- <div nz-row nzGutter="5" class="acOpeningMenu">
+        <div nz-col nzMd="4" (click)="OpenNewTab('clientMaster')" class="acOpeningMenuItem">AC Opening</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('AcctOpeningrpt')" class="acOpeningMenuItem">AC Opening Approval</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('clientMaster')" class="acOpeningMenuItem">Profile View</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('crf')" class="acOpeningMenuItem">CRF</div>
+        <div nz-col nzMd="4" (click)="OpenNewTab('crfrpt')" class="acOpeningMenuItem">CRF Approval</div> 
+    </div> -->
+
+  <form nz-form nzLayout="vertical">
+    <div nz-row nzGutter="8">
+      <div nz-col nzMd="20" nzLg="10">
+        <h3 class="content-title">{{titile}}</h3>
+      </div>
+      <div nz-col nzMd="28" nzLg="14" style="padding: 0;margin: 0">
+        <form-handler (onPreview)="view()" (onReset)="Reset()" (onExportExcel)="exportData()">
+        </form-handler>
+      </div>
+    </div>
+
+    <app-loader *ngIf="isSpinVisible"></app-loader>
+
+
+    <div nz-row nzGutter="12">
+      <div nz-col nzMd="5">
+        <nz-form-item>
+          <nz-form-label>State</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="stateFindopt" (ngModelChange)="onChangestate($event);"
+              [(ngModel)]="model.state" name="State"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Region</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="RegionFindopt" (ngModelChange)="onChangeRegion($event);"
+              [(ngModel)]="model.Region" name="Region"></master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Location</nz-form-label>
+          <nz-form-control>
+            <master-find-ctrl [options]="locationFindopt" [(ngModel)]="model.Location" name="Location">
+            </master-find-ctrl>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>From Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.FD" name="FD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>To Date</nz-form-label>
+          <nz-form-control>
+            <nz-date-picker [(ngModel)]="model.TD" name="TD" nzFormat="dd-MM-yyyy">
+            </nz-date-picker>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>PAN</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="PAN" [(ngModel)]="model.PAN" type="text" name="PAN">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Serial Number</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="slno" [(ngModel)]="model.slno" type="text" name="slno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Request From</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.requestFrom" name="requestFrom" nzAllowClear>
+              <nz-option nzValue="HO" nzLabel="HO"></nz-option>
+              <nz-option nzValue="BRH" nzLabel="Branch"></nz-option>
+              <nz-option nzValue="GCC" nzLabel="GCC"></nz-option>  
+              <nz-option nzValue="ALl" nzLabel="All"></nz-option>      
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>   
+      <div nz-col nzMd="2">
+        <nz-form-item>
+          <nz-form-label>Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.type" name  = "type">
+              <nz-option nzValue="Address" nzLabel="Address"></nz-option>
+              <nz-option nzValue="Bank" nzLabel="Bank"></nz-option>
+              <nz-option nzValue="Email" nzLabel="Email"></nz-option>
+              <nz-option nzValue="Mobile" nzLabel="Mobile"></nz-option>
+              <nz-option nzValue="Telephone" nzLabel="Telephone"></nz-option>
+              <nz-option nzValue="Nominee" nzLabel="Nominee"></nz-option>
+              <nz-option nzValue="Financials" nzLabel="Financials"></nz-option>
+              <nz-option nzValue="KRA" nzLabel="KRA"></nz-option>
+              <nz-option nzCustomContent nzValue="SignatureUpdation" nzLabel="Signature Updation">
+                <span  nz-tooltip nzTitle="Signature Updation">Signature Updation</span>
+              </nz-option>
+              <nz-option nzCustomContent nzValue="ModeofOperation" nzLabel="Mode of Operation">
+                <span  nz-tooltip nzTitle="Mode of Operation">Mode of Operation</span>
+              </nz-option>
+              <nz-option nzCustomContent nzValue="SegmentAddition" nzLabel="Segment Addition">
+                <span  nz-tooltip nzTitle="Segment Addition">Segment Addition</span>
+              </nz-option>
+              <nz-option nzCustomContent nzValue="Additionaltc" nzLabel="Additional T&C">
+                <span  nz-tooltip nzTitle="Additional T&C">Additional T&C</span>
+              </nz-option>
+              <nz-option nzValue="All" nzLabel="All"></nz-option>             
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+     
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>HO processsed User</nz-form-label>
+          <nz-form-control>
+            <input nz-input placeholder="HOprocessUser" [(ngModel)]="model.HOprocessUser" type="text" name="slno">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="3">
+        <nz-form-item>
+          <nz-form-label>Account Type</nz-form-label>
+          <nz-form-control>
+            <nz-select [(ngModel)]="model.accountType" name="accountType" nzAllowClear>
+              <nz-option nzValue="T" nzLabel="Trading"></nz-option>
+              <nz-option nzValue="D" nzLabel="DP"></nz-option>
+              <nz-option nzValue="B" nzLabel="Both"></nz-option>    
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="15">
+        <nz-form-item>
+          <nz-form-label>Status</nz-form-label>
+          <nz-form-control>
+            <!-- <fieldset class="fieldset_made"> -->
+            <!-- <input nz-input placeholder="slno" [(ngModel)]="model.Status" type="text" name="status"> -->
+            <nz-checkbox-group [(ngModel)]="statusOptions" [ngModelOptions]="{standalone: true}"></nz-checkbox-group>
+            <!-- </fieldset> -->
+          </nz-form-control>
+        </nz-form-item>
+      </div> 
+      <div nz-col nzMd="24">
+        <nz-form-item>
+          <nz-form-label>Search by</nz-form-label>
+          <label nz-checkbox [(ngModel)]="model.clientLocation" [ngModelOptions]="{standalone: true}"> Client Loc</label> 
+          <label nz-checkbox [(ngModel)]="model.approvalDate" [ngModelOptions]="{standalone: true}"> HO processed date </label> 
+        </nz-form-item>
+      </div>
+      <!-- <div nz-col nzMd="12" class="SearchBy">
+        <nz-form-item>
+          <nz-form-label>Search by</nz-form-label>
+
+        </nz-form-item>
+      </div> -->
+     
+    </div>
+    <hr>
+
+
+    <nz-table #expandTable *ngIf="DetailData && wsKey=='AcctOpeningrpt'" [nzData]="DetailData" [nzPageSize]=10
+      #basicTable [nzShowPagination]=true nzSize="small" class="tranTbl" nzBodered="true">
+      <thead>
+        <tr style="color: #710505d9;background-color:#e0ecf3 ! important ">
+
+          <th nzWidth="5%" nzAlign='left'>SerialNo</th>
+          <th nzWidth="10%" nzAlign='left'>State</th>
+          <th nzWidth="5%" nzAlign='left'>Region</th>
+          <th nzWidth="5%" nzAlign='left'>Location</th>
+          <th nzWidth="10%" nzAlign='left'>ClientName</th>
+          <th nzWidth="5%" nzAlign='left'>PAN</th>
+          <th nzWidth="10%" nzAlign='left'>ClientType</th>
+          <th nzWidth="10%" nzAlign='left'>EntryUser</th>
+          <th nzWidth="10%" nzAlign='left'>EntryDate</th>
+          <th nzWidth="5%" nzAlign='left'>Status</th>
+          <th nzWidth="10%" nzAlign='left'>FinalizedUser</th>
+          <th nzWidth="10%" nzAlign='left'>FinalizedDate</th>
+          <th nzWidth="5%" nzAlign='left'>HO Approved</th>
+          <th nzWidth="15%" nzAlign='left'>HO Approved Date</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let data of expandTable.data">
+
+          <td nzWidth="10%" nzAlign='left' (click)="createComponentModal(data)" class="treeName">{{data.SerialNo}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.ReportingState}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.Region}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.Curlocation}} </td>
+          <td nzWidth="20%" nzAlign='left'>{{data.Name}} </td>
+          <td nzWidth="5%" nzAlign='left'>{{data.PAN}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.ClientType}}</td>
+          <td nzWidth="10%" nzAlign='left'>{{data.Entryuser}} </td>
+          <td nzWidth="10%" nzAlign='left'>{{data.EntryDate}} </td>
+          <td nzWidth="5%" nzAlign='left'> {{data.Status?'Y':'N'}} </td>
+          <td nzWidth="10%" nzAlign='left'> {{data.FinalizedUser}}</td>
+          <td nzWidth="10%" nzAlign='left'> {{data.FinalizedDate}} </td>
+          <td nzWidth="5%" nzAlign='left'> {{data.HOapproved?'Y':'N'}}</td>
+          <td nzWidth="15%" nzAlign='left'> {{data.HOapprovedDate}} </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <nz-table *ngIf="wsKey!='AcctOpeningrpt' && DetailData" class="tranTbl table-responsive table-themed" #pendingReport
+      [nzData]="DetailData" [nzSize]="'small'">
+      <thead>
+        <tr>
+          <th *ngFor="let header of detailDataHeads;let i = index">
+            {{header}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of pendingReport.data"  class="resulttable">
+          <td *ngFor="let header of detailDataHeads" [class.treeName]="header=='SerialNo'||header=='HOEdit'||header=='Remarks'"
+           (click)="header=='HOEdit'?ShowHOModifications(data['SerialNo']):''"
+           (click)="header=='SerialNo'?createComponentModal(data):''"
+           (click)="header=='Remarks'?ShowHOModificationss(data['SerialNo']):''">{{data[header]}}
+          </td>
+        </tr>
+      </tbody>
+
+    </nz-table>
+
+
+
+    <nz-drawer [nzClosable]="false" [nzVisible]="isVisible" [nzPlacement]="placement" [nzWidth]="'1200px'"
+      (nzOnClose)="close()">
+
+    </nz-drawer>
+
+
+  </form>
+  <nz-modal [(nzVisible)]="isVisibleHo" nzTitle="HO Modification" (nzOnCancel)="handleCancel()"
+   (nzOnOk)="handleCancel()" nzWidth="60%">
+   <div  [innerHtml]="filePreiewContent"></div>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isVisibleReasons" nzTitle="Profile Change Details" (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleCancel()" nzWidth="55%">
+
+  <table>
+    <thead>
+      <!-- <tr>
+        <h4>Rejection Remarks: &nbsp;{{rejectionremark}}</h4>
+      </tr>
+      <br> -->
+      <tr>
+        <h4>Rejected Reasons</h4>
+      </tr>
+    </thead>
+    <tbody>
+      <div *ngFor="let data of fileContent; let i=index;"> <!-- let last = last,  [ngClass]="{ last: last }"-->
+        <tr>
+          <td>
+            <span>{{i+1}}</span>
+          </td>&nbsp;&nbsp;&nbsp;
+          <td>
+            <label><span>{{data}}</span></label>
+          </td>
+        </tr>
+      </div>
+      <!-- <div> 
+        <h4> Rejection Remarks: &nbsp;{{rejectionremark}}</h4>
+      </div> -->
+    </tbody>
+  </table>
+</nz-modal>
+
+</div>

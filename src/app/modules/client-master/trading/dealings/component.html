@@ -1,0 +1,140 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+    <div formGroupName="subBroker">
+
+    <nz-card [nzTitle]="groupTitle">
+    <ng-template #groupTitle>Dealings through sub broker / AP <label nz-checkbox formControlName="hasSection1"
+           >Whether registered with any sub broker
+            / AP</label>
+    </ng-template>
+<div  *ngIf="form.value.subBroker.hasSection1">
+
+        <div nz-row nzGutter="5">
+            <div nz-col nzLg="8" nzMd="12" >
+                <nz-form-item>
+                    <nz-form-label class="required">Sub broker's / AP's Name</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="subBokerName"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="8" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">NSE SEBI registration NO / AP registration No</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="NSERegNO"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="8" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">BSE SEBI registration no / AP registration no</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="BSERegNO"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+      
+            <div nz-col nzLg="8" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">Registered office address</nz-form-label>
+                    <nz-form-control>
+                       
+                        <input nz-input formControlName="registeredOfficeAddress"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="8" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label>Phone No</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input [textMask]="{mask: inputMasks.numeric}"  formControlName="phoneNo" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="8" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label>Website</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="website"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+
+    </div>
+</nz-card>
+</div>
+<br>
+<div formGroupName="stockBroker">
+    <nz-card [nzTitle]="groupTitle2" >
+    <ng-template #groupTitle2>Dealings through stock broker / AP / Other sub broker / member <label nz-checkbox
+            formControlName="hasSection2" >Whether
+            registered with any other stock broker / AP /other sub broker / Member</label>
+    </ng-template>
+<div  *ngIf="form.value.stockBroker.hasSection2">
+        
+        <div nz-row nzGutter="5">
+            <div nz-col nzLg="6" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label class="required">Name of stock broker</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="stockBroker"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="6" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label class="required">Client Code</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="ClientCode"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="6" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label class="required">Name of sub broker</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="subBrokerName"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="6" nzMd="6">
+                <nz-form-item>
+                    <nz-form-label class="required">Exchange</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="Exchange"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="6" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">Name of member</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="nameOfMember" />
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="6" nzMd="12">
+                <nz-form-item>
+                    <nz-form-label class="required">Member Client Code</nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="MenberClientCode"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="12" nzMd="24">
+                <nz-form-item>
+                    <nz-form-label class="required">Details of disputes / dues pending from/to such stock broker / sub broker / AP /
+                        member
+                    </nz-form-label>
+                    <nz-form-control>
+                        <input nz-input formControlName="details"/>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+</div>
+</nz-card>
+</div>
+</form>

@@ -1,0 +1,144 @@
+<form nz-form nzLayout="vertical" [formGroup]="form">
+    <nz-card nzTitle="Agreement Signed Status">
+     <div nz-row nzGutter="5">
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label class="required">POA</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="POA" nzAllowClear>
+                        <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                        <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <!-- <div nz-col nzLg="4" nzMd="6" *ngIf="form.value.POA=='YES'">
+            <nz-form-item>
+                <nz-form-label class="required">POA Signed Date</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker nzPlaceHolder="YYYY-MM-DD"  formControlName="date" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+     </div> -->
+        <!-- <button (click)="filldata()">ljjkjkljljl</button> -->
+        <div nz-col nzLg="4" nzMd="6" *ngIf="!isNRE">
+            <nz-form-item>
+                <nz-form-label class="required">Running A/C</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="runningAc" nzAllowClear>
+                            <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                            <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="8" nzMd="10" *ngIf="form.value.runningAc=='YES'">
+                <nz-form-item>
+                    <nz-form-label class="required">Running A/c payout settlement type</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="RunningAccpayoutsettlementtype" nzAllowClear>
+                                <!-- <nz-option nzValue="Ye" nzLabel="Yearly"></nz-option> -->
+                                <nz-option nzValue="Q" nzLabel="Quarterly"></nz-option>   
+                                <nz-option nzValue="M" nzLabel="Monthly"></nz-option>   
+                        </nz-select>
+
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        <div nz-col nzLg="4" nzMd="6" *ngIf="isCOMSelected">
+                <nz-form-item>
+                    <nz-form-label class="required">ECN Verified by</nz-form-label>
+                    <nz-form-control>
+                            <input nz-input formControlName="ECNVarifiedBy" (blur)="getEmpDetails($event)">
+                        </nz-form-control>
+                </nz-form-item>
+            </div>
+  
+            <div nz-col nzLg="4" nzMd="6" *ngIf="isCOMSelected">
+                <nz-form-item>
+                    <nz-form-label class="required">ECN Verified by Name</nz-form-label>
+                    <nz-form-control>
+                            <input nz-input formControlName="ECNVarifiedName" readonly>
+                        </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col nzLg="4" nzMd="6" *ngIf="isCOMSelected">
+                <nz-form-item>
+                    <nz-form-label class="required">ECN Verified Date</nz-form-label>
+                    <nz-form-control>
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD"  formControlName="ECNVarifiedDate" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+
+                        </nz-form-control>
+                </nz-form-item>
+            </div>
+
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label class="required">KYC Recieved type</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="kycRecievedType" nzAllowClear>
+                            <nz-option *ngFor="let data of kycReceivedType" [nzValue]="data.Code" [nzLabel]="data.Item"></nz-option>
+                         
+                    </nz-select>
+
+
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6">
+            <nz-form-item>
+                <nz-form-label class="required">WSP declaration by client</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="WSPdeclaration" nzAllowClear>
+                            <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                            <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzLg="4" nzMd="6" *ngIf="form.value.WSPdeclaration=='YES'">
+                <nz-form-item>
+                    <nz-form-label class="required">WSP declaration Date</nz-form-label>
+                    <nz-form-control>
+                        <!-- <input type="date"  formControlName="WSPdate" class=date> -->
+                        <nz-date-picker nzPlaceHolder="YYYY-MM-DD"  formControlName="WSPdate" [nzDisabledDate]="disabledFutureDate"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+            <div nz-col nzLg="6" nzMd="12">
+                    <nz-form-item>
+                        <nz-form-label class="required">FAO exposure against holding agreement</nz-form-label>
+                        <nz-form-control>
+                            <nz-select formControlName="FAOexposureagainstholdingagreement" nzAllowClear>
+                                    <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                    <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+            </div>
+                <div nz-col nzLg="3" nzMd="6"  *ngIf="clientType!='nonIndividual'">
+                        <nz-form-item>
+                            <nz-form-label class="required">NRO Undertaking</nz-form-label>
+                            <nz-form-control>
+                                <nz-select formControlName="NROUndertaking" nzAllowClear required >
+                                        <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                        <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                </nz-select>
+                            </nz-form-control>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col nzLg="3" nzMd="6"  *ngIf="clientType!='nonIndividual'">
+                            <nz-form-item>
+                                <nz-form-label class="required">NRE Undertaking</nz-form-label>
+                                <nz-form-control>
+                                    <nz-select formControlName="NREUndertaking" nzAllowClear required>
+                                            <nz-option nzValue="YES" nzLabel="YES"></nz-option>
+                                            <nz-option nzValue="NO" nzLabel="NO"></nz-option>
+                                    </nz-select>
+                                </nz-form-control>
+                            </nz-form-item>
+                        </div>
+    </div>
+</nz-card>
+</form>

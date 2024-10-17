@@ -1,0 +1,74 @@
+<form nz-form [formGroup]="form" nzLayout="vertical">
+
+        <nz-card nzTitle="Contact Details">
+
+
+    <div nz-row nzGutter="5">
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Telephone (Office)</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="TelephoneOffice" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Telephone (Res)</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="TelephoneRes" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Mobile</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="Mobile" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Relation</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="Relation">
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Existing Client</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="ExistingClient" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Existing PAN</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="ExistingPan" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Fax</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="Fax" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzMd="8" nzLg="6">
+            <nz-form-item>
+                <nz-form-label>Email</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="Email" />
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</nz-card>
+</form>

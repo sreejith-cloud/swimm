@@ -1,0 +1,13 @@
+#txt:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#txt{
+  color:#038cfc;
+  cursor: pointer;
+  text-decoration: underline
+
+
+}
+

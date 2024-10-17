@@ -1,0 +1,28 @@
+.container {
+    padding: 5px;
+}
+
+.deleteIcon {
+    font-size: 1.2rem;
+    margin-left: 6px;
+    color: #f70909;
+    cursor: pointer !important;
+}
+
+.sticky-card {
+    position: fixed;
+    z-index: 1000;
+    /* Adjust z-index as needed */
+}
+
+.scrollable-div {
+    overflow-y: auto; 
+    max-height: 500px;
+}
+
+.zoomBtn {
+    background-color: rgb(0, 128, 75);
+    color: white;
+    border: 1px rgb(0, 128, 75);
+    margin-left: 10px;
+}

@@ -1,0 +1,83 @@
+<div class="main-content ml-4">
+  <form nz-form nzLayout="vertical">
+    <!-- <div nz-row class="mb-2">
+<div nz-col nzMd="12">
+<h3 class="content-title">Fixed Details Upload</h3>
+</div>
+</div>
+<app-loader *ngIf="showLoading"></app-loader>
+<div  style="margin-top: 10px;">
+<nz-form-item>
+<nz-form-label><b>Upload File</b></nz-form-label>
+<nz-upload [(nzFileList)]="dis" [nzBeforeUpload]="beforeUpload" [nzLimit]="1"
+       (nzChange)="onFileRemove($event)" >
+<button nz-button class="mr-2">
+<i nz-icon type="upload" ></i><span>Select File</span>
+</button>
+</nz-upload>
+
+
+</nz-form-item>
+<button nz-button nzType="danger" class="hand-cursor mr-2" (click)="onClickCancel()" >Cancel</button>
+<button nz-button nzType="primary" class="hand-cursor" (click)="onUpload()"  [disabled]="disableSubmit">
+Upload
+</button> -->
+    <!-- <div nz-col nzSpan="8"class="">
+
+</div> -->
+    <!-- </div>
+<div nz-col nzMd="8" nzLg="8" class="ml-0 pl-0"> -->
+    <!-- <nz-form-item>
+<nz-form-label><b>Depository</b></nz-form-label>
+<nz-form-control>
+<nz-select style="min-width: 100%;" [(ngModel)]="selectedDpType" name="dptype">
+<nz-option *ngFor="let dp of dpList;let i = index" [nzValue]="dp" [nzLabel]="dp">
+</nz-option>
+</nz-select>
+</nz-form-control>
+</nz-form-item> -->
+    <!-- </div> -->
+
+    <nz-card>
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-form-item style="padding-bottom: 3%;width: 9rem;">
+            <!-- <nz-form-label></nz-form-label> -->
+            <nz-upload [(nzFileList)]="dis" [nzBeforeUpload]="beforeUpload" [nzLimit]="1" nzAccept=".csv"
+              (nzChange)="onFileRemove($event)" [nzAction]="true">
+              <button nz-button class="mr-2">
+                <i nz-icon type="upload"></i><span>Select File</span>
+              </button>
+            </nz-upload>
+          </nz-form-item>
+          <!-- <div>
+            <nz-form-label>Notes:</nz-form-label>
+            <p><span>1. </span>File format should be *.xlsx</p>
+            <p><span>2. </span>Any entries beyond a blank row will be ignored</p>
+            <p><span>3. </span>Upload status can be verified from <i>History</i> tab</p>
+            <p><span>4. </span>Records that fail validation can be reviewed from <i>History</i> tab</p>
+
+          </div> -->
+        </div>
+        <div nz-col nzSpan="12" >
+          <!-- <div style="height: 155px;">
+            <nz-form-label>Upload Remarks<span style="color: brown;">*</span></nz-form-label>
+            <textarea rows="4" nz-input [(ngModel)]="inputRemark" name="inputRemark"
+              maxlength="150"></textarea>
+            <ng-container *ngIf="inputRemark.length==150"><span
+                style="color: red;font-family: math;">maximum 150 characters</span></ng-container>
+          </div> -->
+
+            <button nz-button nzType="danger" class="hand-cursor mr-2"
+              (click)="onClickCancel()">Cancel</button>
+            <button nz-button nzType="primary" class="hand-cursor" (click)="onUpload()"
+              [disabled]="disableSubmit">
+              Upload
+            </button>
+
+        </div>
+      </div>
+    </nz-card>
+  </form>
+</div>
+<app-loader *ngIf="showLoading"></app-loader>
